@@ -18,7 +18,6 @@ func addTwoNumbers(a : Int, b : Int, completionHandler : (Int) -> (Int)) {
   completionHandler(sum)
 }
 
-
 func doSomethingWithNumber(num : Int) -> Int {
   println(num)
   return num
@@ -39,6 +38,8 @@ var completionHandler = {(sum : Int) -> (Int) in
   var a = 32
   return a
 }
+
+//CLOSURE CHALLENGE - Design a 
 
 
 

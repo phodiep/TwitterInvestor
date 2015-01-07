@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A250FA4F1A5DBE3700D7C3A8 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */; };
 		A27EF22B1A5B0319005E7E78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27EF22A1A5B0319005E7E78 /* AppDelegate.swift */; };
 		A27EF22D1A5B0319005E7E78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27EF22C1A5B0319005E7E78 /* ViewController.swift */; };
 		A27EF2301A5B0319005E7E78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A27EF22E1A5B0319005E7E78 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		A27EF2251A5B0319005E7E78 /* TweetFellows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TweetFellows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27EF2291A5B0319005E7E78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A27EF22A1A5B0319005E7E78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				A27EF22C1A5B0319005E7E78 /* ViewController.swift */,
+				A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A250FA4F1A5DBE3700D7C3A8 /* NetworkController.swift in Sources */,
 				A27EF2501A5B0CE2005E7E78 /* Tweet.swift in Sources */,
 				A27EF22D1A5B0319005E7E78 /* ViewController.swift in Sources */,
 				A27EF22B1A5B0319005E7E78 /* AppDelegate.swift in Sources */,
