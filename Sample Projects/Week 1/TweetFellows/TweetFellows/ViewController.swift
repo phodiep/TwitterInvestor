@@ -9,18 +9,23 @@
 import UIKit
 
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   
   @IBOutlet weak var tableView: UITableView!
   var tweets = [Tweet]()
   let networkController = NetworkController()
 
   func doSomething() -> String {
+    println("brad")
     return "Brad"
   }
    override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.doSomething()
+    
+    
+      
     //    if let jsonPath = NSBundle.mainBundle().pathForResource("tweet", ofType: "json") {
     
 //      if let jsonData = NSData(contentsOfFile: jsonPath) {
@@ -40,6 +45,10 @@ class ViewController: UIViewController, UITableViewDataSource {
     //}
     println(self.tweets.count)
     self.tableView.dataSource = self
+    self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "TWEET_CELL")
+    self.tableView.delegate = self
+    self.tableView.estimatedRowHeight = 144
+    self.tableView.rowHeight = UITableViewAutomaticDimension
     
     self.networkController.fetchHomeTimeline { (tweets, errorString) -> () in
       if errorString == nil {
@@ -75,14 +84,25 @@ class ViewController: UIViewController, UITableViewDataSource {
     let tweet = self.tweets[indexPath.row]
     //cell.textLabel?.text = tweet.text
     cell.tweetLabel.text = tweet.text
-    if let imageURL = NSURL(string: tweet.imageURL) {
-      if let imageData = NSData(contentsOfURL: imageURL) {
-      cell.tweetImageView.image = UIImage(data: imageData)
-      }
+    cell.usernameLabel.text = tweet.username
+    if tweet.image == nil {
+      self.networkController.fetchImageForTweet(tweet, completionHandler: { (image) -> () in
+        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+      })
+    } else {
+      cell.tweetImageView.image = tweet.image
     }
-    
-
     return cell
+  }
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    println(indexPath.row)
+    
+        let tweetVC = self.storyboard?.instantiateViewControllerWithIdentifier("TWEET_VC") as TweetViewController
+    tweetVC.networkController = self.networkController
+    tweetVC.tweet = self.tweets[indexPath.row]
+      self.navigationController?.pushViewController(tweetVC, animated: true)
+    
   }
 }
 

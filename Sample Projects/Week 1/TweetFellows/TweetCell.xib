@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="187" id="xVc-p4-pVD" customClass="TweetCell" customModule="TweetFellows" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="345" height="187"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xVc-p4-pVD" id="ax6-BJ-BGW">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ffo-RC-xci">
+                        <rect key="frame" x="8" y="8" width="75" height="75"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="75" id="2jl-NG-XKx"/>
+                            <constraint firstAttribute="height" constant="75" id="JpQ-1G-MA3"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Maq-0G-AOY">
+                        <rect key="frame" x="91" y="8" width="42" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3D-Y9-omX">
+                        <rect key="frame" x="91" y="35" width="246" height="144"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="D3D-Y9-omX" firstAttribute="trailing" secondItem="ax6-BJ-BGW" secondAttribute="trailingMargin" id="F3l-4w-FT8"/>
+                    <constraint firstItem="Ffo-RC-xci" firstAttribute="leading" secondItem="ax6-BJ-BGW" secondAttribute="leadingMargin" id="Lrj-fw-1Mz"/>
+                    <constraint firstItem="D3D-Y9-omX" firstAttribute="bottom" secondItem="ax6-BJ-BGW" secondAttribute="bottomMargin" id="VK6-Pg-Sb1"/>
+                    <constraint firstItem="Maq-0G-AOY" firstAttribute="leading" secondItem="Ffo-RC-xci" secondAttribute="trailing" constant="8" id="bCU-QP-Qrh"/>
+                    <constraint firstItem="Maq-0G-AOY" firstAttribute="leading" secondItem="D3D-Y9-omX" secondAttribute="leading" id="dlq-tf-klw"/>
+                    <constraint firstItem="Ffo-RC-xci" firstAttribute="top" secondItem="ax6-BJ-BGW" secondAttribute="topMargin" id="hf4-lp-nqS"/>
+                    <constraint firstItem="D3D-Y9-omX" firstAttribute="top" secondItem="Maq-0G-AOY" secondAttribute="bottom" constant="6.5" id="uDj-h6-pjN"/>
+                    <constraint firstItem="Maq-0G-AOY" firstAttribute="top" secondItem="Ffo-RC-xci" secondAttribute="top" id="vUs-1l-gV6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="tweetImageView" destination="Ffo-RC-xci" id="HLN-4S-elJ"/>
+                <outlet property="tweetLabel" destination="D3D-Y9-omX" id="23P-ZM-v8n"/>
+                <outlet property="usernameLabel" destination="Maq-0G-AOY" id="KJ7-oP-tAS"/>
+            </connections>
+            <point key="canvasLocation" x="244.5" y="272.5"/>
+        </tableViewCell>
+    </objects>
+</document>
