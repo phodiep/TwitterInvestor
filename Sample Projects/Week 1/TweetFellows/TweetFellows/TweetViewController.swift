@@ -15,11 +15,13 @@ class TweetViewController: UIViewController {
   @IBOutlet weak var favoritesLabel: UILabel!
   @IBOutlet weak var tweetTextLabel: UILabel!
   @IBOutlet weak var usernameLabel: UILabel!
-  @IBOutlet weak var imageView: UIImageView!
+
+  @IBOutlet weak var userButton: UIButton!
   var networkController : NetworkController!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.imageView.image = tweet.image
+//        self.userButton.setImage(self.tweet.image!, forState: .Normal)
+      self.userButton.setBackgroundImage(self.tweet.image!, forState: UIControlState.Normal)
         self.tweetTextLabel.text = tweet.text
         self.usernameLabel.text = tweet.username
         // Do any additional setup after loading the view.
@@ -49,4 +51,11 @@ class TweetViewController: UIViewController {
     }
     */
 
+  @IBAction func userButtonPressed(sender: AnyObject) {
+    
+    let userVC = self.storyboard?.instantiateViewControllerWithIdentifier("USER_VC") as UserViewController
+    userVC.networkController = self.networkController
+    userVC.userID = self.tweet.userID
+    self.navigationController?.pushViewController(userVC, animated: true)
+  }
 }

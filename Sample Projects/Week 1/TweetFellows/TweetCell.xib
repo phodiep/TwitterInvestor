@@ -35,6 +35,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="D3D-Y9-omX" firstAttribute="trailing" secondItem="ax6-BJ-BGW" secondAttribute="trailingMargin" id="F3l-4w-FT8"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Ffo-RC-xci" secondAttribute="bottom" constant="8" id="GXE-Ws-MQJ"/>
                     <constraint firstItem="Ffo-RC-xci" firstAttribute="leading" secondItem="ax6-BJ-BGW" secondAttribute="leadingMargin" id="Lrj-fw-1Mz"/>
                     <constraint firstItem="D3D-Y9-omX" firstAttribute="bottom" secondItem="ax6-BJ-BGW" secondAttribute="bottomMargin" id="VK6-Pg-Sb1"/>
                     <constraint firstItem="Maq-0G-AOY" firstAttribute="leading" secondItem="Ffo-RC-xci" secondAttribute="trailing" constant="8" id="bCU-QP-Qrh"/>

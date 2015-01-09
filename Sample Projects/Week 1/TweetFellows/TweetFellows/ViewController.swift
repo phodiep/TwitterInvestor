@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        println("getting data from path failed")
 //      }
     //}
-    println(self.tweets.count)
+    //println(self.tweets.count)
     self.tableView.dataSource = self
     self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "TWEET_CELL")
     self.tableView.delegate = self
@@ -87,7 +87,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     cell.usernameLabel.text = tweet.username
     if tweet.image == nil {
       self.networkController.fetchImageForTweet(tweet, completionHandler: { (image) -> () in
-        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+//        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        cell.tweetImageView.image = tweet.image
       })
     } else {
       cell.tweetImageView.image = tweet.image

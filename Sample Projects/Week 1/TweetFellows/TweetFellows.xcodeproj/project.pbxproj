@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A227D4A71A60491200650BD7 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A227D4A61A60491200650BD7 /* UserViewController.swift */; };
 		A250FA4F1A5DBE3700D7C3A8 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */; };
 		A27EF22B1A5B0319005E7E78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27EF22A1A5B0319005E7E78 /* AppDelegate.swift */; };
 		A27EF22D1A5B0319005E7E78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27EF22C1A5B0319005E7E78 /* ViewController.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A227D4A61A60491200650BD7 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		A27EF2251A5B0319005E7E78 /* TweetFellows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TweetFellows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27EF2291A5B0319005E7E78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		A27EF24C1A5B0337005E7E78 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A227D4A61A60491200650BD7 /* UserViewController.swift */,
 				A27EF22C1A5B0319005E7E78 /* ViewController.swift */,
 				A297B0BC1A5EF3C5003AD2A3 /* TweetViewController.swift */,
 				A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */,
@@ -256,6 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A227D4A71A60491200650BD7 /* UserViewController.swift in Sources */,
 				A250FA4F1A5DBE3700D7C3A8 /* NetworkController.swift in Sources */,
 				A27EF2501A5B0CE2005E7E78 /* Tweet.swift in Sources */,
 				A297B0BD1A5EF3C5003AD2A3 /* TweetViewController.swift in Sources */,

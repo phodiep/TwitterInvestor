@@ -109,5 +109,37 @@ class NetworkController {
     }
   }
   
-  
+  func fetchTimelineForUser(userID : String, completionHandler: ([Tweet]?, String?) -> ()) {
+    
+    let requestURL = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=\(userID)")
+    let request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL!, parameters: nil)
+    request.account = self.twitterAccount
+    request.performRequestWithHandler { (data, response, error) -> Void in
+      
+      if error == nil {
+        switch response.statusCode {
+        case 200...299:
+          if let jsonArray = NSJSONSerialization.JSONObjectWithData(data, options: nil, error:nil) as? [AnyObject] {
+            var tweets = [Tweet]()
+            for object in jsonArray {
+              if let jsonDictionary = object as? [String : AnyObject] {
+                let tweet = Tweet(jsonDictionary)
+                tweets.append(tweet)
+              }
+            }
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+              completionHandler(tweets, nil)
+            })
+          }
+
+          
+        default:
+          println("default case hit")
+        }
+      }
+    }
+    
+    
+    
+  }
 }
