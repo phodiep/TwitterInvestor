@@ -19,6 +19,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     println("brad")
     return "Brad"
   }
+  
+  //MARK: ViewController LifeCycle
    override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -73,6 +75,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //    self.navigationController?.pushViewController(tweetVC, animated: true)
     
   }
+  
+  //MARK: UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.tweets.count
@@ -95,6 +99,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     return cell
   }
+  
+  //MARK: UITableViewDelegate
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     println(indexPath.row)
