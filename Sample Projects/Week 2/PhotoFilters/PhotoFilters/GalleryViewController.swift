@@ -8,10 +8,16 @@
 
 import UIKit
 
-class GalleryViewController: UIViewController, UICollectionViewDataSource {
+protocol ImageSelectedProtocol {
+  func controllerDidSelectImage(UIImage) -> Void
+}
+
+class GalleryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
   
   var collectionView : UICollectionView!
   var images = [UIImage]()
+  var delegate : ImageSelectedProtocol?
+  //var delegate : AnyObject <ImageSelectedProtocol>
   
   override func loadView() {
     let rootView = UIView(frame: UIScreen.mainScreen().bounds)
@@ -19,6 +25,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource {
     self.collectionView = UICollectionView(frame: rootView.frame, collectionViewLayout: collectionViewFlowLayout)
     rootView.addSubview(self.collectionView)
     self.collectionView.dataSource = self
+    self.collectionView.delegate = self
     collectionViewFlowLayout.itemSize = CGSize(width: 200, height: 200)
     
     self.view = rootView
@@ -48,10 +55,13 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource {
     return cell
   }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+  //MARK: UICollectionViewDelegate
+  
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    self.delegate?.controllerDidSelectImage(self.images[indexPath.row])
+    
+    self.navigationController?.popViewControllerAnimated(true)
+  }
     
 
     /*
