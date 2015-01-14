@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ImageSelectedProtocol {
-  func controllerDidSelectImage(UIImage) -> Void
+  func controllerDidSelectImage(selectedImage: UIImage) -> Void
 }
 
 class GalleryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {

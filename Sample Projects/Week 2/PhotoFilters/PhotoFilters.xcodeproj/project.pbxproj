@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A29326021A65AAFA007DE378 /* Thumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29326011A65AAFA007DE378 /* Thumbnail.swift */; };
+		A2A118151A66F5CF0042E1CC /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A118141A66F5CF0042E1CC /* PhotosViewController.swift */; };
 		A2DA607C1A645235005019DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DA607B1A645235005019DA /* AppDelegate.swift */; };
 		A2DA607E1A645235005019DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DA607D1A645235005019DA /* ViewController.swift */; };
 		A2DA60831A645235005019DA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2DA60821A645235005019DA /* Images.xcassets */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		A29326011A65AAFA007DE378 /* Thumbnail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Thumbnail.swift; sourceTree = "<group>"; };
+		A2A118141A66F5CF0042E1CC /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		A2DA60761A645235005019DA /* PhotoFilters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoFilters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2DA607A1A645235005019DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2DA607B1A645235005019DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				A2DA60A11A646109005019DA /* image2.jpg */,
 				A2DA609F1A646105005019DA /* image1.jpg */,
 				A2DA607D1A645235005019DA /* ViewController.swift */,
+				A2A118141A66F5CF0042E1CC /* PhotosViewController.swift */,
 				A29326011A65AAFA007DE378 /* Thumbnail.swift */,
 				A2DA60821A645235005019DA /* Images.xcassets */,
 				A2DA60841A645235005019DA /* LaunchScreen.xib */,
@@ -228,6 +231,7 @@
 				A2DA609E1A645E89005019DA /* GalleryCell.swift in Sources */,
 				A2DA609C1A645A9A005019DA /* GalleryViewController.swift in Sources */,
 				A2DA607E1A645235005019DA /* ViewController.swift in Sources */,
+				A2A118151A66F5CF0042E1CC /* PhotosViewController.swift in Sources */,
 				A29326021A65AAFA007DE378 /* Thumbnail.swift in Sources */,
 				A2DA607C1A645235005019DA /* AppDelegate.swift in Sources */,
 			);
