@@ -17,7 +17,14 @@ class GalleryCell: UICollectionViewCell {
     //self.backgroundColor = UIColor.whiteColor()
     imageView.frame = self.bounds
     imageView.contentMode = UIViewContentMode.ScaleAspectFill
+    imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
     imageView.layer.masksToBounds = true
+    let views = ["imageView" : imageView]
+    let imageViewConstraintsHorizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: nil, metrics: nil, views: views)
+    self.addConstraints(imageViewConstraintsHorizontal)
+    
+    let imageViewConstraintsVertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]|", options: nil, metrics: nil, views: views)
+    self.addConstraints(imageViewConstraintsVertical)
   }
 
   required init(coder aDecoder: NSCoder) {

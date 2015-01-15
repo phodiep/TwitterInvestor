@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A2DA60751A645235005019DA"
-               BuildableName = "PhotoFilters.app"
-               BlueprintName = "PhotoFilters"
-               ReferencedContainer = "container:PhotoFilters.xcodeproj">
+               BlueprintIdentifier = "A204597F1A685407008D176E"
+               BuildableName = "assets.app"
+               BlueprintName = "assets"
+               ReferencedContainer = "container:assets.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A2DA608A1A645235005019DA"
-               BuildableName = "PhotoFiltersTests.xctest"
-               BlueprintName = "PhotoFiltersTests"
-               ReferencedContainer = "container:PhotoFilters.xcodeproj">
+               BlueprintIdentifier = "A20459941A685407008D176E"
+               BuildableName = "assetsTests.xctest"
+               BlueprintName = "assetsTests"
+               ReferencedContainer = "container:assets.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A2DA608A1A645235005019DA"
-               BuildableName = "PhotoFiltersTests.xctest"
-               BlueprintName = "PhotoFiltersTests"
-               ReferencedContainer = "container:PhotoFilters.xcodeproj">
+               BlueprintIdentifier = "A20459941A685407008D176E"
+               BuildableName = "assetsTests.xctest"
+               BlueprintName = "assetsTests"
+               ReferencedContainer = "container:assets.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A2DA60751A645235005019DA"
-            BuildableName = "PhotoFilters.app"
-            BlueprintName = "PhotoFilters"
-            ReferencedContainer = "container:PhotoFilters.xcodeproj">
+            BlueprintIdentifier = "A204597F1A685407008D176E"
+            BuildableName = "assets.app"
+            BlueprintName = "assets"
+            ReferencedContainer = "container:assets.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -71,15 +71,14 @@
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
-      allowLocationSimulation = "YES"
-      language = "fr">
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A2DA60751A645235005019DA"
-            BuildableName = "PhotoFilters.app"
-            BlueprintName = "PhotoFilters"
-            ReferencedContainer = "container:PhotoFilters.xcodeproj">
+            BlueprintIdentifier = "A204597F1A685407008D176E"
+            BuildableName = "assets.app"
+            BlueprintName = "assets"
+            ReferencedContainer = "container:assets.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -94,10 +93,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A2DA60751A645235005019DA"
-            BuildableName = "PhotoFilters.app"
-            BlueprintName = "PhotoFilters"
-            ReferencedContainer = "container:PhotoFilters.xcodeproj">
+            BlueprintIdentifier = "A204597F1A685407008D176E"
+            BuildableName = "assets.app"
+            BlueprintName = "assets"
+            ReferencedContainer = "container:assets.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

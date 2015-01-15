@@ -11,7 +11,7 @@ import Social
 
 class ViewController: UIViewController, ImageSelectedProtocol, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   
-   let alertController = UIAlertController(title: "Title", message: "Message", preferredStyle: UIAlertControllerStyle.ActionSheet)
+   let alertController = UIAlertController(title: NSLocalizedString("Alert Controller Title", comment: "This is the title for our alert controller"), message: NSLocalizedString("Alert Controller Message", comment: "This is the message for our alert controller"), preferredStyle: UIAlertControllerStyle.ActionSheet)
   let mainImageView = UIImageView()
   var collectionView : UICollectionView!
   var collectionViewYConstraint : NSLayoutConstraint!
@@ -20,6 +20,8 @@ class ViewController: UIViewController, ImageSelectedProtocol, UICollectionViewD
   let imageQueue = NSOperationQueue()
   var gpuContext : CIContext!
   var thumbnails = [Thumbnail]()
+  
+  var filterOption : UIAlertAction!
   
   var doneButton : UIBarButtonItem!
   var shareButton : UIBarButtonItem!
@@ -33,9 +35,10 @@ class ViewController: UIViewController, ImageSelectedProtocol, UICollectionViewD
     let photoButton = UIButton()
     photoButton.setTranslatesAutoresizingMaskIntoConstraints(false)
     rootView.addSubview(photoButton)
-    photoButton.setTitle("Photos", forState: .Normal)
+    photoButton.setTitle(NSLocalizedString("Photos", comment: "This is the title for the main photos button"), forState: .Normal)
     photoButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
     photoButton.addTarget(self, action: "photoButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+    photoButton.accessibilityLabel = NSLocalizedString("Brad", comment: "Brad")
     let collectionviewFlowLayout = UICollectionViewFlowLayout()
     self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: collectionviewFlowLayout)
     collectionviewFlowLayout.itemSize = CGSize(width: 100, height: 100)
@@ -56,6 +59,17 @@ class ViewController: UIViewController, ImageSelectedProtocol, UICollectionViewD
     
    self.doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "donePressed")
     self.shareButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sharePressed")
+    
+    self.filterOption = UIAlertAction(title: "Filter", style: UIAlertActionStyle.Default) { (action) -> Void in
+      self.collectionViewYConstraint.constant = 20
+      UIView.animateWithDuration(0.4, animations: { () -> Void in
+        self.view.layoutIfNeeded()
+      })
+    }
+    
+    self.alertController.addAction(self.filterOption)
+    self.filterOption.enabled = false
+      
     self.navigationItem.rightBarButtonItem = self.shareButton
     
     let galleryOption = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.Default) { (action) -> Void in
@@ -65,18 +79,10 @@ class ViewController: UIViewController, ImageSelectedProtocol, UICollectionViewD
       self.navigationController?.pushViewController(galleryVC, animated: true)
     }
     self.alertController.addAction(galleryOption)
-    
-    let filterOption = UIAlertAction(title: "Filter", style: UIAlertActionStyle.Default) { (action) -> Void in
-      self.collectionViewYConstraint.constant = 20
-      UIView.animateWithDuration(0.4, animations: { () -> Void in
-        self.view.layoutIfNeeded()
-        
-      })
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "donePressed")
       self.navigationItem.rightBarButtonItem = doneButton
-    }
-    self.alertController.addAction(filterOption)
     
+  
     if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
       let cameraOption = UIAlertAction(title: "Camera", style: .Default, handler: { (action) -> Void in
         
@@ -112,6 +118,21 @@ class ViewController: UIViewController, ImageSelectedProtocol, UICollectionViewD
     // Do any additional setup after loading the view, typically from a nib.
   }
   
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    if self.mainImageView.image != nil {
+      
+    self.alertController.addAction(UIAlertAction(title: "Demo", style: .Default, handler: { (action) -> Void in
+      println("")
+    }))
+    
+    let anotherAction = UIAlertAction(title: "Random", style: .Default) { (action) -> Void in
+      println()
+    }
+    self.alertController.addAction(anotherAction)
+    }
+    
+  }
   func setupThumbnails() {
     self.filterNames = ["CISepiaTone","CIPhotoEffectChrome", "CIPhotoEffectNoir"]
     for name in self.filterNames {

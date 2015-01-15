@@ -17,11 +17,12 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   var collectionView : UICollectionView!
   var images = [UIImage]()
   var delegate : ImageSelectedProtocol?
+  var collectionViewFlowLayout : UICollectionViewFlowLayout!
   //var delegate : AnyObject <ImageSelectedProtocol>
   
   override func loadView() {
     let rootView = UIView(frame: UIScreen.mainScreen().bounds)
-    let collectionViewFlowLayout = UICollectionViewFlowLayout()
+    self.collectionViewFlowLayout = UICollectionViewFlowLayout()
     self.collectionView = UICollectionView(frame: rootView.frame, collectionViewLayout: collectionViewFlowLayout)
     rootView.addSubview(self.collectionView)
     self.collectionView.dataSource = self
@@ -39,19 +40,58 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
       let image2 = UIImage(named: "image2.jpg")
       self.images.append(image1!)
       self.images.append(image2!)
+      
+      let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "collectionViewPinched:")
+      self.collectionView.addGestureRecognizer(pinchRecognizer)
+      
       // Do any additional setup after loading the view.
     }
+  
+  //MARK: Gesture Recognizer Actions
+  
+  func collectionViewPinched(sender : UIPinchGestureRecognizer) {
+    
+    switch sender.state {
+    case .Began:
+      println("began")
+    case .Changed:
+      println("changed with velocity \(sender.velocity)")
+    case .Ended:
+      println("ended")
+      self.collectionView.performBatchUpdates({ () -> Void in
+        if sender.velocity > 0 {
+          //increase item size
+          let newSize = CGSize(width: self.collectionViewFlowLayout.itemSize.width * 2, height: self.collectionViewFlowLayout.itemSize.height * 2)
+          self.collectionViewFlowLayout.itemSize = newSize
+        } else if sender.velocity < 0 {
+          let newSize = CGSize(width: self.collectionViewFlowLayout.itemSize.width / 2, height: self.collectionViewFlowLayout.itemSize.height / 2)
+          self.collectionViewFlowLayout.itemSize = newSize
+          //decrease item size
+        }
+        
+        
+      }, completion: {(finished) -> Void in
+        
+      })
+      
+    default:
+      println("default")
+    }
+    println("collection view pinched")
+    
+  }
   
   //MARK: UICollectionViewDataSource
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.images.count
+    return 10000
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GALLERY_CELL", forIndexPath: indexPath) as GalleryCell
-    let image = self.images[indexPath.row]
-    cell.imageView.image = image
+//    let image = self.images[indexPath.row]
+//    cell.imageView.image = image
+    cell.backgroundColor = UIColor.redColor() 
     return cell
   }
 
