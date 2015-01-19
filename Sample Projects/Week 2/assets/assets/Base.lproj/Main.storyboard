@@ -16,16 +16,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Akv-bV-eiY"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="65F-rR-HaG">
+                                <rect key="frame" x="247" y="542" width="106" height="38"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="Akv-bV-eiY" secondAttribute="centerY" id="HDx-t4-seD"/>
-                            <constraint firstAttribute="centerX" secondItem="Akv-bV-eiY" secondAttribute="centerX" id="wuM-yF-Rzz"/>
+                            <constraint firstAttribute="centerX" secondItem="65F-rR-HaG" secondAttribute="centerX" id="2wi-vI-jen"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="65F-rR-HaG" secondAttribute="bottom" constant="20" id="8Wu-56-3N4"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="Akv-bV-eiY" id="CJr-3e-Gak"/>
+                        <outlet property="myButton" destination="65F-rR-HaG" id="Bad-aF-iYT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

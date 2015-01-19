@@ -10,12 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
-  @IBOutlet weak var imageView: UIImageView!
+  @IBOutlet weak var myButton: UIButton!
+ 
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.imageView.image = UIImage(named: "richard.jpg")
+    
+  }
+  
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    println(myButton.layoutMargins.top)
+    myButton.contentEdgeInsets.top = 40
   }
 
   override func didReceiveMemoryWarning() {
