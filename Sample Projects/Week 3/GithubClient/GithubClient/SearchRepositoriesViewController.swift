@@ -13,15 +13,16 @@ class SearchRepositoriesViewController: UIViewController, UITableViewDataSource,
   @IBOutlet weak var tableView: UITableView!
   
   @IBOutlet weak var searchBar: UISearchBar!
-  let networkController = NetworkController()
+  var networkController : NetworkController!
     override func viewDidLoad() {
         super.viewDidLoad()
      self.tableView.dataSource = self
       self.searchBar.delegate = self
-      self.networkController.fetchRepositoriesForSearchTerm("Swift", callback: { (items, errorDescription) -> (Void) in
-        
-      })
       
+      
+      let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+      self.networkController = appDelegate.networkController
+
         // Do any additional setup after loading the view.
     }
   
@@ -38,6 +39,9 @@ class SearchRepositoriesViewController: UIViewController, UITableViewDataSource,
   
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
     println(searchBar.text)
+    self.networkController.fetchRepositoriesForSearchTerm(searchBar.text, callback: { (repositories, errorDescription) -> (Void) in
+      //reload table view with new data
+    })
     searchBar.resignFirstResponder()
     //make your network call here based on the search term
   }
