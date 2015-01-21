@@ -26,6 +26,8 @@ class NetworkController {
   let accessTokenUserDefaultsKey = "accessToken"
   var accessToken : String?
   
+  let imageQueue = NSOperationQueue()
+  
   init() {
     let ephemeralConfig = NSURLSessionConfiguration.ephemeralSessionConfiguration()
     
@@ -51,7 +53,6 @@ class NetworkController {
 //    let oauthURL = "https://github.com/login/oauth/access_token?\(code!)&client_id=\(self.clientID)&client_secret=\(self.clientSecret)"
 //    let postRequest = NSMutableURLRequest(URL: NSURL(string: oauthURL)!)
 //    postRequest.HTTPMethod = "POST"
-    //postRequest.HTTPBody
     
     //THis is the 2nd way you can pass back info with a POST, and this is passing back info in the Body of the HTTP Request
     
@@ -116,9 +117,60 @@ class NetworkController {
       }
     })
     dataTask.resume()
+  }
+  
+  func fetchUsersForSearchTerm(searchTerm : String, callback : ([User]?, String?) -> (Void)) {
+    let url = NSURL(string: "https://api.github.com/search/users?q=\(searchTerm)")
+    let request = NSMutableURLRequest(URL: url!)
+    //this line is how github knows who is making the request
+    request.setValue("token \(self.accessToken!)", forHTTPHeaderField: "Authorization")
+    
+    
+    let dataTask = self.urlSession.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+      if error == nil {
+        
+        if let httpResponse = response as? NSHTTPURLResponse {
+          switch httpResponse.statusCode {
+          case 200...299:
+            if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? [String : AnyObject] {
+              if let itemsArray = jsonDictionary["items"] as? [[String : AnyObject]] {
+                
+                var users = [User]()
+                
+                for item in itemsArray {
+                  let user = User(jsonDictionary: item)
+                  users.append(user)
+                }
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                  callback(users, nil)
+                })
+              }
+            }
+            
+          default:
+            println("default case on user search, status code: \(httpResponse.statusCode)")
+          }
+        }
+        
+      } else {
+        println(error.localizedDescription)
+      }
+    })
+    dataTask.resume()
+  }
+  
+  func fetchAvatarImageForURL(url : String, completionHandler : (UIImage) -> (Void)) {
+    
+    let url = NSURL(string: url)
+    
+    self.imageQueue.addOperationWithBlock { () -> Void in
+      let imageData = NSData(contentsOfURL: url!)
+      let image = UIImage(data: imageData!)
       
-
-    
-    
+      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        completionHandler(image!)
+      })
+    }
   }
 }

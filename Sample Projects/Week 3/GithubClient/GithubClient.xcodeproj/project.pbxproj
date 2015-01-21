@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A20053F71A702806002AAEA5 /* SearchUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20053F61A702806002AAEA5 /* SearchUsersViewController.swift */; };
+		A20053F91A702863002AAEA5 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20053F81A702863002AAEA5 /* UserCell.swift */; };
+		A20053FB1A7028A6002AAEA5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20053FA1A7028A6002AAEA5 /* User.swift */; };
+		A22D359E1A7033F900D7FD57 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22D359D1A7033F900D7FD57 /* UserDetailViewController.swift */; };
+		A22D35A01A70343A00D7FD57 /* ToUserDetailAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22D359F1A70343A00D7FD57 /* ToUserDetailAnimationController.swift */; };
 		A2AA10F01A6D72E4007F9124 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */; };
 		A2AA10F21A6D72E5007F9124 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA10F11A6D72E5007F9124 /* ViewController.swift */; };
 		A2AA10F51A6D72E5007F9124 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2AA10F31A6D72E5007F9124 /* Main.storyboard */; };
@@ -30,6 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A20053F61A702806002AAEA5 /* SearchUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchUsersViewController.swift; sourceTree = "<group>"; };
+		A20053F81A702863002AAEA5 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		A20053FA1A7028A6002AAEA5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A22D359D1A7033F900D7FD57 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		A22D359F1A70343A00D7FD57 /* ToUserDetailAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToUserDetailAnimationController.swift; sourceTree = "<group>"; };
 		A2AA10EA1A6D72E4007F9124 /* GithubClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AA10EE1A6D72E4007F9124 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +99,11 @@
 				A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */,
 				A2AA10F11A6D72E5007F9124 /* ViewController.swift */,
 				A2AA10F31A6D72E5007F9124 /* Main.storyboard */,
+				A22D359D1A7033F900D7FD57 /* UserDetailViewController.swift */,
+				A22D359F1A70343A00D7FD57 /* ToUserDetailAnimationController.swift */,
+				A20053F61A702806002AAEA5 /* SearchUsersViewController.swift */,
+				A20053FA1A7028A6002AAEA5 /* User.swift */,
+				A20053F81A702863002AAEA5 /* UserCell.swift */,
 				A2AA11111A6D8439007F9124 /* NetworkController.swift */,
 				A2AA11151A6D90FA007F9124 /* Repository.swift */,
 				A2AA11131A6D8818007F9124 /* SearchRepositoriesViewController.swift */,
@@ -224,12 +239,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A20053F91A702863002AAEA5 /* UserCell.swift in Sources */,
 				A2AA11121A6D8439007F9124 /* NetworkController.swift in Sources */,
 				A2AA10F21A6D72E5007F9124 /* ViewController.swift in Sources */,
 				A2AA10F01A6D72E4007F9124 /* AppDelegate.swift in Sources */,
 				A2AA11141A6D8818007F9124 /* SearchRepositoriesViewController.swift in Sources */,
+				A20053FB1A7028A6002AAEA5 /* User.swift in Sources */,
+				A22D359E1A7033F900D7FD57 /* UserDetailViewController.swift in Sources */,
+				A20053F71A702806002AAEA5 /* SearchUsersViewController.swift in Sources */,
 				A2AA11101A6D72FF007F9124 /* MenuTableViewController.swift in Sources */,
 				A2AA11161A6D90FA007F9124 /* Repository.swift in Sources */,
+				A22D35A01A70343A00D7FD57 /* ToUserDetailAnimationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +443,7 @@
 				A2AA110B1A6D72E5007F9124 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A2AA110C1A6D72E5007F9124 /* Build configuration list for PBXNativeTarget "GithubClientTests" */ = {
 			isa = XCConfigurationList;
@@ -431,6 +452,7 @@
 				A2AA110E1A6D72E5007F9124 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

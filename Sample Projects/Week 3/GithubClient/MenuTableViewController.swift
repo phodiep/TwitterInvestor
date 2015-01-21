@@ -14,8 +14,8 @@ class MenuTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       
-      let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-      self.networkController = appDelegate.networkController
+//      let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+//      self.networkController = appDelegate.networkController
       
       
 
@@ -28,7 +28,7 @@ class MenuTableViewController: UITableViewController {
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    if self.networkController.accessToken == nil {
+    if NetworkController.sharedNetworkController.accessToken == nil {
       self.networkController.requestAccessToken()
     }
   }
