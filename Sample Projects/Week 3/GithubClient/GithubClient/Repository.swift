@@ -12,9 +12,12 @@ import Foundation
 struct Repository {
   let name : String
   let author : String
+  let url : String
   
   init(jsonDictionary : [String : AnyObject]) {
     self.name = jsonDictionary["name"] as String
     self.author = "Brad"
+    self.url = jsonDictionary["html_url"] as String
+    
   }
 }

@@ -28,9 +28,24 @@ class MenuTableViewController: UITableViewController {
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
+    self.navigationController?.delegate = nil
     if NetworkController.sharedNetworkController.accessToken == nil {
       self.networkController.requestAccessToken()
     }
+    
+    let alertView = NSBundle.mainBundle().loadNibNamed("CustomAlertView", owner: self, options: nil).first as UIView
+    alertView.center = self.view.center
+    alertView.alpha = 0
+    alertView.transform = CGAffineTransformMakeScale(0.4, 0.4)
+    self.view.addSubview(alertView)
+    
+    UIView.animateWithDuration(0.4, delay: 0.5, options: nil, animations: { () -> Void in
+      alertView.alpha = 1
+      alertView.transform =  CGAffineTransformMakeScale(1.0, 1.0)
+    }) { (finished) -> Void in
+      
+    }
+    
   }
 
     override func didReceiveMemoryWarning() {
@@ -38,6 +53,10 @@ class MenuTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+  @IBAction func okayPressed(sender: AnyObject) {
+    
+    
+  }
     // MARK: - Table view data source
 
 //    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

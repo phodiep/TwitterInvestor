@@ -137,6 +137,9 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3I5-IF-Mxt" id="mYH-np-ZnW">
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9qc-Eu-V53" kind="show" identifier="SHOW_WEB" id="G1z-M5-yTv"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -157,6 +160,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPv-AU-Tzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1632" y="329"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="ePp-uB-MvV">
+            <objects>
+                <viewController id="9qc-Eu-V53" customClass="WebViewController" customModule="GithubClient" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="G5m-4I-NPa"/>
+                        <viewControllerLayoutGuide type="bottom" id="CBy-cJ-PiC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1dD-Wx-Xde">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ONk-Yk-6eA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2333" y="329"/>
         </scene>
         <!--Search Users View Controller-->
         <scene sceneID="bbo-ie-5ci">

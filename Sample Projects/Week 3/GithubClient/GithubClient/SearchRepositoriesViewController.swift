@@ -14,6 +14,8 @@ class SearchRepositoriesViewController: UIViewController, UITableViewDataSource,
   
   @IBOutlet weak var searchBar: UISearchBar!
   var networkController : NetworkController!
+  
+  var repos = [Repository]()
     override func viewDidLoad() {
         super.viewDidLoad()
      self.tableView.dataSource = self
@@ -40,20 +42,26 @@ class SearchRepositoriesViewController: UIViewController, UITableViewDataSource,
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
     println(searchBar.text)
     self.networkController.fetchRepositoriesForSearchTerm(searchBar.text, callback: { (repositories, errorDescription) -> (Void) in
+      self.repos = repositories!
+      self.tableView.reloadData()
       //reload table view with new data
     })
     searchBar.resignFirstResponder()
     //make your network call here based on the search term
   }
 
-    /*
-    // MARK: - Navigation
+  
+    // MARK: - Navigationrl
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+      if segue.identifier == "SHOW_WEB" {
+        let destinationVC = segue.destinationViewController as WebViewController
+        let selectedIndexPath = self.tableView.indexPathForSelectedRow()
+        let repo = self.repos[selectedIndexPath!.row]
+        destinationVC.url = repo.url
+      }
     }
-    */
+
 
 }

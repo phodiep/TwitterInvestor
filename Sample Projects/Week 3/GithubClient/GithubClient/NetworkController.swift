@@ -92,7 +92,7 @@ class NetworkController {
     
   }
   
-  func fetchRepositoriesForSearchTerm(searchTerm : String, callback : ([Repository]?, String) -> (Void)) {
+  func fetchRepositoriesForSearchTerm(searchTerm : String, callback : ([Repository]?, String?) -> (Void)) {
     
     let url = NSURL(string: "https://api.github.com/search/repositories?q=\(searchTerm)")
     //Authorization: token OAUTH-TOKEN
@@ -109,6 +109,16 @@ class NetworkController {
           case 200...299:
             println(httpResponse)
             let jsonDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as [String : AnyObject]
+            var repos = [Repository]()
+           if let itemsArray = jsonDictionary["items"] as? [[String: AnyObject]] {
+            for object in itemsArray {
+              let repo = Repository(jsonDictionary: object)
+              repos.append(repo)
+            }
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+              callback(repos, nil)
+            })
+            }
             println(jsonDictionary)
           default:
             println("default")

@@ -21,6 +21,11 @@ class SearchUsersViewController: UIViewController, UICollectionViewDataSource, U
       self.navigationController?.delegate = self
         // Do any additional setup after loading the view.
     }
+  
+//  override func viewWillDisappear(animated: Bool) {
+//    super.viewWillDisappear(animated)
+//    self.transitioningDelegate = nil
+//  }
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self.users.count
@@ -56,10 +61,14 @@ class SearchUsersViewController: UIViewController, UICollectionViewDataSource, U
   }
     
   func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    if fromVC is SearchUsersViewController {
+    if toVC is UserDetailViewController {
       //return the animation controller
       return ToUserDetailAnimationController()
     }
+    
+//    if fromVC is SearchUsersViewController  {
+//      return ToUserDetailAnimationController()
+//    }
     return nil
   }
   
@@ -71,4 +80,10 @@ class SearchUsersViewController: UIViewController, UICollectionViewDataSource, U
       
     }
   }
+  
+  func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    return text.validate()
+  }
+  
+
 }
