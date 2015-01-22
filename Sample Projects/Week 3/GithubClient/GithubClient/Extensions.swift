@@ -10,7 +10,7 @@ import Foundation
 
 extension String {
 
-  
+  //comment
   func validate() -> Bool {
     let regex = NSRegularExpression(pattern: "[^0-9a-zA-Z\n\\-]", options: nil, error: nil)
     let elements = countElements(self)
