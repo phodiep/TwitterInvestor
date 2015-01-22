@@ -15,6 +15,7 @@
 		A250D47B1A716F75004FE3C5 /* CustomAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A250D47A1A716F75004FE3C5 /* CustomAlertView.xib */; };
 		A250D47D1A71762C004FE3C5 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A250D47C1A71762C004FE3C5 /* WebViewController.swift */; };
 		A250D47F1A7181E9004FE3C5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A250D47E1A7181E9004FE3C5 /* Extensions.swift */; };
+		A250D4811A718E02004FE3C5 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = A250D4801A718E02004FE3C5 /* Test.swift */; };
 		A2AA10F01A6D72E4007F9124 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */; };
 		A2AA10F21A6D72E5007F9124 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA10F11A6D72E5007F9124 /* ViewController.swift */; };
 		A2AA10F51A6D72E5007F9124 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2AA10F31A6D72E5007F9124 /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 		A250D47A1A716F75004FE3C5 /* CustomAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomAlertView.xib; sourceTree = "<group>"; };
 		A250D47C1A71762C004FE3C5 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		A250D47E1A7181E9004FE3C5 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		A250D4801A718E02004FE3C5 /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		A2AA10EA1A6D72E4007F9124 /* GithubClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AA10EE1A6D72E4007F9124 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -102,7 +104,6 @@
 			isa = PBXGroup;
 			children = (
 				A2AA110F1A6D72FF007F9124 /* MenuTableViewController.swift */,
-				A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */,
 				A2AA10F11A6D72E5007F9124 /* ViewController.swift */,
 				A2AA10F31A6D72E5007F9124 /* Main.storyboard */,
 				A250D47A1A716F75004FE3C5 /* CustomAlertView.xib */,
@@ -110,6 +111,7 @@
 				A22D359F1A70343A00D7FD57 /* ToUserDetailAnimationController.swift */,
 				A20053F61A702806002AAEA5 /* SearchUsersViewController.swift */,
 				A250D47E1A7181E9004FE3C5 /* Extensions.swift */,
+				A250D4801A718E02004FE3C5 /* Test.swift */,
 				A20053FA1A7028A6002AAEA5 /* User.swift */,
 				A20053F81A702863002AAEA5 /* UserCell.swift */,
 				A2AA11111A6D8439007F9124 /* NetworkController.swift */,
@@ -126,6 +128,7 @@
 		A2AA10ED1A6D72E4007F9124 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A2AA10EF1A6D72E4007F9124 /* AppDelegate.swift */,
 				A2AA10EE1A6D72E4007F9124 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -252,6 +255,7 @@
 				A20053F91A702863002AAEA5 /* UserCell.swift in Sources */,
 				A2AA11121A6D8439007F9124 /* NetworkController.swift in Sources */,
 				A2AA10F21A6D72E5007F9124 /* ViewController.swift in Sources */,
+				A250D4811A718E02004FE3C5 /* Test.swift in Sources */,
 				A2AA10F01A6D72E4007F9124 /* AppDelegate.swift in Sources */,
 				A2AA11141A6D8818007F9124 /* SearchRepositoriesViewController.swift in Sources */,
 				A20053FB1A7028A6002AAEA5 /* User.swift in Sources */,
