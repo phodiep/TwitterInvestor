@@ -19,10 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.makeKeyAndVisible()
+        
         let rootVC = MenuViewController()
         let navigationController = UINavigationController(rootViewController: rootVC)
         self.window?.rootViewController = navigationController
-        
+
         return true
     }
 
