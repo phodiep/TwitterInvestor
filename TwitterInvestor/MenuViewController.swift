@@ -40,13 +40,6 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = MenuCell()
         cell.cellLabel.text = self.menu[indexPath.row][0] as? String
-
-        let views = ["cellLabel" : cell.cellLabel]
-        cell.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[cellLabel]", options: nil, metrics: nil, views: views))
-        cell.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-[cellLabel]-|", options: nil, metrics: nil, views: views))
-        
         return cell
     }
     

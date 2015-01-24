@@ -17,6 +17,12 @@ class MenuCell: UITableViewCell {
         
         self.cellLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         contentView.addSubview(self.cellLabel)
+        
+        let views = ["cellLabel" : self.cellLabel]
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-16-[cellLabel]", options: nil, metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-[cellLabel]-|", options: nil, metrics: nil, views: views))
     }
 
     

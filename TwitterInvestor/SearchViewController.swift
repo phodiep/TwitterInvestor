@@ -8,14 +8,16 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UISearchBarDelegate {
+class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView()
     let searchBar = UISearchBar()
+    
+    var watchList = [Stock]()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
-
+        
         self.searchBar.delegate = self
         self.searchBar.sizeToFit()
 
@@ -29,12 +31,51 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
 
         self.title = "Search"
+        self.tableView.registerClass(SearchCell.self, forCellReuseIdentifier: "SEARCH_CELL")
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        
+
+        
+        self.watchList.append(Stock(ticker: "APPL", companyName: "Apple Inc."))
+        self.watchList.append(Stock(ticker: "BA", companyName: "Boeing"))
+        self.watchList.append(Stock(ticker: "GOOG", companyName: "Google Inc"))
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    //MARK: UITableViewDataSource
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.watchList.count
     }
     
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
+        let cell = SearchCell()
+        cell.tickerLabel.text = self.watchList[indexPath.row].ticker
+        cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
+        
+        return cell
+    }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 45
+    }
+    
+    //MARK: UITableViewDelegate
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let webVC = WebViewController()
+        webVC.ticker = self.watchList[indexPath.row].ticker
+        self.navigationController?.pushViewController(webVC, animated: true)
+    }
+    
+    //MARK: UISearchBarDelegate
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
+        
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        self.tableView.reloadData()
+        
+    }
 }

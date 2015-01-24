@@ -21,6 +21,7 @@
 		1DF2973B1A731CB200B5ADED /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2973A1A731CB200B5ADED /* NetworkController.swift */; };
 		1DF297411A73289F00B5ADED /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297401A73289F00B5ADED /* MenuCell.swift */; };
 		1DF297431A73373C00B5ADED /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297421A73373C00B5ADED /* SearchViewController.swift */; };
+		1DF297471A73723F00B5ADED /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297461A73723F00B5ADED /* SearchCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		1DF2973A1A731CB200B5ADED /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		1DF297401A73289F00B5ADED /* MenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
 		1DF297421A73373C00B5ADED /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		1DF297461A73723F00B5ADED /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				1DF297401A73289F00B5ADED /* MenuCell.swift */,
+				1DF297461A73723F00B5ADED /* SearchCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DF2973B1A731CB200B5ADED /* NetworkController.swift in Sources */,
+				1DF297471A73723F00B5ADED /* SearchCell.swift in Sources */,
 				1DF297431A73373C00B5ADED /* SearchViewController.swift in Sources */,
 				1DF297351A731B1500B5ADED /* HelpViewController.swift in Sources */,
 				1DF297411A73289F00B5ADED /* MenuCell.swift in Sources */,

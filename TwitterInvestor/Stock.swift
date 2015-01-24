@@ -19,5 +19,9 @@ class Stock {
         
     }
     
+    init(ticker: String, companyName: String) {
+        self.ticker = ticker
+        self.companyName = companyName
+    }
     
 }

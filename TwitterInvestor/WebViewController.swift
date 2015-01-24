@@ -12,11 +12,22 @@ import WebKit
 class WebViewController: UIViewController {
 
     let webView = WKWebView()
+    var ticker: String!
     var url: String!
+
+    override func loadView() {
+        self.webView.frame = UIScreen.mainScreen().bounds
+        self.url = "https://www.google.com/search?q=ticker+\(self.ticker)&tbm=nws"
+        
+        let request = NSURLRequest(URL: NSURL(string: url)!)
+        self.webView.loadRequest(request)
+        self.view = self.webView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "News"
         
 
     }
