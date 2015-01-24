@@ -13,13 +13,14 @@
 		1DF297101A73195C00B5ADED /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DF2970E1A73195C00B5ADED /* LaunchScreen.xib */; };
 		1DF2971C1A73195C00B5ADED /* TwitterInvestorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2971B1A73195C00B5ADED /* TwitterInvestorTests.swift */; };
 		1DF2972D1A731A9E00B5ADED /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2972C1A731A9E00B5ADED /* MenuViewController.swift */; };
-		1DF2972F1A731AAB00B5ADED /* WatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2972E1A731AAB00B5ADED /* WatchViewController.swift */; };
 		1DF297311A731AF100B5ADED /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297301A731AF100B5ADED /* DetailViewController.swift */; };
 		1DF297331A731B0000B5ADED /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297321A731B0000B5ADED /* WebViewController.swift */; };
 		1DF297351A731B1500B5ADED /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297341A731B1500B5ADED /* HelpViewController.swift */; };
 		1DF297371A731B8300B5ADED /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297361A731B8300B5ADED /* Stock.swift */; };
 		1DF297391A731C3F00B5ADED /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297381A731C3F00B5ADED /* Tweet.swift */; };
 		1DF2973B1A731CB200B5ADED /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2973A1A731CB200B5ADED /* NetworkController.swift */; };
+		1DF297411A73289F00B5ADED /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297401A73289F00B5ADED /* MenuCell.swift */; };
+		1DF297431A73373C00B5ADED /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297421A73373C00B5ADED /* SearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,13 +44,14 @@
 		1DF2971A1A73195C00B5ADED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DF2971B1A73195C00B5ADED /* TwitterInvestorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterInvestorTests.swift; sourceTree = "<group>"; };
 		1DF2972C1A731A9E00B5ADED /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		1DF2972E1A731AAB00B5ADED /* WatchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchViewController.swift; sourceTree = "<group>"; };
 		1DF297301A731AF100B5ADED /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		1DF297321A731B0000B5ADED /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		1DF297341A731B1500B5ADED /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		1DF297361A731B8300B5ADED /* Stock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 		1DF297381A731C3F00B5ADED /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		1DF2973A1A731CB200B5ADED /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
+		1DF297401A73289F00B5ADED /* MenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
+		1DF297421A73373C00B5ADED /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 		1DF297261A73199200B5ADED /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1DF297401A73289F00B5ADED /* MenuCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -148,11 +151,11 @@
 			isa = PBXGroup;
 			children = (
 				1DF2972C1A731A9E00B5ADED /* MenuViewController.swift */,
-				1DF2972E1A731AAB00B5ADED /* WatchViewController.swift */,
 				1DF297301A731AF100B5ADED /* DetailViewController.swift */,
 				1DF297321A731B0000B5ADED /* WebViewController.swift */,
 				1DF297341A731B1500B5ADED /* HelpViewController.swift */,
 				1DF2973A1A731CB200B5ADED /* NetworkController.swift */,
+				1DF297421A73373C00B5ADED /* SearchViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -257,14 +260,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DF2973B1A731CB200B5ADED /* NetworkController.swift in Sources */,
+				1DF297431A73373C00B5ADED /* SearchViewController.swift in Sources */,
 				1DF297351A731B1500B5ADED /* HelpViewController.swift in Sources */,
+				1DF297411A73289F00B5ADED /* MenuCell.swift in Sources */,
 				1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */,
 				1DF297371A731B8300B5ADED /* Stock.swift in Sources */,
 				1DF297391A731C3F00B5ADED /* Tweet.swift in Sources */,
 				1DF297331A731B0000B5ADED /* WebViewController.swift in Sources */,
 				1DF2972D1A731A9E00B5ADED /* MenuViewController.swift in Sources */,
 				1DF297311A731AF100B5ADED /* DetailViewController.swift in Sources */,
-				1DF2972F1A731AAB00B5ADED /* WatchViewController.swift in Sources */,
 				1DF297061A73195C00B5ADED /* TwitterInvestor.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,6 +455,7 @@
 				1DF297211A73195C00B5ADED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1DF297221A73195C00B5ADED /* Build configuration list for PBXNativeTarget "TwitterInvestorTests" */ = {
 			isa = XCConfigurationList;
@@ -459,6 +464,7 @@
 				1DF297241A73195C00B5ADED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
