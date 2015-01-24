@@ -38,7 +38,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         
 
         
-        self.watchList.append(Stock(ticker: "APPL", companyName: "Apple Inc."))
+        self.watchList.append(Stock(ticker: "AAPL", companyName: "Apple Inc."))
         self.watchList.append(Stock(ticker: "BA", companyName: "Boeing"))
         self.watchList.append(Stock(ticker: "GOOG", companyName: "Google Inc"))
         
@@ -64,9 +64,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let webVC = WebViewController()
-        webVC.ticker = self.watchList[indexPath.row].ticker
-        self.navigationController?.pushViewController(webVC, animated: true)
+        let detailVC = DetailViewController()
+        detailVC.stock = self.watchList[indexPath.row]
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    
     }
     
     //MARK: UISearchBarDelegate
