@@ -8,23 +8,27 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UISearchBarDelegate {
 
-    var tableView = UITableView()
+    let tableView = UITableView()
+    let searchBar = UISearchBar()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
 
-        self.tableView.backgroundColor = UIColor.redColor()
-        
+        self.searchBar.delegate = self
+        self.searchBar.sizeToFit()
+
+        self.tableView.tableHeaderView = searchBar
+
         self.view = self.tableView
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = "Search"
-        
     }
 
     override func didReceiveMemoryWarning() {
