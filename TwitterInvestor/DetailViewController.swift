@@ -48,9 +48,6 @@ class DetailViewController: UIViewController {
         
         let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
         let navBarHeight = self.navigationController?.navigationBar.frame.size.height
-        println(statusBarHeight)
-        println(navBarHeight)
-        println(UIScreen.mainScreen().bounds.height)
         
         let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
         let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5

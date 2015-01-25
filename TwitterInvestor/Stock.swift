@@ -11,6 +11,7 @@ import Foundation
 class Stock {
     var ticker: String
     var companyName: String
+    var change: Float?
     
     init(jsonDictionary: [String:AnyObject]) {
         
@@ -19,9 +20,12 @@ class Stock {
         
     }
     
-    init(ticker: String, companyName: String) {
+    init(ticker: String, companyName: String, change: Float?) {
         self.ticker = ticker
         self.companyName = companyName
+        if change != nil {
+            self.change = change
+        }
     }
     
 }

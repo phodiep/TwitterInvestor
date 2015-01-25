@@ -36,11 +36,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-
-        
-        self.watchList.append(Stock(ticker: "AAPL", companyName: "Apple Inc."))
-        self.watchList.append(Stock(ticker: "BA", companyName: "Boeing"))
-        self.watchList.append(Stock(ticker: "GOOG", companyName: "Google Inc"))
+        self.watchList.append(Stock(ticker: "AAPL", companyName: "Apple Inc.", change: 0.58))
+        self.watchList.append(Stock(ticker: "BA", companyName: "Boeing", change: -1.02))
+        self.watchList.append(Stock(ticker: "GOOG", companyName: "Google Inc", change: 5.56))
         
     }
 
@@ -54,12 +52,38 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let cell = SearchCell()
         cell.tickerLabel.text = self.watchList[indexPath.row].ticker
         cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
+        cell.change = self.watchList[indexPath.row].change
         
+        if cell.change == 0.0 {
+            cell.changeLabel.textColor = UIColor.blackColor()
+            cell.changeLabel.text = "\(cell.change)"
+        }
+        if cell.change > 0.0 {
+            cell.changeLabel.textColor = UIColor.greenColor()
+            cell.changeLabel.text = "+\(cell.change)"
+        }
+        if cell.change < 0.0 {
+            cell.changeLabel.textColor = UIColor.redColor()
+            cell.changeLabel.text = "\(cell.change)"
+        }
+
         return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45
+    }
+
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            //swipe left to delete
+            self.watchList.removeAtIndex(indexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
     }
     
     //MARK: UITableViewDelegate
@@ -72,11 +96,28 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
-        
+        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???", change: 0), atIndex: 0)
+        searchBar.showsCancelButton = false        
         searchBar.resignFirstResponder()
         searchBar.text = ""
         self.tableView.reloadData()
         
     }
+
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        self.searchBar.showsCancelButton = true
+        return true
+    }
+    func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        return text.validateForTicker()
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+        
+        
+    }
+    
 }
