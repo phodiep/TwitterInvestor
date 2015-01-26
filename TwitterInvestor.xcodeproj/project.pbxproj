@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DB33AE71A76B1CC008B4225 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE61A76B1CC008B4225 /* Extensions.swift */; };
+		1DB33AE91A76D88F008B4225 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE81A76D88F008B4225 /* Notifications.swift */; };
 		1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297021A73195C00B5ADED /* AppDelegate.swift */; };
 		1DF297061A73195C00B5ADED /* TwitterInvestor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297041A73195C00B5ADED /* TwitterInvestor.xcdatamodeld */; };
 		1DF2970D1A73195C00B5ADED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DF2970C1A73195C00B5ADED /* Images.xcassets */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		1DB33AE61A76B1CC008B4225 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1DB33AE81A76D88F008B4225 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		1DF296FD1A73195B00B5ADED /* TwitterInvestor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterInvestor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF297011A73195C00B5ADED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DF297021A73195C00B5ADED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 		1DF297261A73199200B5ADED /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1DB33AE81A76D88F008B4225 /* Notifications.swift */,
 				1DF297401A73289F00B5ADED /* MenuCell.swift */,
 				1DF297461A73723F00B5ADED /* SearchCell.swift */,
 			);
@@ -269,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DB33AE91A76D88F008B4225 /* Notifications.swift in Sources */,
 				1DF2973B1A731CB200B5ADED /* NetworkController.swift in Sources */,
 				4E4BAF7B1A74229B0076CE09 /* TrendEngineForTicker.swift in Sources */,
 				1DF297471A73723F00B5ADED /* SearchCell.swift in Sources */,
