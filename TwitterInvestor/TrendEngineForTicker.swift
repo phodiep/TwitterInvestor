@@ -24,14 +24,15 @@ class TrendEngineForTicker{
   init(tickerSymbol: String, firstJSONBlob: [[String:AnyObject]]){
     self.ticker = tickerSymbol
     
+    let lastTweet = firstJSONBlob.last
     let dateFormat = NSDateFormatter()
-    let lastTweet = firstJSONBlob.last as [String:AnyObject]!
-    dateFormat.dateFromString(lastTweet["created_at"] as String)
-    //self.dateOfOldestTweet = NSDate(timeInterval: 0.0, sinceDate: dateFormat)
-    
+    dateFormat.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+    let dateAsString = lastTweet!["created_at"] as String!
+    let oldestDate = dateFormat.dateFromString(dateAsString)
+    println(oldestDate!)
     for o in firstJSONBlob{
       println(o["created_at"]!)
-  //println(o["text"]!)
+      //println(o["text"]!)
     }
     
     

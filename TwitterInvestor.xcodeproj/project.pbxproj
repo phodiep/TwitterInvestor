@@ -142,6 +142,7 @@
 				1DF297361A731B8300B5ADED /* Stock.swift */,
 				1DF297381A731C3F00B5ADED /* Tweet.swift */,
 				4E4BAF7A1A74229B0076CE09 /* TrendEngineForTicker.swift */,
+				1DB33AE41A745949008B4225 /* Extensions.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";

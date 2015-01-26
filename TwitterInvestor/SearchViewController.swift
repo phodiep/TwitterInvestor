@@ -113,7 +113,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
+        //self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
       
       NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
         if returnedTrendEngine != nil{
@@ -123,6 +123,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         
       })
       
+        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???", change: 0), atIndex: 0)
+        searchBar.showsCancelButton = false        
         searchBar.resignFirstResponder()
         searchBar.text = ""
         self.tableView.reloadData()
