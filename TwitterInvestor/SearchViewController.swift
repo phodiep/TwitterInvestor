@@ -115,8 +115,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
-      
-      NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+
+        NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
         if returnedTrendEngine != nil{
           self.engines.append(returnedTrendEngine!)
         }
@@ -146,4 +146,20 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         
     }
     
+    //MARK: UIActionAlert
+    func invalidTickerAlert() {
+        let alertController = UIAlertController(title: "Ticker is not valid", message: "enter a valid ticker for search", preferredStyle: .Alert)
+    
+        let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
+            //dismiss alert and reset search bar text
+            self.searchBar.text = ""
+        }
+        
+        alertController.addAction(okButton)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+
+    }
+
+
 }
