@@ -32,21 +32,39 @@ class NetworkController {
         let ephemeralConfig = NSURLSessionConfiguration.ephemeralSessionConfiguration()
         self.urlSession = NSURLSession(configuration: ephemeralConfig)
     }
-    
-    func getStockInfoFromYahoo(ticker: String, completionHandler: ([Stock]?, String?) -> () ) {
-        let url = NSURL(string: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20%28%22\(ticker)%22%29&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=")
-        
-        let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler: { (jsonData, response, error) -> Void in
+
+/***
+ *  https://www.quandl.com/resources/api-for-stock-data
+ *  Quandl is the easiest way to find, use and share numerical data. Search millions of datasets. 
+ *  Instantly download, graph, share or access via API.
+ *  for example: https://www.quandl.com/api/v1/datasets/WIKI/CRIS.json
+ */
+    func getStockInfoFromYahoo(ticker: String, stockLookup: (StockData?, NSError?) -> () ) {
+
+        println( "getStockInfoFromYahoo() ticker[\(ticker)]" )
+
+        let url = NSURL( string:
+        "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22AAPL%22)&env=store://datatables.org/alltableswithkeys&format=json" )
+
+        println( "url[\(url)]" )
+
+//      let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler: { (jsonData, response, error) -> Void in
+        let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler : { (jsonData, response, error) -> Void in
+            
             var stock: Stock?
             var errorString: String?
             
             if error == nil && jsonData != nil {
                 if let urlResponse = response as? NSHTTPURLResponse {
-                    switch urlResponse.statusCode {
+                    let returnCode = urlResponse.statusCode
+                    println( "returnCode[\(returnCode)] [\(urlResponse.statusCode)]" )
+                    switch returnCode {
                     case 200...299:
-                        let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as [String: AnyObject]
-                        let resultsDictionary = jsonDictionary["results"] as [String: AnyObject]
-                        println(resultsDictionary)
+                        let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: nil, error: nil) as [String : AnyObject]
+                        //println( jsonDictionary )
+
+                        var stockData = StockData( tickerSymbol: ticker, JSONBlob: jsonData )
+
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"
                     }
@@ -57,7 +75,8 @@ class NetworkController {
     }
   
   
-  func getJSONTocheckforTrend(tickerSymbol: String, trailingClosure: (TrendEngineForTicker?,NSError?)->Void) {
+  func getJSONTocheckforTrend(tickerSymbol: String, trailingClosure: (TrendEngineForTicker?,NSError?) -> Void) {
+
     let myAccountStore = ACAccountStore()
     //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
     let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)

@@ -15,6 +15,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     var watchList = [Stock]()
     var engines = [TrendEngineForTicker]()
+    var stockData = [StockData]()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
@@ -113,21 +114,31 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+
+        let DBUG = false
         self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
-      
-      NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
-        if returnedTrendEngine != nil{
-          self.engines.append(returnedTrendEngine!)
+
+        NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { ( returnedYahooData, error) -> Void in
+            if returnedYahooData != nil {
+                println( returnedYahooData )
+                // self.stockData.append(returnedYahooData!)
+                self.stockData.append(returnedYahooData!)
+            }
+        })
+
+        if DBUG {
+            NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+                if returnedTrendEngine != nil{
+                    self.engines.append(returnedTrendEngine!)
+                }
+            })
         }
-        
-        
-      })
       
-        searchBar.resignFirstResponder()
-        searchBar.text = ""
-        self.tableView.reloadData()
+      searchBar.resignFirstResponder()
+      searchBar.text = ""
+      self.tableView.reloadData()
         
-    }
+   }
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         self.searchBar.showsCancelButton = true
