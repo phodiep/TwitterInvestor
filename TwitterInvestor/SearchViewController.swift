@@ -69,6 +69,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         cell.tickerLabel.text = self.watchList[indexPath.row].ticker
         cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
         cell.change = self.watchList[indexPath.row].change
+        cell.priceLabel.text = "\(self.watchList[indexPath.row].price!)"
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()

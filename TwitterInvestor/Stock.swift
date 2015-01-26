@@ -11,9 +11,13 @@ import Foundation
 class Stock {
     var ticker: String
     var companyName: String
+    var industry: String?
     var price: Float?
     var change: Float?
+    var changePerc: Float?
     var pe: Float?
+    var dividend: Float?
+    var dividendPerc: Float?
     
     
     init(jsonDictionary: [String:AnyObject]) {
