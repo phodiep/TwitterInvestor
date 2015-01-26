@@ -76,7 +76,7 @@ class NetworkController {
           //This is the URL for the JSON twitter request for hometimeline
           //https://stream.twitter.com/1.1/statuses/firehose.json
           //https://api.twitter.com/1.1/search/tweets.json?q=%23yolo&count=200&src=typd
-          let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&src=typd&count=100")//q=%SIRI")
+          let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&count=100")//q=%SIRI")
           //A request of type SLRequest, this starts a new thread.
           let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
           //Set the SLRequests account property to the twitter accont that we got from the array of accounts
