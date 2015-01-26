@@ -46,6 +46,8 @@ class DetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = self.newsButton
     }
 
+    
+
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.rootView.setNeedsLayout()
         self.rootView.layoutIfNeeded()
@@ -60,39 +62,20 @@ class DetailViewController: UIViewController {
         let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
         let navBarHeight = self.navigationController?.navigationBar.frame.size.height
         
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
-            let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
-            let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
-            
-            let views = ["stockView" : self.stockView,
-                "twitterView" : self.twitterView]
-            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-                "H:|[stockView]|",
-                options: nil, metrics: nil, views: views))
-            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-                "H:|[twitterView]|",
-                options: nil, metrics: nil, views: views))
-            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-(\(navBarHeight! + statusBarHeight))-[stockView(\(stockViewHeight))][twitterView(\(twitterViewHeight))]|",
-                options: nil, metrics: nil, views: views))
-        }
+        let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
+        let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
         
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
-            let stockViewWidth = UIScreen.mainScreen().bounds.width * 0.5
-            let twitterViewWidth = UIScreen.mainScreen().bounds.width * 0.5
-            
-            let views = ["stockView" : self.stockView,
-                "twitterView" : self.twitterView]
-            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-                "H:|[stockView(\(stockViewWidth))][twitterView(\(twitterViewWidth))]|",
-                options: nil, metrics: nil, views: views))
-            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-(\(navBarHeight!))-[stockView]|",
-                options: nil, metrics: nil, views: views))
-            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-(\(navBarHeight!))-[twitterView]|",
-                options: nil, metrics: nil, views: views))
-        }
+        let views = ["stockView" : self.stockView,
+            "twitterView" : self.twitterView]
+        self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[stockView]|",
+            options: nil, metrics: nil, views: views))
+        self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[twitterView]|",
+            options: nil, metrics: nil, views: views))
+        self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-(\(navBarHeight! + statusBarHeight))-[stockView(\(stockViewHeight))][twitterView(\(twitterViewHeight))]|",
+            options: nil, metrics: nil, views: views))
         
     }
 

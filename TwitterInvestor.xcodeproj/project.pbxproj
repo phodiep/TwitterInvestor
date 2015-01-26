@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1DB33AE51A745949008B4225 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE41A745949008B4225 /* Extensions.swift */; };
+		1DB33AE71A76B1CC008B4225 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE61A76B1CC008B4225 /* Extensions.swift */; };
 		1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297021A73195C00B5ADED /* AppDelegate.swift */; };
 		1DF297061A73195C00B5ADED /* TwitterInvestor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297041A73195C00B5ADED /* TwitterInvestor.xcdatamodeld */; };
 		1DF2970D1A73195C00B5ADED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DF2970C1A73195C00B5ADED /* Images.xcassets */; };
@@ -37,7 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1DB33AE41A745949008B4225 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1DB33AE61A76B1CC008B4225 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1DF296FD1A73195B00B5ADED /* TwitterInvestor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterInvestor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF297011A73195C00B5ADED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DF297021A73195C00B5ADED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -140,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				1DF297361A731B8300B5ADED /* Stock.swift */,
+				1DB33AE61A76B1CC008B4225 /* Extensions.swift */,
 				1DF297381A731C3F00B5ADED /* Tweet.swift */,
 				4E4BAF7A1A74229B0076CE09 /* TrendEngineForTicker.swift */,
 			);
@@ -276,7 +277,7 @@
 				1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */,
 				1DF297371A731B8300B5ADED /* Stock.swift in Sources */,
 				1DF297391A731C3F00B5ADED /* Tweet.swift in Sources */,
-				1DB33AE51A745949008B4225 /* Extensions.swift in Sources */,
+				1DB33AE71A76B1CC008B4225 /* Extensions.swift in Sources */,
 				1DF297331A731B0000B5ADED /* WebViewController.swift in Sources */,
 				1DF2972D1A731A9E00B5ADED /* MenuViewController.swift in Sources */,
 				1DF297311A731AF100B5ADED /* DetailViewController.swift in Sources */,
