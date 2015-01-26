@@ -15,7 +15,11 @@ func newNotification(message: String) {
     localNotification.alertBody = message
     localNotification.fireDate = NSDate(timeIntervalSinceNow: 5)
     localNotification.soundName = UILocalNotificationDefaultSoundName
-    localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
+    UIApplication.sharedApplication().applicationIconBadgeNumber += 1
     UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
 
+}
+
+func clearNotificationBadgeNumbers() {
+    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
 }
