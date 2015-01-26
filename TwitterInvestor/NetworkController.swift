@@ -7,19 +7,28 @@
 //
 
 import Foundation
+import Social
+import Accounts
 
 class NetworkController {
-    
+  
+  
+  //URLSession Variable
     var urlSession: NSURLSession
-    
+  var twitterAccount: ACAccount?
+  
+  //Shared Instance of Network controller. (Singleton pattern)
     class var sharedInstance : NetworkController {
         struct Static {
             static let instance: NetworkController = NetworkController()
         }
         return Static.instance
     }
-    
+  
+  
+  
     init() {
+      //Make sure the URL session will save data on RAM
         let ephemeralConfig = NSURLSessionConfiguration.ephemeralSessionConfiguration()
         self.urlSession = NSURLSession(configuration: ephemeralConfig)
     }
@@ -45,9 +54,74 @@ class NetworkController {
             }
         })
         dataTask.resume()
-        
-        
     }
+  
+  
+  func getJSONTocheckforTrend(tickerSymbol: String, trailingClosure: (TrendEngineForTicker?,NSError?)->Void) {
+    let myAccountStore = ACAccountStore()
+    //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
+    let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+    //this starts a new thread to access the account and do something with it in the clsure statement
+    myAccountStore.requestAccessToAccountsWithType(myAccountType, options: nil) { (gotit: Bool , error: NSError!) -> Void in
+      //If ACAccountStore was able to access the account the gotit boolean in the cluses will be true or false
+      if gotit{
+        //A user can have multiple accounts with each of these services, we load them all into the array.
+        let accountsArray = myAccountStore.accountsWithAccountType(myAccountType)
+        //make sure we got at least one account
+        if accountsArray.isEmpty == false{
+          //We just want the first account that is stored in the array of account (there might only be one)
+          self.twitterAccount = accountsArray[0] as? ACAccount
+          //return twitterAccount
+          
+          //This is the URL for the JSON twitter request for hometimeline
+          //https://stream.twitter.com/1.1/statuses/firehose.json
+          //https://api.twitter.com/1.1/search/tweets.json?q=%23yolo&count=200&src=typd
+          let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&src=typd&count=100")//q=%SIRI")
+          //A request of type SLRequest, this starts a new thread.
+          let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
+          //Set the SLRequests account property to the twitter accont that we got from the array of accounts
+          twitterRequest.account = self.twitterAccount
+          //call the performRequestWithHandler method on SLRequest (this starts a new thread) paramaters are the data that will be returned, the response code, and then an error
+          twitterRequest.performRequestWithHandler({ (jsonData, responseCode, error) -> Void in
+            //make a switch statement on the response code. You will probably get a basic server response code
+            switch responseCode.statusCode{
+              //If the response is good
+            case 200...299:
+              //create an array of json data that is typed as an array of [AnyObject]
+              //println(jsonData)
+              if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
+                if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
+                  NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil)
+                  })
+                }
+              }
+              //If response is bad
+            case 400...599:
+              println(error)
+              NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                trailingClosure(nil, error)
+              })
+            default:
+              println("\(responseCode.statusCode)")
+            }
+          })
+        }
+      }
+    }
+  }
+  
+  func getJSONToBuildBaseLineActivity(){
+    
+    
+    
+  }
+  
+  
+  
+  
+  
+  
     
     
 }

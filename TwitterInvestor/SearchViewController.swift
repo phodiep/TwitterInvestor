@@ -14,6 +14,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     let searchBar = UISearchBar()
     
     var watchList = [Stock]()
+    var engines = [TrendEngineForTicker]()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
@@ -72,7 +73,15 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
+      
+      NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+        if returnedTrendEngine != nil{
+          self.engines.append(returnedTrendEngine!)
+        }
         
+        
+      })
+      
         searchBar.resignFirstResponder()
         searchBar.text = ""
         self.tableView.reloadData()
