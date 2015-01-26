@@ -16,6 +16,9 @@ class DetailViewController: UIViewController {
     let stockView = UIView()
     let twitterView = UIView()
     
+    var newsButton: UIBarButtonItem!
+    var orientation: UIDeviceOrientation!
+    
     override func loadView() {
         self.rootView.frame = UIScreen.mainScreen().bounds
         
@@ -34,100 +37,167 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
         
-        // Do any additional setup after loading the view.
+        self.orientation = UIDevice.currentDevice().orientation
+
+        self.title = self.stock.ticker
+        
+        self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
+        self.navigationItem.rightBarButtonItem = self.newsButton
+    }
+
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.rootView.setNeedsLayout()
+        self.rootView.layoutIfNeeded()
+        
+//        self.layoutRootView()
+
     }
     
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.layoutRootView()
-    }
     
     func layoutRootView() {
         
         let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
         let navBarHeight = self.navigationController?.navigationBar.frame.size.height
         
-        let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
-        let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
-
-        let views = ["stockView" : self.stockView,
-            "twitterView" : self.twitterView]
-        self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|[stockView]|",
-            options: nil, metrics: nil, views: views))
-        self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|[twitterView]|",
-            options: nil, metrics: nil, views: views))
-        self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-(\(navBarHeight! + statusBarHeight))-[stockView(\(stockViewHeight))][twitterView(\(twitterViewHeight))]|",
-            options: nil, metrics: nil, views: views))
-
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait {
+            let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
+            let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.5
+            
+            let views = ["stockView" : self.stockView,
+                "twitterView" : self.twitterView]
+            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:|[stockView]|",
+                options: nil, metrics: nil, views: views))
+            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:|[twitterView]|",
+                options: nil, metrics: nil, views: views))
+            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:|-(\(navBarHeight! + statusBarHeight))-[stockView(\(stockViewHeight))][twitterView(\(twitterViewHeight))]|",
+                options: nil, metrics: nil, views: views))
+        }
+        
+        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+            let stockViewWidth = UIScreen.mainScreen().bounds.width * 0.5
+            let twitterViewWidth = UIScreen.mainScreen().bounds.width * 0.5
+            
+            let views = ["stockView" : self.stockView,
+                "twitterView" : self.twitterView]
+            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:|[stockView(\(stockViewWidth))][twitterView(\(twitterViewWidth))]|",
+                options: nil, metrics: nil, views: views))
+            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:|-(\(navBarHeight!))-[stockView]|",
+                options: nil, metrics: nil, views: views))
+            self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:|-(\(navBarHeight!))-[twitterView]|",
+                options: nil, metrics: nil, views: views))
+        }
+        
     }
 
     func layoutStockView() {
-        self.stockView.backgroundColor = UIColor.blueColor()
+        self.stockView.backgroundColor = UIColor.whiteColor()
         
-        let symbolLabel = UILabel()
         let companyLabel = UILabel()
-        let newsButton = UIButton()
+        let plotImage = UIImageView()
+        let priceLabel = UILabel()
+        let peLabel = UILabel()
+        let changeLabel = UILabel()
         
-        symbolLabel.text = self.stock.ticker
+        companyLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        priceLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+        peLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        
+        
+        
         companyLabel.text = self.stock.companyName
-        newsButton.setTitle("News", forState: .Normal)
-        newsButton.addTarget(self, action: "newsButtonPressed:", forControlEvents: .TouchUpInside)
+        plotImage.image = UIImage(named: "stockPrice")
+        priceLabel.text = "\(self.stock.price!)"
+        peLabel.text = "p/e: \(self.stock.pe!)"
         
-        symbolLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        if self.stock.change == 0.0 {
+            changeLabel.textColor = UIColor.blackColor()
+            changeLabel.text = "\(self.stock.change!)"
+        }
+        if self.stock.change > 0.0 {
+            let greenColor = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
+            changeLabel.textColor = greenColor
+            changeLabel.text = "+\(self.stock.change!)"
+        }
+        if self.stock.change < 0.0 {
+            changeLabel.textColor = UIColor.redColor()
+            changeLabel.text = "\(self.stock.change!)"
+        }
+
+        
         companyLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        newsButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        plotImage.setTranslatesAutoresizingMaskIntoConstraints(false)
+        priceLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        peLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        changeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         
-        self.stockView.addSubview(symbolLabel)
         self.stockView.addSubview(companyLabel)
-        self.stockView.addSubview(newsButton)
-
-        let views = ["symbolLabel": symbolLabel,
-                    "companyLabel": companyLabel,
-                    "newsButton": newsButton]
+        self.stockView.addSubview(plotImage)
+        self.stockView.addSubview(priceLabel)
+        self.stockView.addSubview(peLabel)
+        self.stockView.addSubview(changeLabel)
+        
+        
+        
+        let views = ["companyLabel": companyLabel,
+                    "plotImage": plotImage,
+                    "priceLabel": priceLabel,
+                    "peLabel": peLabel,
+                    "changeLabel": changeLabel]
         
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[companyLabel]-8-[symbolLabel]",
+            "H:|-16-[companyLabel]",
             options: nil, metrics: nil, views: views))
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[companyLabel]",
+            "V:|-16-[companyLabel]-16-[plotImage(120)]",
             options: nil, metrics: nil, views: views))
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[symbolLabel]",
+            "H:|-16-[plotImage(180)]",
+            options: nil, metrics: nil, views: views))
+        self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[priceLabel]-16-|",
             options: nil, metrics: nil, views: views))
 
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[newsButton]-16-|",
-            options: nil, metrics: nil, views: views))
-        self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[newsButton]",
-            options: nil, metrics: nil, views: views))
+            "V:|-16-[priceLabel]-8-[changeLabel]-8-[peLabel]",
+            options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
 
         
     }
     
     func layoutTwitterView() {
-        self.twitterView.backgroundColor = UIColor.purpleColor()
+        self.twitterView.backgroundColor = UIColor.whiteColor()
         
         let trendLabel = UILabel()
-        trendLabel.text = "Trending Data..."
+        let plotImage = UIImageView()
         
+        trendLabel.text = "Tweets per hour"
+        plotImage.image = UIImage(named: "twitterTrend")
         
         trendLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        plotImage.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         self.twitterView.addSubview(trendLabel)
+        self.twitterView.addSubview(plotImage)
         
-        let views = ["trendLabel" : trendLabel]
+        let views = ["trendLabel" : trendLabel,
+                "plotImage" : plotImage]
         
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-16-[trendLabel]",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[trendLabel(30)]",
+            "H:|-16-[plotImage(180)]",
+            options: nil, metrics: nil, views: views))
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-8-[trendLabel(30)]-16-[plotImage(120)]",
             options: nil, metrics: nil, views: views))
         
     }

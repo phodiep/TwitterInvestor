@@ -36,9 +36,24 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-        self.watchList.append(Stock(ticker: "AAPL", companyName: "Apple Inc.", change: 0.58))
-        self.watchList.append(Stock(ticker: "BA", companyName: "Boeing", change: -1.02))
-        self.watchList.append(Stock(ticker: "GOOG", companyName: "Google Inc", change: 5.56))
+        self.watchList.append(Stock(
+            ticker: "AAPL",
+            companyName: "Apple Inc.",
+            change: 0.58,
+            price: 112.98,
+            pe: 17.52))
+        self.watchList.append(Stock(
+            ticker: "BA",
+            companyName: "Boeing",
+            change: -1.02,
+            price: 134.62,
+            pe: 19.36))
+        self.watchList.append(Stock(
+            ticker: "GOOG",
+            companyName: "Google Inc",
+            change: 5.56,
+            price: 539.95,
+            pe: 28.42))
         
     }
 
@@ -59,7 +74,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
             cell.changeLabel.text = "\(cell.change)"
         }
         if cell.change > 0.0 {
-            cell.changeLabel.textColor = UIColor.greenColor()
+            let greenColor = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
+            cell.changeLabel.textColor = greenColor
             cell.changeLabel.text = "+\(cell.change)"
         }
         if cell.change < 0.0 {
