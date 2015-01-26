@@ -28,7 +28,6 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.menuTableView.dataSource = self
         self.menuTableView.delegate = self
         self.title = "Main Menu"
-        
     }
 
     override func didReceiveMemoryWarning() {
