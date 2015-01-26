@@ -69,6 +69,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         cell.tickerLabel.text = self.watchList[indexPath.row].ticker
         cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
         cell.change = self.watchList[indexPath.row].change
+        cell.priceLabel.text = "\(self.watchList[indexPath.row].price!)"
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()
@@ -147,4 +148,20 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         
     }
     
+    //MARK: UIActionAlert
+    func invalidTickerAlert() {
+        let alertController = UIAlertController(title: "Ticker is not valid", message: "enter a valid ticker for search", preferredStyle: .Alert)
+    
+        let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
+            //dismiss alert and reset search bar text
+            self.searchBar.text = ""
+        }
+        
+        alertController.addAction(okButton)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+
+    }
+
+
 }
