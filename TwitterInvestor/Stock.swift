@@ -21,7 +21,6 @@ class Stock {
     var pe: Float?          = 0.0
     var peratio: Float?     = 0.0
     
-    
     init(jsonDictionary: [String:AnyObject]) {
 
         println( "Stock[\(jsonDictionary)]" );

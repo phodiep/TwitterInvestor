@@ -29,6 +29,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.menuTableView.delegate = self
         self.title = "Main Menu"
         
+        clearNotificationBadgeNumbers()
     }
 
     override func didReceiveMemoryWarning() {

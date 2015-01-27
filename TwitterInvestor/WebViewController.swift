@@ -14,6 +14,8 @@ class WebViewController: UIViewController {
     let webView = WKWebView()
     var ticker: String!
     var url: String!
+    
+    var shareButton: UIBarButtonItem!
 
     override func loadView() {
         self.webView.frame = UIScreen.mainScreen().bounds
@@ -29,6 +31,8 @@ class WebViewController: UIViewController {
 
         self.title = "News"
         
+        self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "shareButtonPressed:")
+        self.navigationItem.rightBarButtonItem = self.shareButton
 
     }
 
@@ -37,5 +41,27 @@ class WebViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: Button Actions
+    func shareButtonPressed(sender: UIBarButtonItem) {
+        let shareAlertController = UIAlertController(title: "Share", message: "", preferredStyle: .ActionSheet)
+        
+        let safariOption = UIAlertAction(title: "Open Link in Safari", style: .Default) { (action) -> Void in
+            self.openLinkInSafari()
+        }
+        
+        let cancelOption = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
+            //close actionsheet
+        }
+        
+        shareAlertController.addAction(safariOption)
+        shareAlertController.addAction(cancelOption)
+        
+        self.presentViewController(shareAlertController, animated: true, completion: nil)
+
+    }
+    
+    func openLinkInSafari() {
+        UIApplication.sharedApplication().openURL(self.webView.URL!)
+    }
 
 }
