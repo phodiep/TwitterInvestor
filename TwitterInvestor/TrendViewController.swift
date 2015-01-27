@@ -19,6 +19,7 @@ class TrendTableView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.allowsSelection = false
+        self.backgroundColor = UIColor.blueColor()
 
         
     }

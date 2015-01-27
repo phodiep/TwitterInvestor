@@ -173,15 +173,16 @@ class DetailViewController: UIViewController {
         averageLabel.font = UIFont(name: "HelveticaNeue", size: 14)
         latestTweet.font = UIFont(name: "HelveticaNeue", size: 14)
         isTrendingLabel.font = UIFont(name: "HelveticaNeue", size: 14)
-        
+
+        trendTable.trends = self.trendEngine.arrayOfTrends
         trendLabel.text = "TwitterTrends"
         plotImage.image = UIImage(named: "twitterTrend")
-        averageLabel.text = "Average: \(self.trendEngine.tweetsPerHour?) tweets/hr"
-        latestTweet.text = "Latest Tweet: \(self.trendEngine.dateOfNewestTweet?)"
+        //NSString(format: "%.01f", myFloat)
+        let average = NSString(format: "%.02f", Float(60/self.trendEngine.tweetsPerHour!))
+        averageLabel.text = "Average: \(average) tweets/hr"
+        latestTweet.text = "Latest Tweet: \(self.trendEngine.dateOfNewestTweet!)"
         let isTrend = (self.trendEngine.isTrending ? "Yes":"No")
         isTrendingLabel.text = "Trending? \(isTrend)"
-        trendTable.trends = self.trendEngine.arrayOfTrends
-        
         
         trendLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         plotImage.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -208,24 +209,17 @@ class DetailViewController: UIViewController {
             "H:|-8-[plotImage]-8-|",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[plotImage]-8-[trendTable]-8-|",
+            "H:[trendTable(200)]-8-|",
+            options: nil, metrics: nil, views: views))
+
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-8-[plotImage]-8-[trendTable(150)]-8-|",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:[plotImage]-8-[averageLabel(30)]-[latestTweet(30)]-[isTrendingLabel(30)]",
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
         
-        
-        
-//        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "H:|-16-[trendLabel]",
-//            options: nil, metrics: nil, views: views))
-//        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "H:|-16-[plotImage(180)]",
-//            options: nil, metrics: nil, views: views))
-//        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "V:|-8-[trendLabel(30)]-16-[plotImage(120)]",
-//            options: nil, metrics: nil, views: views))
         
     }
     
