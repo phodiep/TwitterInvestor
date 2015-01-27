@@ -48,15 +48,14 @@ class TrendEngineForTicker{
   //MARK: Initalizers
   init(tickerSymbol: String, firstJSONBlob: [[String:AnyObject]]){
     self.ticker = tickerSymbol
-    //theJSON = stripTweets(firstJSONBlob)
-   // println(firstJSONBlob)
-    
     if firstJSONBlob.count == 0{
       tweetsPerHour = 0
+      println(self.arrayOfAllJSON.count)
     }else {
       for item in firstJSONBlob{
         self.arrayOfAllJSON.append(item)
       }
+      println(self.arrayOfAllJSON.count)
       let newestTweet = firstJSONBlob.first as [String:AnyObject]!
       self.idOfNewestTweet = newestTweet["id_str"] as? String
       let format = NSDateFormatter()
@@ -65,19 +64,14 @@ class TrendEngineForTicker{
       let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
-      
-
-      buildBackAWeek(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (returnedShit) -> Void in
-      })
-
+      getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!)
     }
   }
   
   
-  func buildBackAWeek(theTicker: String,oldestTweetID: String, completion: ([String:AnyObject])->Void){
-    //Get the time for 5 days ago
-    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -432000)
-    println(self.dateOfOldestTweet)
+  func getMoreTweets(theTicker: String,oldestTweetID: String){
+    
+    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -430000)
     
     if self.dateOfOldestTweet?.compare(fiveDaysAgo) == NSComparisonResult.OrderedDescending{
       NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) ->   Void in
@@ -85,14 +79,19 @@ class TrendEngineForTicker{
         for item in returnedJSON!{
           self.arrayOfAllJSON.append(item)
         }
+        println(self.arrayOfAllJSON.count)
         let oldestTweet = self.arrayOfAllJSON.last as [String:AnyObject]!
         self.idOfOldestTweet = oldestTweet["id_str"] as? String
         let format = NSDateFormatter()
         format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+        //completion(format.dateFromString(oldestTweet["created_at"] as String!)!)
+        self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+        self.getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!)
         println(self.dateOfOldestTweet)
-
       }
+    }else{
+      return
     }
   }
   
