@@ -35,7 +35,7 @@ class TrendEngineForTicker{
   var idOfNewestTweet: String?
   //Date stamp of newest Tweet
   var dateOfNewestTweet: NSDate?
-  //ID of oldest tweet
+  //ID of oldest tweet 
   var idOfOldestTweet: String?
   //Date Stamp of oldest tweet
   var dateOfOldestTweet: NSDate?
