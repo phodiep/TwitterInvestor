@@ -111,6 +111,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
+        detailVC.trendEngine = self.engines[indexPath.row]
         self.navigationController?.pushViewController(detailVC, animated: true)
     
     }
@@ -154,6 +155,25 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
       searchBar.text = ""
 
    }
+    /*
+        //self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
+      
+      NetworkController.sharedInstance.getInitialTwitterRequest(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+        if returnedTrendEngine != nil{
+          self.engines.append(returnedTrendEngine!)
+        }
+        
+        
+      })
+      
+        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???", change: 0), atIndex: 0)
+        searchBar.showsCancelButton = false        
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        self.tableView.reloadData()
+        
+    }
+>>>>>>> 7f61c1a7a7c7ec8b5babcf913c7a53966524b535 */
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         self.searchBar.showsCancelButton = true
