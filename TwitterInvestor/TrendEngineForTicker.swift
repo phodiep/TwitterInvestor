@@ -163,14 +163,39 @@ class TrendEngineForTicker{
     return investmentRelatedTweets
   }
   
+  
+  
+  
+  
+  
   func checkForTrend()->Bool{
-    
-    
-    
-    
-    
+    if self.needsBaseline == true {
+      
+    }else{
+      NetworkController.sharedInstance.twitterRequestForAfterID(self.ticker!, theID: self.idOfNewestTweet!) { (returnedJSON, error) -> Void in
+        let JSON = self.stripTweets(returnedJSON!)
+        let averageIntervalForNewTweets = self.figureOutAverageInterval(JSON)
+        switch (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!{
+        
+        case 0...0.2:
+          println("noTrend")
+        case 0.3...0.5:
+          println("trent")
+        case 0.6...1:
+          println("moderate Trend")
+        case 1.1...99:
+          println("Big Trend")
+        default:
+          break
+        }
+        for item in JSON{
+          self.arrayOfAllJSON.insert(item, atIndex: 0)
+        }
+        
+        
+        
+      }
+    }
     return false
   }
-  
-  
 }
