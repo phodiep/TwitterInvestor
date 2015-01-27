@@ -144,6 +144,7 @@ class NetworkController {
               //println(jsonData)
               if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
                 if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
+                  NSOperationQueue.currentQueue()?.name = "TwitterRequestQueue"
                   NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     completion(arrayOfResults,nil)
                   })
