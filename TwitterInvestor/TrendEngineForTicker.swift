@@ -24,15 +24,22 @@ struct Trend{
 class TrendEngineForTicker{
   
   //MARK: Properties for engine
-  var theJSON = [[String:AnyObject]]()
+  var arrayOfAllJSON = [[String:AnyObject]]()
   //Variable to hold the ticker symbol that the class in currently collecting twitter data for.
   var ticker: String?
   //Do we have baseline trend data for this ticker? Or are we going to tell the user that there is no baseline data. We can expect that there will be no baseline data on stocks that are very obscure
   var needsBaseline:Bool = true
   //If we do have baseline data for the tweet then we want to display it as Tweets per hour to the user.
   var tweetsPerHour: Int?
-  //If we do have baseline data for this tweet, this data is the date of the oldest tweet we have gotten.
-  var idOfNewestTweet: NSDate?
+  //If we do have baseline data for this tweet, this data is the date of the oldest and newest tweets we have gotten.
+  var idOfNewestTweet: String?
+  //Date stamp of newest Tweet
+  var dateOfNewestTweet: NSDate?
+  //ID of oldest tweet
+  var idOfOldestTweet: String?
+  //Date Stamp of oldest tweet
+  var dateOfOldestTweet: NSDate?
+  
   //Bool to see if stock is trending 
   var isTrending:Bool = false
   //Array of all trends that have occured for this stock.
@@ -42,14 +49,45 @@ class TrendEngineForTicker{
   //MARK: Initalizers
   init(tickerSymbol: String, firstJSONBlob: [[String:AnyObject]]){
     self.ticker = tickerSymbol
-    
     //theJSON = stripTweets(firstJSONBlob)
-   
+   // println(firstJSONBlob)
     
     if firstJSONBlob.count == 0{
       tweetsPerHour = 0
     }else {
-      println(figureOutAverageInterval(firstJSONBlob))
+      for item in firstJSONBlob{
+        self.arrayOfAllJSON.append(item)
+      }
+      let newestTweet = firstJSONBlob.first as [String:AnyObject]!
+      self.idOfNewestTweet = newestTweet["id_str"] as? String
+      self.dateOfNewestTweet = newestTweet["created_at"] as? NSDate
+      println(self.dateOfNewestTweet)
+      let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
+      self.idOfOldestTweet = oldestTweet["id_str"] as? String
+     // println(idOfNewestTweet)
+      //println(idOfOldestTweet)
+      //figureOutAverageInterval(firstJSONBlob)
+      buildBackAWeek(self.ticker!, oldestTweetID: self.idOfOldestTweet!)
+    }
+  }
+  
+  
+  func buildBackAWeek(theTicker: String,oldestTweetID: String){
+    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -432000)
+   // println(todaysDate)
+    
+    
+    NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) -> Void in
+      
+      for item in returnedJSON!{
+        self.arrayOfAllJSON.append(item)
+      }
+      //println(self.arrayOfAllJSON.count)
+      for item in self.arrayOfAllJSON{
+        println(item["created_at"])
+      }
+      let oldestTweet = self.arrayOfAllJSON.last as [String:AnyObject]!
+      self.idOfOldestTweet = oldestTweet["id_str"] as? String
     }
   }
   
@@ -62,6 +100,7 @@ class TrendEngineForTicker{
     dateFormat.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
     for o in JSONBlob{
       let dateOfTweet = dateFormat.dateFromString(o["created_at"] as String)
+      //println(dateOfTweet)
       arrayOfDatesFromJSON.append(dateOfTweet!)
     }
     
@@ -78,7 +117,7 @@ class TrendEngineForTicker{
       totalIntervalTime = totalIntervalTime + number
     }
     println(arrayOfDatesFromJSON.count)
-    return (totalIntervalTime/Double(arrayOfTimeIntervals.count))/60
+    return (totalIntervalTime/Double(arrayOfTimeIntervals.count))
   }
   
   
@@ -106,11 +145,13 @@ class TrendEngineForTicker{
     return JSON
   }
   
-  func checkForTrend(){
+  func checkForTrend()->Bool{
     
     
     
     
+    
+    return false
   }
   
   

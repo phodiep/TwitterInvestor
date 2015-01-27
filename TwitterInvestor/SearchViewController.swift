@@ -116,7 +116,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         //self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
       
-      NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+      NetworkController.sharedInstance.getInitialTwitterRequest(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
         if returnedTrendEngine != nil{
           self.engines.append(returnedTrendEngine!)
         }
