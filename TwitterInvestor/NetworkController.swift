@@ -11,7 +11,8 @@ import Social
 import Accounts
 
 class NetworkController {
-  
+
+    let DBUG = false
   
     //URLSession Variable
     var urlSession: NSURLSession
@@ -33,20 +34,27 @@ class NetworkController {
         self.urlSession = NSURLSession(configuration: ephemeralConfig)
     }
 
-/***
- *  https://www.quandl.com/resources/api-for-stock-data
- *  Quandl is the easiest way to find, use and share numerical data. Search millions of datasets. 
- *  Instantly download, graph, share or access via API.
- *  for example: https://www.quandl.com/api/v1/datasets/WIKI/CRIS.json
- */
+    /**
+    * @abtract A really simple way to calculate the sum of two numbers.
+    * @param firstNumber An NSInteger to be used in the summation of two numbers
+    * @param secondNumber The second half of the equation.
+    * @return The sum of the two numbers passed in.
+    *
+    * @discussion A really simple way to calculate the sum of two numbers.
+
+    *  https://www.quandl.com/resources/api-for-stock-data
+    *  Quandl is the easiest way to find, use and share numerical data. Search millions of datasets.
+    *  Instantly download, graph, share or access via API.
+    *  for example: https://www.quandl.com/api/v1/datasets/WIKI/CRIS.json
+    */
     func getStockInfoFromYahoo(ticker: String, stockLookup: (Stock?, NSError?) -> () ) {
 
-        println( "getStockInfoFromYahoo() ticker[\(ticker)]" )
+        if DBUG { println( "getStockInfoFromYahoo() ticker[\(ticker)]" ) }
 
         let url = NSURL( string:
-        "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22AAPL%22)&env=store://datatables.org/alltableswithkeys&format=json" )
+        "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22\(ticker)%22)&env=store://datatables.org/alltableswithkeys&format=json" )
 
-        println( "url[\(url)]" )
+        if DBUG {println( "url[\(url)]" ) }
 
         let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler : { (jsonData, response, error) -> Void in
             
@@ -59,11 +67,13 @@ class NetworkController {
                     println( "returnCode[\(returnCode)] [\(urlResponse.statusCode)]" )
                     switch returnCode {
                     case 200...299:
-                        let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: nil, error: nil) as [String : AnyObject]
+                        let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil ) as [String : AnyObject]
                         println( jsonDictionary )
 
-//                      var stockData = StockData( tickerSymbol: ticker, JSONBlob: jsonData )
-                        stock = Stock( jsonDictionary: jsonDictionary )
+                        if jsonDictionary.count == 1 {
+
+                            stock = Stock( jsonDictionary: jsonDictionary )
+                        }
 
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"

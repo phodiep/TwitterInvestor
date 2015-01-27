@@ -116,33 +116,28 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
 
         let DBUG = false
+        var found = false
         
-        self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
-
         NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { (stock, error ) -> Void in
             if stock != nil {
                 println( stock )
                 // self.stockData.append(returnedYahooData!)
                 self.stockData.append(stock!)
-            }
 
+
+                NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+                    if returnedTrendEngine != nil{
+                        self.engines.append(returnedTrendEngine!)
+                    }
+                })
+
+                self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
+
+            }
         })
-/*        NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { ( returnedYahooData, error) -> Void in
-            if returnedYahooData != nil {
-                println( returnedYahooData )
-                // self.stockData.append(returnedYahooData!)
-                self.stockData.append(returnedYahooData!)
-            }
-        }) */
 
-        if DBUG {
-            NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
-                if returnedTrendEngine != nil{
-                    self.engines.append(returnedTrendEngine!)
-                }
-            })
-        }
-      
+
+
       searchBar.resignFirstResponder()
       searchBar.text = ""
       self.tableView.reloadData()
