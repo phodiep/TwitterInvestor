@@ -124,10 +124,10 @@ class TrendEngineForTicker{
   //Funciton to strip tweets that have nothing to do with investing.
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
     var JSON = JSONBlob
-    let arrayOfKeyWords = ["Stock","Market","Money","Mover","investing","DayTrader", "loser", "Gainer", "PreMarket", "Soared", "rating", "buy", "sell", "stock", "chart", "longterm", "Trade","investment"]
+    let arrayOfKeyWords = ["Stock","Market","Money","Mover","investing","DayTrader", "loser", "Gainer", "PreMarket", "Soared", "rating", "buy", "sell", "stock", "chart", "longterm", "Trade","investment", "long", "short"]
+    var investmentRelatedTweets = [[String:AnyObject]]()
     
-    
-    for var i = 0; i < JSON.count; ++i{
+    for var i = 0; i < JSON.count; ++i {
       let currentTweet = JSON[i]
       let text = currentTweet["text"] as String
       let entities = currentTweet["entities"] as [String:AnyObject]
@@ -137,12 +137,13 @@ class TrendEngineForTicker{
         arrayOfHashTags.append(o["text"] as String!)
       }
       for k in arrayOfKeyWords{
-        if text.lowercaseString.rangeOfString(k) == nil{
-          JSON.removeAtIndex(i)
+        if text.lowercaseString.rangeOfString(k) != nil {
+            investmentRelatedTweets.append(JSON[i])
         }
+        
       }
     }
-    return JSON
+    return investmentRelatedTweets
   }
   
   func checkForTrend()->Bool{
