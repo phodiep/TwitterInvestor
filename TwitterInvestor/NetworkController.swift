@@ -59,7 +59,7 @@ class NetworkController {
         let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler : { (jsonData, response, error) -> Void in
             
             var stock: Stock?
-            var errorString: String?
+            var errorString: NSString
             
             if error == nil && jsonData != nil {
                 if let urlResponse = response as? NSHTTPURLResponse {
@@ -72,7 +72,12 @@ class NetworkController {
 
                         if jsonDictionary.count == 1 {
 
-                            stock = Stock( jsonDictionary: jsonDictionary )
+                            var stockData: Stock = Stock( jsonDictionary: jsonDictionary )
+      //                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
+
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            stockLookup( stockData, nil  )
+                            })
                         }
 
                     default:

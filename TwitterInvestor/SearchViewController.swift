@@ -10,16 +10,15 @@ import UIKit
 
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
 
-    let tableView = UITableView()
+    var tableView = UITableView()
     let searchBar = UISearchBar()
     
     var watchList = [Stock]()
     var engines = [TrendEngineForTicker]()
-    var stockData = [Stock]()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
-        
+        self.tableView.dataSource = self
         self.searchBar.delegate = self
         self.searchBar.sizeToFit()
 
@@ -35,8 +34,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.title = "Search"
         self.tableView.registerClass(SearchCell.self, forCellReuseIdentifier: "SEARCH_CELL")
         
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
+
         
         self.watchList.append(Stock(
             ticker: "AAPL",
@@ -56,7 +54,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
             change: 5.56,
             price: 539.95,
             pe: 28.42))
-        
+
+        self.tableView.reloadData()
     }
 
     //MARK: UITableViewDataSource
@@ -66,8 +65,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 //        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
+
         let cell = SearchCell()
+
         cell.tickerLabel.text = self.watchList[indexPath.row].ticker
+
         cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
         cell.change = self.watchList[indexPath.row].change
         cell.priceLabel.text = "\(self.watchList[indexPath.row].price!)"
@@ -118,30 +120,37 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 
         let DBUG = false
         var found = false
-        
+
         NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { (stock, error ) -> Void in
+
             if stock != nil {
                 println( stock )
                 // self.stockData.append(returnedYahooData!)
-                self.stockData.append(stock!)
+                println( self.watchList.count )
+
+                self.watchList.append(stock!)
+
+            //    var stockData: Stock = Stock( jsonDictionary: jsonDictionary )
+                //                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
 
 
-                NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
-                    if returnedTrendEngine != nil{
-                        self.engines.append(returnedTrendEngine!)
-                    }
-                })
+                println( " ========================================== " )
+                println( self.watchList )
+self.tableView.reloadData()
+//
+//                NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+//                    if returnedTrendEngine != nil {
+//                        self.engines.append(returnedTrendEngine!)
+//                    }
+//                })
 
-                self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
+//                self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???" ), atIndex: 0)
 
             }
-        })
-
-
+            })
 
       searchBar.resignFirstResponder()
       searchBar.text = ""
-      self.tableView.reloadData()
 
    }
 

@@ -15,11 +15,11 @@ class Stock {
     var ticker: String      = ""
     var name: String        = ""
     var companyName: String = ""
-    var price: Float?       = 0.0
     var ask: Float?         = 0.0
     var change: Float?      = 0.0
     var pe: Float?          = 0.0
     var peratio: Float?     = 0.0
+    var price: Float?       = 0.0
     
     init(jsonDictionary: [String:AnyObject]) {
 
@@ -37,9 +37,9 @@ class Stock {
         self.symbol = ticker
         self.companyName = companyName
         self.name = companyName
-        self.change = change
-        self.price = price
-        self.pe = pe
+        self.change = 0.0
+        self.price = 0.0
+        self.pe = 0.0
     }
 
     func getSymbol() -> String {
@@ -54,22 +54,46 @@ class Stock {
         return self.name
     }
 
+    func getCompanyName() -> String {
+        return self.name
+    }
+
     func extractData( jsonDictionary : [String:AnyObject] ) {
 
         var count : Int = jsonDictionary.count
+        var query    = jsonDictionary["query"] as [String:AnyObject]
+        var results  = query["results"] as [String:AnyObject]
+        var quote    = results["quote"] as [String:AnyObject]
+        println( quote )
 
-        var quote = jsonDictionary.indexForKey("quote")
+ //       var quote = jsonDictionary.indexForKey("quote")
 
-        self.symbol         = "" //jsonDictionary["Symbol"] as String
-        self.ticker         = jsonDictionary["symbol"] as String    // Should be removed
-        self.companyName    = jsonDictionary["Name"] as String      // Should be removed
-        self.name           = jsonDictionary["Name"] as String
+        self.symbol         = quote["Symbol"] as String
+        self.ticker         = quote["symbol"] as String    // Should be removed
+        self.companyName    = quote["Name"] as String      // Should be removed
+        self.name           = quote["Name"] as String
 
-        self.price          = ( jsonDictionary["Ask"] as Float )    // Should be removed
-        self.ask            = ( jsonDictionary["Ask"] as Float )
-        self.change         = ( jsonDictionary["Change"] as Float )
-        self.pe             = ( jsonDictionary["PERatio"] as Float )  // Should be removed
-        self.peratio        = ( jsonDictionary["PERatio"] as Float )
+        let strPrice        = quote["AskRealtime"] as NSString     // Should be removed
+        self.price          = strPrice.floatValue
+
+        // println( "prices[\(self.price)" )
+        let stringAsk       = quote["AskRealtime"] as NSString
+        self.ask            = stringAsk.floatValue
+
+        let stringChange         = quote["Change"] as NSString
+        self.change            = stringChange.floatValue
+
+        let stringPERatio             = quote["PERatio"] as NSString
+        self.peratio            = stringPERatio.floatValue
+
+        let stringPE       = quote["PERatio"] as NSString
+        self.ask            = stringPE.floatValue
+    }
+
+    func convertToFloat( quote: NSString ) -> Float {
+        var working : NSString  = ""
+        var results : Float     = 0.0
+        return results
     }
 
     func printStockDictionary( jsonDictionary : [String:AnyObject] ) {
