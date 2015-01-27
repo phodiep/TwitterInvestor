@@ -82,6 +82,22 @@ class DetailViewController: UIViewController {
     func layoutStockView() {
         self.stockView.backgroundColor = UIColor.whiteColor()
         
+        let plotImage = StockPlot(frame: CGRectMake(0, 0, 300, 250),
+            data: [
+                ["label" : "A", "value": 10 as NSNumber],
+                ["label" : "B", "value": 140 as NSNumber],
+                ["label" : "C", "value": 50 as NSNumber],
+                ["label" : "D", "value": 250 as NSNumber],
+                ["label" : "E", "value": 30 as NSNumber]
+            ] as NSArray)
+        
+        self.stockView.addSubview(plotImage)
+    }
+    
+    
+    func real_layoutStockView() {
+        self.stockView.backgroundColor = UIColor.whiteColor()
+        
         let companyLabel = UILabel()
         let plotImage = UIImageView()
         let priceLabel = UILabel()
