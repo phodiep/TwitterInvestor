@@ -20,6 +20,9 @@ class StockPlot: UIView {
     var graphHeight = CGFloat(0)
     var axisWidth = CGFloat(0)
     var axisHeight = CGFloat(0)
+    var everest = CGFloat(0)
+    var margin = CGFloat(10)
+    var xSpacing = CGFloat(0)
     
     //graph style
     var showLines = true
@@ -27,6 +30,8 @@ class StockPlot: UIView {
     var linesColor = UIColor.lightGrayColor()
     var axisColor = UIColor.grayColor()
     var graphColor = UIColor.blackColor()
+    var labelFont = UIFont.systemFontOfSize(12)
+    var labelColor = UIColor.blackColor()
     
     
     override init(frame: CGRect) {
@@ -49,51 +54,52 @@ class StockPlot: UIView {
         context = UIGraphicsGetCurrentContext()
         
         //set size of graph
-        self.graphWidth = rect.size.width
-        self.graphHeight = rect.size.height
-        self.axisWidth = rect.size.width
-        self.axisHeight = rect.size.height
+        self.graphWidth = rect.size.width - self.padding - self.margin
+        self.graphHeight = rect.size.height - 40    //??? what is 40?
+        self.axisWidth = rect.size.width - self.margin
+        self.axisHeight = rect.size.height - self.padding - self.margin
+        self.xSpacing = self.axisWidth / 121        //121 = 5 days * 24 hrs + 1
         
         //draw x/y axis of graph
         let axisPath = CGPathCreateMutable()
-        CGPathMoveToPoint(axisPath, nil, 0, 0)  //start at 0,0
-        CGPathMoveToPoint(axisPath, nil, 0, axisHeight)  //draw y-axis
-        CGPathAddLineToPoint(axisPath, nil, axisWidth, axisHeight)  //draw x-axis
+        CGPathMoveToPoint(axisPath, nil, self.padding, self.margin)  //start at top left
+        CGPathAddLineToPoint(axisPath, nil, self.padding, self.axisHeight)  //draw y-axis
+        CGPathAddLineToPoint(axisPath, nil, self.padding + self.axisWidth, self.margin + self.axisHeight)  //draw x-axis
         CGContextAddPath(context, axisPath)
         CGContextSetStrokeColorWithColor(context, self.axisColor.CGColor)
         CGContextStrokePath(context)
 
         // label y axis and ticks
-        var yLabelInterval = 1
-        for i in 0...5 {
-            let label = UILabel()
-            label.text = "\(i)"
-            label.backgroundColor = UIColor.whiteColor()
-            label.textColor = UIColor.blackColor()
-            label.textAlignment = NSTextAlignment.Right
-            
-            let yTickBuffer = floor(self.axisHeight) - (floor(self.axisHeight)/6 * CGFloat(i))
-            label.frame = CGRectMake(0, yTickBuffer, 20, 20)
-            addSubview(label)
-            
-            if i != 0 {
-                let line = CGPathCreateMutable()
-                CGPathMoveToPoint(line, nil, 0, yTickBuffer)
-                CGPathAddLineToPoint(line, nil, axisWidth, yTickBuffer)
-                CGContextAddPath(context, line)
-                CGContextSetStrokeColorWithColor(context, self.linesColor.CGColor)
-                CGContextStrokePath(context)
-            }
-        }
+//        var yLabelInterval = 1
+//        for i in 0...5 {
+//            let label = UILabel()
+//            label.text = "\(i)"
+//            label.backgroundColor = UIColor.whiteColor()
+//            label.textColor = UIColor.blackColor()
+//            label.textAlignment = NSTextAlignment.Right
+//            
+//            let yTickBuffer = floor(self.axisHeight) - (floor(self.axisHeight)/6 * CGFloat(i))
+//            label.frame = CGRectMake(0, yTickBuffer, 20, 20)
+//            addSubview(label)
+//            
+//            if i != 0 {
+//                let line = CGPathCreateMutable()
+//                CGPathMoveToPoint(line, nil, 0, yTickBuffer)
+//                CGPathAddLineToPoint(line, nil, axisWidth, yTickBuffer)
+//                CGContextAddPath(context, line)
+//                CGContextSetStrokeColorWithColor(context, self.linesColor.CGColor)
+//                CGContextStrokePath(context)
+//            }
+//        }
         
-        // plot points
+        // plot initial point
         let pointPath = CGPathCreateMutable()
-        let firstPoint = (data[0] as NSDictionary).objectForKey("value") as NSNumber
+        let firstPoint = (data[0] as NSDictionary).objectForKey("average") as NSNumber
         let initialY = CGFloat(firstPoint.floatValue)
-        let initialX = CGFloat(showPoints ? 10:0)
-        CGPathMoveToPoint(pointPath, nil, initialX, CGFloat(graphHeight) - initialY)
+        let initialX = self.padding + self.xSpacing
+        CGPathMoveToPoint(pointPath, nil, initialX, CGFloat(self.graphHeight) - initialY)
         
-        
+        //plot remaining points
         for point in data {
             let interval = Int(graphWidth) / (data.count - 1)
             let pointValue = point.objectForKey("value") as NSNumber
