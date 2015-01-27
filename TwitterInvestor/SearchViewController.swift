@@ -15,7 +15,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     var watchList = [Stock]()
     var engines = [TrendEngineForTicker]()
-    var stockData = [StockData]()
+    var stockData = [Stock]()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
@@ -116,15 +116,24 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
 
         let DBUG = false
+        
         self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???"), atIndex: 0)
 
-        NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { ( returnedYahooData, error) -> Void in
+        NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { (stock, error ) -> Void in
+            if stock != nil {
+                println( stock )
+                // self.stockData.append(returnedYahooData!)
+                self.stockData.append(stock!)
+            }
+
+        })
+/*        NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { ( returnedYahooData, error) -> Void in
             if returnedYahooData != nil {
                 println( returnedYahooData )
                 // self.stockData.append(returnedYahooData!)
                 self.stockData.append(returnedYahooData!)
             }
-        })
+        }) */
 
         if DBUG {
             NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in

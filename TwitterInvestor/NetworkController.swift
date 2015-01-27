@@ -13,11 +13,11 @@ import Accounts
 class NetworkController {
   
   
-  //URLSession Variable
+    //URLSession Variable
     var urlSession: NSURLSession
-  var twitterAccount: ACAccount?
+    var twitterAccount: ACAccount?
   
-  //Shared Instance of Network controller. (Singleton pattern)
+    //Shared Instance of Network controller. (Singleton pattern)
     class var sharedInstance : NetworkController {
         struct Static {
             static let instance: NetworkController = NetworkController()
@@ -39,7 +39,7 @@ class NetworkController {
  *  Instantly download, graph, share or access via API.
  *  for example: https://www.quandl.com/api/v1/datasets/WIKI/CRIS.json
  */
-    func getStockInfoFromYahoo(ticker: String, stockLookup: (StockData?, NSError?) -> () ) {
+    func getStockInfoFromYahoo(ticker: String, stockLookup: (Stock?, NSError?) -> () ) {
 
         println( "getStockInfoFromYahoo() ticker[\(ticker)]" )
 
@@ -48,7 +48,6 @@ class NetworkController {
 
         println( "url[\(url)]" )
 
-//      let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler: { (jsonData, response, error) -> Void in
         let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler : { (jsonData, response, error) -> Void in
             
             var stock: Stock?
@@ -61,9 +60,10 @@ class NetworkController {
                     switch returnCode {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: nil, error: nil) as [String : AnyObject]
-                        //println( jsonDictionary )
+                        println( jsonDictionary )
 
-                        var stockData = StockData( tickerSymbol: ticker, JSONBlob: jsonData )
+//                      var stockData = StockData( tickerSymbol: ticker, JSONBlob: jsonData )
+                        stock = Stock( jsonDictionary: jsonDictionary )
 
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"
