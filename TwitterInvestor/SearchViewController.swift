@@ -108,6 +108,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
+        detailVC.trendEngine = self.engines[indexPath.row]
         self.navigationController?.pushViewController(detailVC, animated: true)
     
     }
