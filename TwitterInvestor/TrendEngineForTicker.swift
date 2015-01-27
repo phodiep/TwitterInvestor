@@ -10,12 +10,15 @@ import UIKit
 
 
 struct Trend{
+  //Date and time when the trend was detected
   var startTime: NSDate?
+  //Date and time when the trend ended/returned to baseline
   var EndTime: NSDate?
+  //Int that will represent the magnitude of the trend
   var trendMagnitude: Int = 0
-  
-  
-  
+  //Number of tweet that have made up the trend
+  var numberOfTweetsThatRepresentTheTrend: Int?
+
 }
 
 class TrendEngineForTicker{
@@ -32,9 +35,8 @@ class TrendEngineForTicker{
   var idOfNewestTweet: NSDate?
   //Bool to see if stock is trending 
   var isTrending:Bool = false
-  //Int that will represent the magnitude of the trend 
-  var trendMagnitude: Int = 0
-  
+  //Array of all trends that have occured for this stock.
+  var arrayOfTrends = [Trend]()
   
   
   //MARK: Initalizers
@@ -76,14 +78,14 @@ class TrendEngineForTicker{
       totalIntervalTime = totalIntervalTime + number
     }
     println(arrayOfDatesFromJSON.count)
-    return (totalIntervalTime/Double(arrayOfTimeIntervals.count))
+    return (totalIntervalTime/Double(arrayOfTimeIntervals.count))/60
   }
   
   
   //Funciton to strip tweets that have nothing to do with investing.
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
     var JSON = JSONBlob
-    let arrayOfKeyWords = ["Stock","Market","Money","Mover","investing","DayTrader", "loser", "Gainer", "PreMarket", "Soared", "rating", "buy", "sell"]
+    let arrayOfKeyWords = ["Stock","Market","Money","Mover","investing","DayTrader", "loser", "Gainer", "PreMarket", "Soared", "rating", "buy", "sell", "stock", "chart", "longterm", "Trade","investment"]
     
     
     for var i = 0; i < JSON.count; ++i{
