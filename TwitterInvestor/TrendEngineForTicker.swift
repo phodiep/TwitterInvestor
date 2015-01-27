@@ -39,7 +39,6 @@ class TrendEngineForTicker{
   var idOfOldestTweet: String?
   //Date Stamp of oldest tweet
   var dateOfOldestTweet: NSDate?
-  
   //Bool to see if stock is trending 
   var isTrending:Bool = false
   //Array of all trends that have occured for this stock.
@@ -60,34 +59,40 @@ class TrendEngineForTicker{
       }
       let newestTweet = firstJSONBlob.first as [String:AnyObject]!
       self.idOfNewestTweet = newestTweet["id_str"] as? String
-      self.dateOfNewestTweet = newestTweet["created_at"] as? NSDate
-      println(self.dateOfNewestTweet)
+      let format = NSDateFormatter()
+      format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+      self.dateOfNewestTweet = format.dateFromString(newestTweet["created_at"] as String!)
       let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
-     // println(idOfNewestTweet)
-      //println(idOfOldestTweet)
-      //figureOutAverageInterval(firstJSONBlob)
-      buildBackAWeek(self.ticker!, oldestTweetID: self.idOfOldestTweet!)
+      self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+      
+
+      buildBackAWeek(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (returnedShit) -> Void in
+      })
+
     }
   }
   
   
-  func buildBackAWeek(theTicker: String,oldestTweetID: String){
+  func buildBackAWeek(theTicker: String,oldestTweetID: String, completion: ([String:AnyObject])->Void){
+    //Get the time for 5 days ago
     let fiveDaysAgo = NSDate(timeIntervalSinceNow: -432000)
-   // println(todaysDate)
+    println(self.dateOfOldestTweet)
     
-    
-    NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) -> Void in
+    if self.dateOfOldestTweet?.compare(fiveDaysAgo) == NSComparisonResult.OrderedDescending{
+      NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) ->   Void in
       
-      for item in returnedJSON!{
-        self.arrayOfAllJSON.append(item)
+        for item in returnedJSON!{
+          self.arrayOfAllJSON.append(item)
+        }
+        let oldestTweet = self.arrayOfAllJSON.last as [String:AnyObject]!
+        self.idOfOldestTweet = oldestTweet["id_str"] as? String
+        let format = NSDateFormatter()
+        format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+        println(self.dateOfOldestTweet)
+
       }
-      //println(self.arrayOfAllJSON.count)
-      for item in self.arrayOfAllJSON{
-        println(item["created_at"])
-      }
-      let oldestTweet = self.arrayOfAllJSON.last as [String:AnyObject]!
-      self.idOfOldestTweet = oldestTweet["id_str"] as? String
     }
   }
   
