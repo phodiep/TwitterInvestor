@@ -136,7 +136,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 
                 println( " ========================================== " )
                 println( self.watchList )
-self.tableView.reloadData()
+                self.tableView.reloadData()
+                
 //
 //                NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
 //                    if returnedTrendEngine != nil {
