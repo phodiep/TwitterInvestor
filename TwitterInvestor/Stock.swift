@@ -48,13 +48,13 @@ class Stock {
 
         // ---------------------------------------------------------------------
 
-//        for key in quote.keys {
-//            println("Key: \(key)")
-//        }
-//
-//        for (key, value) in quote {
-//            println("Key: \(key)")
-//        }
+        for key in quote.keys {
+            println("Key: \(key)")
+        }
+
+        for (key, value) in quote {
+            println("Key: \(key)")
+        }
 
         if DBUG { println( quote ) }
 
