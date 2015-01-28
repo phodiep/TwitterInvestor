@@ -118,8 +118,9 @@ class NetworkController {
           twitterRequest.account = self.twitterAccount
           //call the performRequestWithHandler method on SLRequest (this starts a new thread) paramaters are the data that will be returned, the response code, and then an error
           twitterRequest.performRequestWithHandler({ (jsonData, responseCode, error) -> Void in
+            println(error)
             //make a switch statement on the response code. You will probably get a basic server response code
-            switch responseCode.statusCode{
+            switch responseCode.statusCode {
               //If the response is good
             case 200...299:
               //create an array of json data that is typed as an array of [AnyObject]

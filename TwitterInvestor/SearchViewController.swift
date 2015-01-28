@@ -52,9 +52,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 
         cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
 
-        cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
-        cell.change = self.watchList[indexPath.row].change
-        cell.priceLabel.text = "\(self.watchList[indexPath.row].price!)"
+        cell.companyNameLabel.text = stockQuote.getStringValue( "Name" )
+        cell.change = stockQuote.convertToFloat( "Change" ) // self.watchList[indexPath.row].change
+        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )   // "\(self.watchList[indexPath.row].price!)"
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()
@@ -101,7 +101,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        let ticker = searchBar.text
+        let input = searchBar.text
+        let ticker = input.uppercaseString
+
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
         self.watchList.insert(Stock!, atIndex: 0)
         NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
