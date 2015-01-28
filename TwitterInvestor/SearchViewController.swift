@@ -15,6 +15,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     var watchList = [Stock]()
     var engines = [TrendEngineForTicker]()
+   // var stocks = [Stock]()
 
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
@@ -162,6 +163,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         
         
       })
+     
       
         self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???", change: 0), atIndex: 0)
         searchBar.showsCancelButton = false        
