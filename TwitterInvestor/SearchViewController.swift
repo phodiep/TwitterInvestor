@@ -119,9 +119,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
             self.watchList.insert(Stock!, atIndex: 0)
             
-            NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
+            NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
                 if returnedTrendEngine != nil{
-                    self.engines.append(returnedTrendEngine!)
+                  returnedTrendEngine!.buildData()
+                  self.engines.append(returnedTrendEngine!)
                     activityIndicator.stopAnimating()
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
