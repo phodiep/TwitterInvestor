@@ -33,7 +33,7 @@ class NetworkController {
         self.urlSession = NSURLSession(configuration: ephemeralConfig)
     }
     
-    func getStockInfoFromYahoo(ticker: String, completionHandler: ([Stock]?, String?) -> () ) {
+    func getStockInfoFromYahoo(ticker: String, completionHandler: (Stock?, String?) -> () ) {
         let url = NSURL(string: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20%28%22\(ticker)%22%29&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=")
         
         let dataTask = self.urlSession.dataTaskWithURL(url!, completionHandler: { (jsonData, response, error) -> Void in
@@ -46,7 +46,8 @@ class NetworkController {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as [String: AnyObject]
                         let resultsDictionary = jsonDictionary["results"] as [String: AnyObject]
-                        println(resultsDictionary)
+                        let newStock = Stock()
+                        completionHandler(newStock, nil)
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"
                     }
@@ -144,7 +145,7 @@ class NetworkController {
               //println(jsonData)
               if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
                 if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
-                  NSOperationQueue.currentQueue()?.name = "TwitterRequestQueue"
+                 // NSOperationQueue.currentQueue()?.name = "TwitterRequestQueue"
                   NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     completion(arrayOfResults,nil)
                   })
@@ -167,10 +168,55 @@ class NetworkController {
   }
   
   
-  func getJSONToCheckForTrend(){
-    
-    
-    
+  func twitterRequestForAfterID(theTicker: String, theID: String, Completion: ([[String:AnyObject]]?, NSError?)->Void){
+    let myAccountStore = ACAccountStore()
+    //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
+    let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+    //this starts a new thread to access the account and do something with it in the clsure statement
+    myAccountStore.requestAccessToAccountsWithType(myAccountType, options: nil) { (gotit: Bool , error: NSError!) -> Void in
+      //If ACAccountStore was able to access the account the gotit boolean in the cluses will be true or false
+      if gotit{
+        //A user can have multiple accounts with each of these services, we load them all into the array.
+        let accountsArray = myAccountStore.accountsWithAccountType(myAccountType)
+        //make sure we got at least one account
+        if accountsArray.isEmpty == false{
+          //We just want the first account that is stored in the array of account (there might only be one)
+          self.twitterAccount = accountsArray[0] as? ACAccount
+          //return twitterAccount
+          let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(theTicker)&count=100&since_id=\(theID)")
+          //A request of type SLRequest, this starts a new thread.
+          let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
+          //Set the SLRequests account property to the twitter accont that we got from the array of accounts
+          twitterRequest.account = self.twitterAccount
+          //call the performRequestWithHandler method on SLRequest (this starts a new thread) paramaters are the data that will be returned, the response code, and then an error
+          twitterRequest.performRequestWithHandler({ (jsonData, responseCode, error) -> Void in
+            //make a switch statement on the response code. You will probably get a basic server response code
+            switch responseCode.statusCode{
+              //If the response is good
+            case 200...299:
+              //create an array of json data that is typed as an array of [AnyObject]
+              //println(jsonData)
+              if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
+                if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
+                  //NSOperationQueue.currentQueue()?.name = "TwitterRequestQueue"
+                  NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    Completion(arrayOfResults,nil)
+                  })
+                }
+              }
+              //If response is bad
+            case 400...599:
+              println(error)
+              NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                Completion(nil, error)
+              })
+            default:
+              println("\(responseCode.statusCode)")
+            }
+          })
+        }
+      }
+    }
   }
   
   
