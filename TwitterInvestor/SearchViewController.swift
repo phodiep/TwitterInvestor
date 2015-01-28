@@ -102,7 +102,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         let ticker = searchBar.text
         let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.frame = self.view.bounds
+        activityIndicator.frame = self.tableView.bounds
         activityIndicator.color = UIColor.blackColor()
         activityIndicator.backgroundColor = UIColor.lightGrayColor()
         activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
