@@ -124,6 +124,7 @@ class TrendEngineForTicker{
     for o in JSONBlob{
       let dateOfTweet = dateFormat.dateFromString(o["created_at"] as String)
       arrayOfDatesFromJSON.append(dateOfTweet!)
+      
     }
     
     var arrayOfTimeIntervals = [NSTimeInterval]()
