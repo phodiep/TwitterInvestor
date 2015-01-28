@@ -171,7 +171,8 @@ class TrendEngineForTicker{
   
   
   
-  func checkForTrend()->Bool{
+  func checkForTrend()->Double?{
+    var magnitudeOfTrend: Double?
     if self.needsBaseline == true {
       
     }else{
@@ -181,30 +182,32 @@ class TrendEngineForTicker{
         switch (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!{
         
         case 0...0.2:
-          println("noTrend")
+          var newTrend = Trend()
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          magnitudeOfTrend = newTrend.trendMagnitude
         case 0.3...0.5:
           let date = NSDate()
           var newTrend = Trend()
           newTrend.startTime = date
           newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
           newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
-          println("trent")
+          magnitudeOfTrend = newTrend.trendMagnitude
         case 0.6...1:
           let date = NSDate()
           var newTrend = Trend()
           newTrend.startTime = date
           newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
           newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
-          println("moderate Trend")
+          magnitudeOfTrend = newTrend.trendMagnitude
         case 1.1...99:
           let date = NSDate()
           var newTrend = Trend()
           newTrend.startTime = date
           newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
           newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
-          println("Big Trend")
+          magnitudeOfTrend = newTrend.trendMagnitude
         default:
-          break
+          magnitudeOfTrend = 0
         }
         for item in JSON{
           self.arrayOfAllJSON.insert(item, atIndex: 0)
@@ -214,6 +217,6 @@ class TrendEngineForTicker{
         
       }
     }
-    return false
+    return magnitudeOfTrend
   }
 }

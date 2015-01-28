@@ -19,7 +19,11 @@ class DetailViewController: UIViewController {
     
     var newsButton: UIBarButtonItem!
     var orientation: UIDeviceOrientation!
-    
+    var timerForTwitterTrendCheck: NSTimer?
+    var operationQueueCheckTrend: NSOperationQueue?
+    var isTrending: Bool?
+    var trendMagnitude: Double?
+  
     override func loadView() {
         self.rootView.frame = UIScreen.mainScreen().bounds
         
@@ -95,8 +99,9 @@ class DetailViewController: UIViewController {
         priceLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         peLabel.font = UIFont(name: "HelveticaNeue", size: 16)
         changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        
-        
+        timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
+        NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
+        self.operationQueueCheckTrend = NSOperationQueue()
         
         companyLabel.text = self.stock.companyName
         plotImage.image = UIImage(named: "stockPrice")
@@ -156,6 +161,17 @@ class DetailViewController: UIViewController {
             options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
 
         
+    }
+  
+  
+    func checkForTrend(){
+      
+      
+      operationQueueCheckTrend!.addOperationWithBlock { () -> Void in
+        
+        self.trendMagnitude = self.trendEngine.checkForTrend()
+        self.isTrending = self.trendEngine.isTrending
+      }
     }
 
     func layoutTwitterView() {
