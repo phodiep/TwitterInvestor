@@ -69,17 +69,17 @@ class NetworkController {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil ) as [String : AnyObject]
 //                        println( jsonDictionary )
-
+                        
                         if jsonDictionary.count == 1 {
-
+                            
                             var stockData: Stock = Stock( jsonDictionary: jsonDictionary )
-      //                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
-
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            stockLookup( stockData, nil  )
+//                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                                stockLookup( stockData, nil  )
                             })
                         }
-
+                        
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"
                     }

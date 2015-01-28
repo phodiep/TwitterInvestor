@@ -20,6 +20,7 @@ class DetailViewController: UIViewController {
     var newsButton: UIBarButtonItem!
     var orientation: UIDeviceOrientation!
     
+    //MARK: UIViewController Lifecycle
     override func loadView() {
         self.rootView.frame = UIScreen.mainScreen().bounds
         
@@ -45,21 +46,10 @@ class DetailViewController: UIViewController {
         
         self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
         self.navigationItem.rightBarButtonItem = self.newsButton
-
         
     }
 
-    
-
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.rootView.setNeedsLayout()
-        self.rootView.layoutIfNeeded()
-        
-//        self.layoutRootView()
-
-    }
-    
-    
+    //MARK: Autolayout Views
     func layoutRootView() {
         
         let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
@@ -96,8 +86,6 @@ class DetailViewController: UIViewController {
         peLabel.font = UIFont(name: "HelveticaNeue", size: 16)
         changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
         
-        
-        
         companyLabel.text = self.stock.companyName
         plotImage.image = UIImage(named: "stockPrice")
         priceLabel.text = "\(self.stock.price!)"
@@ -117,7 +105,6 @@ class DetailViewController: UIViewController {
             changeLabel.text = "\(self.stock.change!)"
         }
 
-        
         companyLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         plotImage.setTranslatesAutoresizingMaskIntoConstraints(false)
         priceLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -129,8 +116,6 @@ class DetailViewController: UIViewController {
         self.stockView.addSubview(priceLabel)
         self.stockView.addSubview(peLabel)
         self.stockView.addSubview(changeLabel)
-        
-        
         
         let views = ["companyLabel": companyLabel,
                     "plotImage": plotImage,
@@ -150,12 +135,9 @@ class DetailViewController: UIViewController {
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[priceLabel]-16-|",
             options: nil, metrics: nil, views: views))
-
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|-16-[priceLabel]-8-[changeLabel]-8-[peLabel]",
             options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
-
-        
     }
 
     func layoutTwitterView() {
@@ -167,10 +149,10 @@ class DetailViewController: UIViewController {
         let latestTweet = UILabel()
         let isTrendingLabel = UILabel()
         
-        trendLabel.font = UIFont(name: "HelveticaNeue", size: 14)
-        averageLabel.font = UIFont(name: "HelveticaNeue", size: 14)
-        latestTweet.font = UIFont(name: "HelveticaNeue", size: 14)
-        isTrendingLabel.font = UIFont(name: "HelveticaNeue", size: 14)
+        trendLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        averageLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        latestTweet.font = UIFont(name: "HelveticaNeue", size: 16)
+        isTrendingLabel.font = UIFont(name: "HelveticaNeue", size: 16)
 
         trendLabel.text = "TwitterTrends"
         plotImage.image = UIImage(named: "twitterTrend")
@@ -216,7 +198,7 @@ class DetailViewController: UIViewController {
         
     }
     
-    
+    //MARK: Button Actions
     func newsButtonPressed(sender: UIButton) {
         let webVC = WebViewController()
         webVC.ticker = self.stock.ticker
