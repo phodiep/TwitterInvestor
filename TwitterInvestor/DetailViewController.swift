@@ -82,21 +82,33 @@ class DetailViewController: UIViewController {
         self.stockView.backgroundColor = UIColor.whiteColor()
         
         let companyLabel = UILabel()
-        let plotImage = UIImageView()
         let priceLabel = UILabel()
         let peLabel = UILabel()
         let changeLabel = UILabel()
+        let daysRangeLabel = UILabel()
+        let fiftyDayAverageLabel = UILabel()
+        let marketCapLabel = UILabel()
+        let volAverageLabel = UILabel()
+        let epsLabel = UILabel()
+        let sharesLabel = UILabel()
         
         companyLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
         priceLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         peLabel.font = UIFont(name: "HelveticaNeue", size: 16)
         changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        daysRangeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        fiftyDayAverageLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        marketCapLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        volAverageLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        epsLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        sharesLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        
+        
         timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
         NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
         self.operationQueueCheckTrend = NSOperationQueue()
         
-        companyLabel.text = self.stock.companyName
-        plotImage.image = UIImage(named: "stockPrice")
+        companyLabel.text = "company"
         priceLabel.text = "\(self.stock.price!)"
         peLabel.text = "p/e: \(self.stock.pe!)"
         
@@ -114,38 +126,60 @@ class DetailViewController: UIViewController {
             changeLabel.text = "\(self.stock.change!)"
         }
 
+        daysRangeLabel.text = "days range"
+        fiftyDayAverageLabel.text = "fifty"
+        marketCapLabel.text = "market cap"
+        volAverageLabel.text = "vol average"
+        epsLabel.text = "eps"
+        sharesLabel.text = "shares"
+        
+        
         companyLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        plotImage.setTranslatesAutoresizingMaskIntoConstraints(false)
         priceLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         peLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         changeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        daysRangeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        fiftyDayAverageLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        marketCapLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        volAverageLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        epsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        sharesLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         self.stockView.addSubview(companyLabel)
-        self.stockView.addSubview(plotImage)
         self.stockView.addSubview(priceLabel)
         self.stockView.addSubview(peLabel)
         self.stockView.addSubview(changeLabel)
+        self.stockView.addSubview(daysRangeLabel)
+        self.stockView.addSubview(fiftyDayAverageLabel)
+        self.stockView.addSubview(marketCapLabel)
+        self.stockView.addSubview(volAverageLabel)
+        self.stockView.addSubview(epsLabel)
+        self.stockView.addSubview(sharesLabel)
         
         let views = ["companyLabel": companyLabel,
-                    "plotImage": plotImage,
                     "priceLabel": priceLabel,
                     "peLabel": peLabel,
-                    "changeLabel": changeLabel]
+                    "changeLabel": changeLabel,
+                    "daysRangeLabel" : daysRangeLabel,
+                    "fiftyDayAverageLabel" : fiftyDayAverageLabel,
+                    "marketCapLabel" : marketCapLabel,
+                    "volAverageLabel" : volAverageLabel,
+                    "epsLabel" : epsLabel,
+                    "sharesLabel" : sharesLabel]
         
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-16-[companyLabel]",
             options: nil, metrics: nil, views: views))
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-16-[companyLabel]-16-[plotImage(120)]",
-            options: nil, metrics: nil, views: views))
-        self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[plotImage(180)]",
-            options: nil, metrics: nil, views: views))
-        self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[priceLabel]-16-|",
             options: nil, metrics: nil, views: views))
+
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-16-[priceLabel]-8-[changeLabel]-8-[peLabel]",
+            "V:|-16-[companyLabel]-16-[daysRangeLabel]-16-[fiftyDayAverageLabel]-16-[marketCapLabel]-16-[sharesLabel]",
+            options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
+
+        self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-16-[priceLabel]-16-[changeLabel]-16-[volAverageLabel]-16-[peLabel]-16-[epsLabel]",
             options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
     }
   

@@ -41,16 +41,16 @@ class SearchCell: UITableViewCell {
             "priceLabel" : self.priceLabel]
 
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[tickerLabel]",
+            "H:|-16-[tickerLabel(50)]-8-[priceLabel(50)]-8-[changeLabel(50)]-16-[companyNameLabel]-|",
             options: nil, metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-115-[priceLabel]-16-[changeLabel]",
-            options: nil, metrics: nil, views: views))
+//        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+//            "H:|-115-[priceLabel]-16-[changeLabel]",
+//            options: nil, metrics: nil, views: views))
 
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[companyNameLabel]-16-|",
-            options: nil, metrics: nil, views: views))
+//        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+//            "H:[companyNameLabel]-16-|",
+//            options: nil, metrics: nil, views: views))
 
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|[tickerLabel]|",
