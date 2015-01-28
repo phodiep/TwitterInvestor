@@ -21,6 +21,8 @@ class Stock {
     var peratio: Float?     = 0.0
     var price: Float?       = 0.0
     
+  init(){
+    
   }
   
   
