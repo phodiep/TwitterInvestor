@@ -9,8 +9,8 @@
 import Foundation
 
 class Stock {
-    var ticker: String
-    var companyName: String
+    var ticker: String?
+    var companyName: String?
     var industry: String?
     var price: Float?
     var change: Float?
@@ -19,11 +19,15 @@ class Stock {
     var dividend: Float?
     var dividendPerc: Float?
     
+  init(){
     
+  }
+  
+  
     init(jsonDictionary: [String:AnyObject]) {
         
-        self.ticker = jsonDictionary["ticker"] as String
-        self.companyName = jsonDictionary["name"] as String
+        self.ticker = jsonDictionary["ticker"] as? String
+        self.companyName = jsonDictionary["name"] as? String
         
     }
     

@@ -15,10 +15,13 @@ struct Trend{
   //Date and time when the trend ended/returned to baseline
   var EndTime: NSDate?
   //Int that will represent the magnitude of the trend
-  var trendMagnitude: Int = 0
+  var trendMagnitude: Double = 0
   //Number of tweet that have made up the trend
   var numberOfTweetsThatRepresentTheTrend: Int?
 
+  init(){
+    
+  }
 }
 
 class TrendEngineForTicker{
@@ -180,10 +183,25 @@ class TrendEngineForTicker{
         case 0...0.2:
           println("noTrend")
         case 0.3...0.5:
+          let date = NSDate()
+          var newTrend = Trend()
+          newTrend.startTime = date
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
           println("trent")
         case 0.6...1:
+          let date = NSDate()
+          var newTrend = Trend()
+          newTrend.startTime = date
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
           println("moderate Trend")
         case 1.1...99:
+          let date = NSDate()
+          var newTrend = Trend()
+          newTrend.startTime = date
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
           println("Big Trend")
         default:
           break
