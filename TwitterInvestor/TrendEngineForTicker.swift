@@ -61,7 +61,6 @@ class TrendEngineForTicker{
       let newestTweet = firstJSONBlob.first as [String:AnyObject]!
       self.idOfNewestTweet = newestTweet["id_str"] as? String
       let format = NSDateFormatter()
-      self.tweetText = newestTweet["text"] as? String
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
       self.dateOfNewestTweet = format.dateFromString(newestTweet["created_at"] as String!)
       let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
@@ -81,6 +80,7 @@ class TrendEngineForTicker{
       println("averageTime Between Relevant Tweets is: \(self.tweetsPerHour!) minutes.")
     })
     self.needsBaseline = false
+    //newNotification("Message")
     
   }
   
