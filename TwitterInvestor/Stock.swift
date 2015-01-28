@@ -54,7 +54,7 @@ class Stock {
 
         if DBUG { println( quote ) }
 
-        printStockDictionary( jsonDictionary )
+//        printStockDictionary( jsonDictionary )
     }
 
     init(ticker: String, companyName: String, change: Float = 0.0, price: Float = 0.0, pe: Float = 0.0) {

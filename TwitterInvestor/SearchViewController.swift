@@ -35,26 +35,24 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.title = "Search"
         self.tableView.registerClass(SearchCell.self, forCellReuseIdentifier: "SEARCH_CELL")
         
-
-        
-        self.watchList.append(Stock(
-            ticker: "AAPL",
-            companyName: "Apple Inc.",
-            change: 0.58,
-            price: 112.98,
-            pe: 17.52))
-        self.watchList.append(Stock(
-            ticker: "BA",
-            companyName: "Boeing",
-            change: -1.02,
-            price: 134.62,
-            pe: 19.36))
-        self.watchList.append(Stock(
-            ticker: "GOOG",
-            companyName: "Google Inc",
-            change: 5.56,
-            price: 539.95,
-            pe: 28.42))
+//        self.watchList.append(Stock(
+//            ticker: "AAPL",
+//            companyName: "Apple Inc.",
+//            change: 0.58,
+//            price: 112.98,
+//            pe: 17.52))
+//        self.watchList.append(Stock(
+//            ticker: "BA",
+//            companyName: "Boeing",
+//            change: -1.02,
+//            price: 134.62,
+//            pe: 19.36))
+//        self.watchList.append(Stock(
+//            ticker: "GOOG",
+//            companyName: "Google Inc",
+//            change: 5.56,
+//            price: 539.95,
+//            pe: 28.42))
 
         self.tableView.reloadData()
     }
@@ -68,8 +66,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 //        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
 
         let cell = SearchCell()
+        let stockQuote = self.watchList[indexPath.row]
 
-        cell.tickerLabel.text = self.watchList[indexPath.row].ticker
+        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
 
         cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
         cell.change = self.watchList[indexPath.row].change
@@ -119,9 +118,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-      NetworkController.sharedInstance.getStockInfoFromYahoo(searchBar.text, stockLookup: { (Stock, error) -> () in
-        self.watchList.append(Stock!)
-        NetworkController.sharedInstance.getInitialTwitterRequest(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
+        let ticker = searchBar.text
+        NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
+        self.watchList.insert(Stock!, atIndex: 0)
+        NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
           if returnedTrendEngine != nil{
             self.engines.append(returnedTrendEngine!)
           }
@@ -141,6 +141,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.searchBar.showsCancelButton = true
         return true
     }
+    
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         return text.validateForTicker()
     }

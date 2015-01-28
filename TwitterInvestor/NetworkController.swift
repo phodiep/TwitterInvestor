@@ -68,7 +68,7 @@ class NetworkController {
                     switch returnCode {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil ) as [String : AnyObject]
-                        println( jsonDictionary )
+//                        println( jsonDictionary )
 
                         if jsonDictionary.count == 1 {
 
@@ -111,6 +111,7 @@ class NetworkController {
           //https://stream.twitter.com/1.1/statuses/firehose.json
           //https://api.twitter.com/1.1/search/tweets.json?q=%23yolo&count=200&src=typd
           let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&count=100")//q=%SIRI")
+            println(tickerSymbol)
           //A request of type SLRequest, this starts a new thread.
           let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
           //Set the SLRequests account property to the twitter accont that we got from the array of accounts
