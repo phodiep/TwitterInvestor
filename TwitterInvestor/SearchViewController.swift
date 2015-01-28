@@ -49,12 +49,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 //        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
 
         let cell = SearchCell()
+        let stockQuote = self.watchList[indexPath.row]
 
-        cell.tickerLabel.text = self.watchList[indexPath.row].ticker
+        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
 
-        cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
-        cell.change = self.watchList[indexPath.row].change
-        cell.priceLabel.text = "\(self.watchList[indexPath.row].price!)"
+        cell.companyNameLabel.text = stockQuote.getStringValue( "Name" )
+        cell.change = stockQuote.convertToFloat( "Change" ) // self.watchList[indexPath.row].change
+        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )   // "\(self.watchList[indexPath.row].price!)"
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()
@@ -100,7 +101,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        let ticker = searchBar.text
+        let input = searchBar.text
+        let ticker = input.uppercaseString
+
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.frame = self.tableView.bounds
         activityIndicator.color = UIColor.blackColor()
