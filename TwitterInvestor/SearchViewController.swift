@@ -17,6 +17,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     var engines = [TrendEngineForTicker]()
    // var stocks = [Stock]()
 
+    //MARK: UIViewController Lifecycle
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
         self.tableView.dataSource = self
@@ -48,12 +49,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 //        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
 
         let cell = SearchCell()
+        let stockQuote = self.watchList[indexPath.row]
 
-        cell.tickerLabel.text = self.watchList[indexPath.row].ticker
+        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
 
-        cell.companyNameLabel.text = self.watchList[indexPath.row].companyName
-        cell.change = self.watchList[indexPath.row].change
-        cell.priceLabel.text = "\(self.watchList[indexPath.row].price!)"
+        cell.companyNameLabel.text = stockQuote.getStringValue( "Name" )
+        cell.change = stockQuote.convertToFloat( "Change" ) // self.watchList[indexPath.row].change
+        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )   // "\(self.watchList[indexPath.row].price!)"
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()
@@ -90,7 +92,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("cell")
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
         detailVC.trendEngine = self.engines[indexPath.row]
@@ -100,18 +101,36 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        let ticker = searchBar.text
+        let input = searchBar.text
+        let ticker = input.uppercaseString
+
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.frame = self.view.bounds
+        activityIndicator.color = UIColor.blackColor()
+        activityIndicator.backgroundColor = UIColor.lightGrayColor()
+        activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
+        activityIndicator.alpha = 0.5
+        activityIndicator.hidden = false
+        self.view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
-        self.watchList.insert(Stock!, atIndex: 0)
-        NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
-          if returnedTrendEngine != nil{
-            self.engines.append(returnedTrendEngine!)
-          }
+            self.watchList.insert(Stock!, atIndex: 0)
+            
+            NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
+                if returnedTrendEngine != nil{
+                    self.engines.append(returnedTrendEngine!)
+                    activityIndicator.stopAnimating()
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    self.tableView.reloadData()
+                }
+            })
+
         })
-        self.tableView.reloadData()
-      })
-     
-      
+        
+        
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         searchBar.text = ""
@@ -139,7 +158,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UIActionAlert
     func invalidTickerAlert() {
-        let alertController = UIAlertController(title: "Ticker is not valid", message: "enter a valid ticker for search", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Ticker is not valid", message: "Enter a valid ticker for search", preferredStyle: .Alert)
     
         let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
             //dismiss alert and reset search bar text

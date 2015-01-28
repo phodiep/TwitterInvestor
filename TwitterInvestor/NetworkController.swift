@@ -69,17 +69,17 @@ class NetworkController {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil ) as [String : AnyObject]
 //                        println( jsonDictionary )
-
+                        
                         if jsonDictionary.count == 1 {
-
+                            
                             var stockData: Stock = Stock( jsonDictionary: jsonDictionary )
-      //                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
-
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            stockLookup( stockData, nil  )
+//                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                                stockLookup( stockData, nil  )
                             })
                         }
-
+                        
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"
                     }
@@ -118,8 +118,9 @@ class NetworkController {
           twitterRequest.account = self.twitterAccount
           //call the performRequestWithHandler method on SLRequest (this starts a new thread) paramaters are the data that will be returned, the response code, and then an error
           twitterRequest.performRequestWithHandler({ (jsonData, responseCode, error) -> Void in
+            println(error)
             //make a switch statement on the response code. You will probably get a basic server response code
-            switch responseCode.statusCode{
+            switch responseCode.statusCode {
               //If the response is good
             case 200...299:
               //create an array of json data that is typed as an array of [AnyObject]
