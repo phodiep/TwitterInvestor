@@ -45,7 +45,7 @@ class NetworkController {
                     switch urlResponse.statusCode {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as [String: AnyObject]
-                        let resultsDictionary = jsonDictionary["results"] as [String: AnyObject]
+                       // let resultsDictionary = jsonDictionary["results"] as [String: AnyObject]
                         let newStock = Stock()
                         completionHandler(newStock, nil)
                     default:
