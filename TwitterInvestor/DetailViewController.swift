@@ -157,12 +157,12 @@ class DetailViewController: UIViewController {
 
         
     }
-    
+
     func layoutTwitterView() {
         self.twitterView.backgroundColor = UIColor.whiteColor()
-        
-        let trendTable = TrendTableView()
-        
+
+ //       let trendTable = TrendTableView()
+/*
         let trendLabel = UILabel()
         let plotImage = UIImageView()
         let averageLabel = UILabel()
@@ -220,7 +220,7 @@ class DetailViewController: UIViewController {
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
         
-        
+     */
     }
     
     
