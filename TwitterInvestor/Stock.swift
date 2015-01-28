@@ -33,19 +33,19 @@ class Stock {
         extractData( jsonDictionary )
 
 
-        printStockDictionary( jsonDictionary )
+//        printStockDictionary( jsonDictionary )
     }
     
-    init(ticker: String, companyName: String, change: Float = 0.0, price: Float = 0.0, pe: Float = 0.0) {
-
-        self.ticker = ticker
-        self.symbol = ticker
-        self.companyName = companyName
-        self.name = companyName
-        self.change = 0.0
-        self.price = 0.0
-        self.pe = 0.0
-    }
+//    init(ticker: String, companyName: String, change: Float = 0.0, price: Float = 0.0, pe: Float = 0.0) {
+//
+//        self.ticker = ticker
+//        self.symbol = ticker
+//        self.companyName = companyName
+//        self.name = companyName
+//        self.change = 0.0
+//        self.price = 0.0
+//        self.pe = 0.0
+//    }
 
     func getSymbol() -> String {
         return self.symbol
@@ -69,30 +69,29 @@ class Stock {
         var query    = jsonDictionary["query"] as [String:AnyObject]
         var results  = query["results"] as [String:AnyObject]
         var quote    = results["quote"] as [String:AnyObject]
-        println( quote )
 
  //       var quote = jsonDictionary.indexForKey("quote")
 
         self.symbol         = quote["Symbol"] as String
-        self.ticker         = quote["symbol"] as String    // Should be removed
+        self.ticker         = quote["Symbol"] as String    // Should be removed
         self.companyName    = quote["Name"] as String      // Should be removed
         self.name           = quote["Name"] as String
 
         let strPrice        = quote["AskRealtime"] as NSString     // Should be removed
         self.price          = strPrice.floatValue
 
-        // println( "prices[\(self.price)" )
         let stringAsk       = quote["AskRealtime"] as NSString
         self.ask            = stringAsk.floatValue
 
         let stringChange         = quote["Change"] as NSString
         self.change            = stringChange.floatValue
 
-        let stringPERatio             = quote["PERatio"] as NSString
-        self.peratio            = stringPERatio.floatValue
+        if let stringPERatio             = quote["PERatio"] as? NSString {
+            self.peratio            = stringPERatio.floatValue
+        }
 
-        let stringPE       = quote["PERatio"] as NSString
-        self.ask            = stringPE.floatValue
+//        let stringPE       = quote["PERatio"] as NSString
+//        self.ask            = stringPE.floatValue
     }
 
     func convertToFloat( quote: NSString ) -> Float {
