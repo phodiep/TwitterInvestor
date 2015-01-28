@@ -66,6 +66,7 @@ class TrendEngineForTicker{
       let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+      putTweetsInBucket(self.arrayOfAllJSON)
     }
   }
   
@@ -172,6 +173,54 @@ class TrendEngineForTicker{
     }
     return investmentRelatedTweets
   }
+
+func putTweetsInBucket(theJSON: [[String:AnyObject]])->[AnyObject]{
+    
+    var theMovingDate = NSDate(timeInterval: 3600, sinceDate: self.dateOfOldestTweet as NSDate!)
+
+    let format = NSDateFormatter()
+    format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+    var masterBucket = [AnyObject]()
+    var bucket = [[String:AnyObject]]()
+    
+    
+    for var i = theJSON.count; i > 0; --i{
+      let oneTweet = theJSON[i-1]
+      var dateFromOneTweet = format.dateFromString(oneTweet["created_at"] as String!)
+      
+      if compareDates(dateFromOneTweet!, laterDate: theMovingDate){
+        bucket.append(oneTweet)
+      }else{
+        masterBucket.append(bucket)
+        bucket = [[String:AnyObject]]()
+        theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
+        while !(compareDates(dateFromOneTweet!, laterDate: theMovingDate)){
+          masterBucket.append(bucket)
+          bucket = [[String:AnyObject]]()
+          theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
+        }
+        bucket.append(oneTweet)
+      }
+    }
+    
+    println(masterBucket.count)
+    for item in masterBucket{
+      println(item.count)
+    }
+    return masterBucket
+  }
+  
+  
+  func compareDates(earlierDate: NSDate, laterDate: NSDate)->Bool{
+    if earlierDate.compare(laterDate) == NSComparisonResult.OrderedAscending{
+      return true
+    }
+    if earlierDate.compare(laterDate) == NSComparisonResult.OrderedSame{
+      return true
+    }
+    return false
+  }
+
   
   
   
