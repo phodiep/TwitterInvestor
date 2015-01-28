@@ -20,6 +20,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
         self.tableView.dataSource = self
+        self.tableView.delegate = self
         self.searchBar.delegate = self
         self.searchBar.sizeToFit()
 
@@ -35,25 +36,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.title = "Search"
         self.tableView.registerClass(SearchCell.self, forCellReuseIdentifier: "SEARCH_CELL")
         
-//        self.watchList.append(Stock(
-//            ticker: "AAPL",
-//            companyName: "Apple Inc.",
-//            change: 0.58,
-//            price: 112.98,
-//            pe: 17.52))
-//        self.watchList.append(Stock(
-//            ticker: "BA",
-//            companyName: "Boeing",
-//            change: -1.02,
-//            price: 134.62,
-//            pe: 19.36))
-//        self.watchList.append(Stock(
-//            ticker: "GOOG",
-//            companyName: "Google Inc",
-//            change: 5.56,
-//            price: 539.95,
-//            pe: 28.42))
-
         self.tableView.reloadData()
     }
 
@@ -109,6 +91,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("cell")
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
         detailVC.trendEngine = self.engines[indexPath.row]

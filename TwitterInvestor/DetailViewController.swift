@@ -161,8 +161,6 @@ class DetailViewController: UIViewController {
     func layoutTwitterView() {
         self.twitterView.backgroundColor = UIColor.whiteColor()
 
- //       let trendTable = TrendTableView()
-
         let trendLabel = UILabel()
         let plotImage = UIImageView()
         let averageLabel = UILabel()
@@ -174,12 +172,16 @@ class DetailViewController: UIViewController {
         latestTweet.font = UIFont(name: "HelveticaNeue", size: 14)
         isTrendingLabel.font = UIFont(name: "HelveticaNeue", size: 14)
 
-//        trendTable.trends = self.trendEngine.arrayOfTrends
         trendLabel.text = "TwitterTrends"
         plotImage.image = UIImage(named: "twitterTrend")
         let average = NSString(format: "%.02f", Float(60/self.trendEngine.tweetsPerHour!))
         averageLabel.text = "Average: \(average) tweets/hr"
-        latestTweet.text = "Latest Tweet: \(self.trendEngine.dateOfNewestTweet!)"
+        
+        let latestDate = self.trendEngine.dateOfNewestTweet
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+        
+        latestTweet.text = "Latest Tweet: \(dateFormatter.stringFromDate(latestDate!))"
         let isTrend = (self.trendEngine.isTrending ? "Yes":"No")
         isTrendingLabel.text = "Trending? \(isTrend)"
         
@@ -188,29 +190,22 @@ class DetailViewController: UIViewController {
         averageLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         latestTweet.setTranslatesAutoresizingMaskIntoConstraints(false)
         isTrendingLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-//        trendTable.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         self.twitterView.addSubview(trendLabel)
         self.twitterView.addSubview(plotImage)
         self.twitterView.addSubview(averageLabel)
         self.twitterView.addSubview(latestTweet)
         self.twitterView.addSubview(isTrendingLabel)
-//        self.twitterView.addSubview(trendTable)
         
         let views = ["trendLabel" : trendLabel,
             "plotImage" : plotImage,
             "averageLabel" : averageLabel,
             "latestTweet" : latestTweet,
             "isTrendingLabel" : isTrendingLabel]
-//            "trendTable" : trendTable]
 
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-8-[plotImage]-8-|",
             options: nil, metrics: nil, views: views))
-//        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "H:[trendTable(200)]-8-|",
-//            options: nil, metrics: nil, views: views))
-
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|-8-[plotImage]",
             options: nil, metrics: nil, views: views))
