@@ -67,17 +67,21 @@ class TrendEngineForTicker{
       let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
-      getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (theBool) -> Void in
-        if theBool == true{
-          self.arrayOfAllJSON = self.stripTweets(self.arrayOfAllJSON)
-        }
-        println(self.arrayOfAllJSON.count)
-        self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
-        println("averageTime Between Relevant Tweets is: \(self.tweetsPerHour!) minutes.")
-      })
-      self.needsBaseline = false
-    
     }
+  }
+  
+  
+  func buildData(){
+    getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (theBool) -> Void in
+      if theBool == true{
+        self.arrayOfAllJSON = self.stripTweets(self.arrayOfAllJSON)
+      }
+      println(self.arrayOfAllJSON.count)
+      self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
+      println("averageTime Between Relevant Tweets is: \(self.tweetsPerHour!) minutes.")
+    })
+    self.needsBaseline = false
+    
   }
   
   

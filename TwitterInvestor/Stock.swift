@@ -44,17 +44,17 @@ class Stock {
 
         let symbol = getStringValue( "Symbol" )
         let ticker = getStringValue( "Symbol" )
-        println( "symbol[\(symbol)] symbol[\(ticker)]" )
+        //println( "symbol[\(symbol)] symbol[\(ticker)]" )
 
         // ---------------------------------------------------------------------
 
-        for key in quote.keys {
-            println("Key: \(key)")
-        }
-
-        for (key, value) in quote {
-            println("Key: \(key)")
-        }
+//        for key in quote.keys {
+//            println("Key: \(key)")
+//        }
+//
+//        for (key, value) in quote {
+//            println("Key: \(key)")
+//        }
 
         if DBUG { println( quote ) }
 
@@ -83,7 +83,7 @@ class Stock {
      *
      */
     func convertToInt( key : NSString ) -> Int {
-        println( "convertToInt() key[\(key)]" )
+        //println( "convertToInt() key[\(key)]" )
         let aString   : NSString   = quoteData["\(key)"] as NSString
         let anInteger : Int?       = aString.integerValue
         return anInteger!
@@ -92,13 +92,13 @@ class Stock {
     }
 
     func getStringValue( key: NSString ) -> NSString {
-        println( "getStringValue() key[\(key)]" )
+       // println( "getStringValue() key[\(key)]" )
         let string : NSString       = quoteData["\(key)"] as String
         return string
     }
 
     func convertToFloat( key: NSString ) -> Float {
-        println( "convertToFloat() key[\(key)]" )
+       // println( "convertToFloat() key[\(key)]" )
         let string : NSString   = quoteData["\(key)"] as NSString
         let aFloat : Float      = string.floatValue
         return aFloat
