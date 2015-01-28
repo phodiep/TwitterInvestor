@@ -23,7 +23,7 @@ class Stock {
     
     init(jsonDictionary: [String:AnyObject]) {
 
-        println( "Stock[\(jsonDictionary)]" );
+        // println( "Stock[\(jsonDictionary)]" );
 
         extractData( jsonDictionary )
 

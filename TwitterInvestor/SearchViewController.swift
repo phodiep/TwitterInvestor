@@ -125,28 +125,25 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         NetworkController.sharedInstance.getStockInfoFromYahoo( searchBar.text, stockLookup: { (stock, error ) -> Void in
 
             if stock != nil {
-                println( stock )
+                if DBUG { println( stock ) }
                 // self.stockData.append(returnedYahooData!)
-                println( self.watchList.count )
+                if DBUG { println( self.watchList.count ) }
 
                 self.watchList.append(stock!)
 
-            //    var stockData: Stock = Stock( jsonDictionary: jsonDictionary )
-                //                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
+                if DBUG {
+                    println( " ========================================== " )
+                    println( self.watchList )
+                    self.tableView.reloadData()
+                    println( " ========================================== " )
+                }
 
-
-                println( " ========================================== " )
-                println( self.watchList )
-                self.tableView.reloadData()
-                
-//
-//                NetworkController.sharedInstance.getJSONTocheckforTrend(searchBar.text, trailingClosure: { (returnedTrendEngine, error) -> Void in
-//                    if returnedTrendEngine != nil {
-//                        self.engines.append(returnedTrendEngine!)
-//                    }
-//                })
-
-//                self.watchList.insert(Stock(ticker: searchBar.text, companyName: "???" ), atIndex: 0)
+                NetworkController.sharedInstance.getInitialTwitterRequest( searchBar.text, trailingClosure:
+                    { (returnedTrendEngine, error) -> Void in
+                    if returnedTrendEngine != nil {
+                        self.engines.append(returnedTrendEngine!)
+                    }
+                })
 
             }
             })

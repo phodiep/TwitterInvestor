@@ -132,7 +132,7 @@ class NetworkController {
               }
               //If response is bad
             case 400...599:
-              println(error)
+              println(responseCode.statusCode)
               NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 trailingClosure(nil, error)
               })
