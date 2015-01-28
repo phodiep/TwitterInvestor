@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1DB33AE71A76B1CC008B4225 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE61A76B1CC008B4225 /* Extensions.swift */; };
 		1DB33AE91A76D88F008B4225 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE81A76D88F008B4225 /* Notifications.swift */; };
-		1DB33AED1A783EDE008B4225 /* TrendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AEC1A783EDE008B4225 /* TrendCell.swift */; };
 		1DB33AEF1A78425B008B4225 /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AEE1A78425B008B4225 /* TrendViewController.swift */; };
 		1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297021A73195C00B5ADED /* AppDelegate.swift */; };
 		1DF297061A73195C00B5ADED /* TwitterInvestor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297041A73195C00B5ADED /* TwitterInvestor.xcdatamodeld */; };
@@ -42,7 +41,6 @@
 /* Begin PBXFileReference section */
 		1DB33AE61A76B1CC008B4225 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1DB33AE81A76D88F008B4225 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		1DB33AEC1A783EDE008B4225 /* TrendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendCell.swift; sourceTree = "<group>"; };
 		1DB33AEE1A78425B008B4225 /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
 		1DF296FD1A73195B00B5ADED /* TwitterInvestor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterInvestor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF297011A73195C00B5ADED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 				1DB33AE81A76D88F008B4225 /* Notifications.swift */,
 				1DF297401A73289F00B5ADED /* MenuCell.swift */,
 				1DF297461A73723F00B5ADED /* SearchCell.swift */,
-				1DB33AEC1A783EDE008B4225 /* TrendCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -284,7 +281,6 @@
 				1DF297431A73373C00B5ADED /* SearchViewController.swift in Sources */,
 				1DF297351A731B1500B5ADED /* HelpViewController.swift in Sources */,
 				1DF297411A73289F00B5ADED /* MenuCell.swift in Sources */,
-				1DB33AED1A783EDE008B4225 /* TrendCell.swift in Sources */,
 				1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */,
 				1DF297371A731B8300B5ADED /* Stock.swift in Sources */,
 				1DF297391A731C3F00B5ADED /* Tweet.swift in Sources */,
