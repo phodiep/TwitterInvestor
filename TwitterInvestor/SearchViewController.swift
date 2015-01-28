@@ -104,6 +104,18 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let input = searchBar.text
         let ticker = input.uppercaseString
 
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.frame = self.view.bounds
+        activityIndicator.color = UIColor.blackColor()
+        activityIndicator.backgroundColor = UIColor.lightGrayColor()
+        activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
+        activityIndicator.alpha = 0.5
+        activityIndicator.hidden = false
+        self.view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
             self.watchList.insert(Stock!, atIndex: 0)
             
