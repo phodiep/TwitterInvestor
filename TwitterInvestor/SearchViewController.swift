@@ -17,6 +17,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     var engines = [TrendEngineForTicker]()
    // var stocks = [Stock]()
 
+    //MARK: UIViewController Lifecycle
     override func loadView() {
         self.tableView.frame = UIScreen.mainScreen().bounds
         self.tableView.dataSource = self
@@ -91,7 +92,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("cell")
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
         detailVC.trendEngine = self.engines[indexPath.row]
@@ -105,16 +105,20 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let ticker = input.uppercaseString
 
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
-        self.watchList.insert(Stock!, atIndex: 0)
-        NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
-          if returnedTrendEngine != nil{
-            self.engines.append(returnedTrendEngine!)
-          }
+            self.watchList.insert(Stock!, atIndex: 0)
+            
+            NetworkController.sharedInstance.getInitialTwitterRequest(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
+                if returnedTrendEngine != nil{
+                    self.engines.append(returnedTrendEngine!)
+                    activityIndicator.stopAnimating()
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    self.tableView.reloadData()
+                }
+            })
+
         })
-        self.tableView.reloadData()
-      })
-     
-      
+        
+        
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         searchBar.text = ""
@@ -128,8 +132,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
     
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        return text.validateForTicker()
-    }
+        //return text.validateForTicker()
+        return true
+  }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.text = ""
@@ -141,7 +146,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UIActionAlert
     func invalidTickerAlert() {
-        let alertController = UIAlertController(title: "Ticker is not valid", message: "enter a valid ticker for search", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Ticker is not valid", message: "Enter a valid ticker for search", preferredStyle: .Alert)
     
         let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
             //dismiss alert and reset search bar text
