@@ -15,10 +15,13 @@ struct Trend{
   //Date and time when the trend ended/returned to baseline
   var EndTime: NSDate?
   //Int that will represent the magnitude of the trend
-  var trendMagnitude: Int = 0
+  var trendMagnitude: Double = 0
   //Number of tweet that have made up the trend
   var numberOfTweetsThatRepresentTheTrend: Int?
 
+  init(){
+    
+  }
 }
 
 class TrendEngineForTicker{
@@ -30,7 +33,7 @@ class TrendEngineForTicker{
   //Do we have baseline trend data for this ticker? Or are we going to tell the user that there is no baseline data. We can expect that there will be no baseline data on stocks that are very obscure
   var needsBaseline:Bool = true
   //If we do have baseline data for the tweet then we want to display it as Tweets per hour to the user.
-  var tweetsPerHour: Int?
+  var tweetsPerHour: Double?
   //If we do have baseline data for this tweet, this data is the date of the oldest and newest tweets we have gotten.
   var idOfNewestTweet: String?
   //Date stamp of newest Tweet
@@ -42,15 +45,13 @@ class TrendEngineForTicker{
   //Bool to see if stock is trending 
   var isTrending:Bool = false
   //Array of all trends that have occured for this stock.
+  var tweetText: String?
   var arrayOfTrends = [Trend]()
   
   
   //MARK: Initalizers
   init(tickerSymbol: String, firstJSONBlob: [[String:AnyObject]]){
     self.ticker = tickerSymbol
-    //theJSON = stripTweets(firstJSONBlob)
-   // println(firstJSONBlob)
-    
     if firstJSONBlob.count == 0{
       tweetsPerHour = 0
     }else {
@@ -65,19 +66,29 @@ class TrendEngineForTicker{
       let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
-      
-
-      buildBackAWeek(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (returnedShit) -> Void in
-      })
 
     }
   }
   
   
-  func buildBackAWeek(theTicker: String,oldestTweetID: String, completion: ([String:AnyObject])->Void){
-    //Get the time for 5 days ago
-    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -432000)
-    println(self.dateOfOldestTweet)
+  func buildData(){
+    getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (theBool) -> Void in
+      if theBool == true{
+        self.arrayOfAllJSON = self.stripTweets(self.arrayOfAllJSON)
+      }
+      println(self.arrayOfAllJSON.count)
+      self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
+      println("averageTime Between Relevant Tweets is: \(self.tweetsPerHour!) minutes.")
+    })
+    self.needsBaseline = false
+    //newNotification("Message")
+    
+  }
+  
+  
+  func getMoreTweets(theTicker: String,oldestTweetID: String, completion: (Bool)->Void){
+    
+    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -430000)
     
     if self.dateOfOldestTweet?.compare(fiveDaysAgo) == NSComparisonResult.OrderedDescending{
       NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) ->   Void in
@@ -90,9 +101,17 @@ class TrendEngineForTicker{
         let format = NSDateFormatter()
         format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
-        println(self.dateOfOldestTweet)
-
+        //completion(format.dateFromString(oldestTweet["created_at"] as String!)!)
+        self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+        self.getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (theBool) -> Void in
+          
+          completion(theBool)
+          
+        })
       }
+    }else{
+      completion(true)
+      return
     }
   }
   
@@ -105,8 +124,8 @@ class TrendEngineForTicker{
     dateFormat.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
     for o in JSONBlob{
       let dateOfTweet = dateFormat.dateFromString(o["created_at"] as String)
-      //println(dateOfTweet)
       arrayOfDatesFromJSON.append(dateOfTweet!)
+      
     }
     
     var arrayOfTimeIntervals = [NSTimeInterval]()
@@ -121,15 +140,15 @@ class TrendEngineForTicker{
     for number in arrayOfTimeIntervals{
       totalIntervalTime = totalIntervalTime + number
     }
-    println(arrayOfDatesFromJSON.count)
-    return (totalIntervalTime/Double(arrayOfTimeIntervals.count))
+    return (totalIntervalTime/Double(arrayOfTimeIntervals.count))/60
   }
   
   
   //Funciton to strip tweets that have nothing to do with investing.
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
     var JSON = JSONBlob
-    let arrayOfKeyWords = ["Stock","Market","Money","Mover","investing","DayTrader", "loser", "Gainer", "PreMarket", "Soared", "rating", "buy", "sell", "stock", "chart", "longterm", "Trade","investment", "long", "short"]
+    //make sure all lower case
+    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
     var investmentRelatedTweets = [[String:AnyObject]]()
     
     for var i = 0; i < JSON.count; ++i {
@@ -141,24 +160,205 @@ class TrendEngineForTicker{
       for o in hashTags{
         arrayOfHashTags.append(o["text"] as String!)
       }
+      //revisit this logic
       for k in arrayOfKeyWords{
         if text.lowercaseString.rangeOfString(k) != nil {
-            investmentRelatedTweets.append(JSON[i])
+          for HT in arrayOfHashTags{
+            if HT.lowercaseString.rangeOfString(HT) != nil{
+              investmentRelatedTweets.append(JSON[i])
+            }
+          }
         }
+      }
+    }
+    putTweetsInBucket(investmentRelatedTweets)
+    return investmentRelatedTweets
+  }
+
+    func putTweetsInBucket_rewrite(theJSON: [[String:AnyObject]])->[AnyObject]{
+        //    var theMovingDate = NSDate(timeInterval: 3600, sinceDate: self.dateOfOldestTweet as NSDate!)
+//        var theMovingDate = NSDate(timeInterval: 3600, sinceDate: NSDate(timeIntervalSinceNow: -432000))
+        
+        let format = NSDateFormatter()
+        format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+
+        let startDate = NSDate(timeIntervalSinceNow: (-432000)) //5days * 24hours * 60min * 60sec
+        
+        let numBuckets = 5 * 24 //5 days * 24 hours each
+        
+        var masterBucket = [[String:AnyObject]]()
+        
+        var movingDate = startDate
+        for i in 1...numBuckets {
+            masterBucket.append(["time" : movingDate,"count" : 0])
+            movingDate = NSDate(timeInterval: 3600, sinceDate: movingDate)
+            }
+
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+
+        for tweet in theJSON {
+            var dateOfTweet = format.dateFromString(tweet["created_at"] as String!)
+            println(dateOfTweet)
+            let timeDifference = Int(-startDate.timeIntervalSinceDate(dateOfTweet!) / 60 / 60) //returns hours since
+            println(timeDifference)
+
+            var bucket: (AnyObject) = masterBucket[timeDifference]
+            var bucketTime = bucket["time"]
+            var bucketCount = bucket["count"] as Int
+            bucketCount += 1
+            var returnBucket = ["time" : bucketTime, "count" : bucketCount]
+            
+//            masterBucket[timeDifference] = ["time" : bucketTime, "count" : bucketCount]
+//            
+//            
+//            
+//            println(masterBucket[timeDifference][1])
+//            masterBucket[timeDifference]![1] = 1
+//            println(masterBucket[timeDifference][1])
+        }
+        
+//        for var i = theJSON.count; i > 0; --i{
+//            let oneTweet = theJSON[i-1]
+//            var dateFromOneTweet = format.dateFromString(oneTweet["created_at"] as String!)
+//            
+//            if compareDates(dateFromOneTweet!, laterDate: theMovingDate){
+//                bucket.append(oneTweet)
+//            }else{
+//                masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
+//                
+//                
+//                bucket = [[String:AnyObject]]()
+//                theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
+//                while !(compareDates(dateFromOneTweet!, laterDate: theMovingDate)){
+//                    masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
+//                    bucket = [[String:AnyObject]]()
+//                    theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
+//                }
+//                bucket.append(oneTweet)
+//            }
+//        }
+//        masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
+//        
+//        for item in masterBucket {
+//            let iDate = item["date"]
+//            let iCount = item["count"]
+//            println("\(iDate!) - \(iCount!)")
+//        }
+//        println(NSDate())
+        
+        return masterBucket
+        
+    }
+    
+    func putTweetsInBucket(theJSON: [[String:AnyObject]])->[AnyObject]{
+        //    var theMovingDate = NSDate(timeInterval: 3600, sinceDate: self.dateOfOldestTweet as NSDate!)
+        var theMovingDate = NSDate(timeInterval: 3600, sinceDate: NSDate(timeIntervalSinceNow: -432000))
+        let format = NSDateFormatter()
+        format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        var masterBucket = [AnyObject]()
+        var bucket = [[String:AnyObject]]()
+        
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+        
+        for var i = theJSON.count; i > 0; --i{
+            let oneTweet = theJSON[i-1]
+            var dateFromOneTweet = format.dateFromString(oneTweet["created_at"] as String!)
+            
+            if compareDates(dateFromOneTweet!, laterDate: theMovingDate){
+                bucket.append(oneTweet)
+            }else{
+                masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
+                
+                
+                bucket = [[String:AnyObject]]()
+                theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
+                while !(compareDates(dateFromOneTweet!, laterDate: theMovingDate)){
+                    masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
+                    bucket = [[String:AnyObject]]()
+                    theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
+                }
+                bucket.append(oneTweet)
+            }
+        }
+        masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
+        
+//        for item in masterBucket {
+//            let iDate = item["date"]
+//            let iCount = item["count"]
+//            println("\(iDate!) - \(iCount!)")
+//        }
+//        println(NSDate())
+        
+        return masterBucket
+        
+    }
+
+  
+  
+  func compareDates(earlierDate: NSDate, laterDate: NSDate)->Bool{
+    if earlierDate.compare(laterDate) == NSComparisonResult.OrderedAscending{
+      return true
+    }
+    if earlierDate.compare(laterDate) == NSComparisonResult.OrderedSame{
+      return true
+    }
+    return false
+  }
+
+  
+  
+  
+  
+  
+  
+  func checkForTrend()->Double?{
+    var magnitudeOfTrend: Double?
+    if self.needsBaseline == true {
+      
+    }else{
+      NetworkController.sharedInstance.twitterRequestForAfterID(self.ticker!, theID: self.idOfNewestTweet!) { (returnedJSON, error) -> Void in
+        let JSON = self.stripTweets(returnedJSON!)
+        let averageIntervalForNewTweets = self.figureOutAverageInterval(JSON)
+        switch (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!{
+        
+        case 0...0.2:
+          var newTrend = Trend()
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          magnitudeOfTrend = newTrend.trendMagnitude
+        case 0.3...0.5:
+          let date = NSDate()
+          var newTrend = Trend()
+          newTrend.startTime = date
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
+          magnitudeOfTrend = newTrend.trendMagnitude
+        case 0.6...1:
+          let date = NSDate()
+          var newTrend = Trend()
+          newTrend.startTime = date
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
+          magnitudeOfTrend = newTrend.trendMagnitude
+        case 1.1...99:
+          let date = NSDate()
+          var newTrend = Trend()
+          newTrend.startTime = date
+          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
+          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
+          magnitudeOfTrend = newTrend.trendMagnitude
+        default:
+          magnitudeOfTrend = 0
+        }
+        for item in JSON{
+          self.arrayOfAllJSON.insert(item, atIndex: 0)
+        }
+        
+        
         
       }
     }
-    return investmentRelatedTweets
+    return magnitudeOfTrend
   }
-  
-  func checkForTrend()->Bool{
-    
-    
-    
-    
-    
-    return false
-  }
-  
-  
 }
