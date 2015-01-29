@@ -138,8 +138,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
             
             NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
                 if returnedTrendEngine != nil{
-                  returnedTrendEngine!.buildData()
-                  self.engines.append(returnedTrendEngine!)
+                  //returnedTrendEngine!.buildData()
+                  self.engines.insert(returnedTrendEngine!, atIndex: 0)
                     activityIndicator.stopAnimating()
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
