@@ -48,6 +48,7 @@ class TrendEngineForTicker{
   var tweetText: String?
   var arrayOfTrends = [Trend]()
   var tweetBuckets : [AnyObject]?
+  var plotView: UIView?
   
   
   //MARK: Initalizers
@@ -75,6 +76,8 @@ class TrendEngineForTicker{
       self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
       //Set the needs baseline property to nil.
       self.needsBaseline = false
+      self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
+      self.setPlotView()
     }
   }
   
@@ -218,7 +221,9 @@ class TrendEngineForTicker{
     return false
   }
 
-  
+  func setPlotView(){
+    self.plotView = TrendPlot(frame: CGRectZero, data: self.tweetBuckets!)
+  }
   
   
   
