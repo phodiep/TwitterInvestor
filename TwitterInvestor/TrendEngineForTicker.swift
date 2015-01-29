@@ -47,6 +47,7 @@ class TrendEngineForTicker{
   //Array of all trends that have occured for this stock.
   var tweetText: String?
   var arrayOfTrends = [Trend]()
+    var tweetBuckets : [AnyObject]?
   
   
   //MARK: Initalizers
@@ -171,85 +172,10 @@ class TrendEngineForTicker{
         }
       }
     }
-    putTweetsInBucket(investmentRelatedTweets)
+    self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
     return investmentRelatedTweets
   }
 
-    func putTweetsInBucket_rewrite(theJSON: [[String:AnyObject]])->[AnyObject]{
-        //    var theMovingDate = NSDate(timeInterval: 3600, sinceDate: self.dateOfOldestTweet as NSDate!)
-//        var theMovingDate = NSDate(timeInterval: 3600, sinceDate: NSDate(timeIntervalSinceNow: -432000))
-        
-        let format = NSDateFormatter()
-        format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
-
-        let startDate = NSDate(timeIntervalSinceNow: (-432000)) //5days * 24hours * 60min * 60sec
-        
-        let numBuckets = 5 * 24 //5 days * 24 hours each
-        
-        var masterBucket = [[String:AnyObject]]()
-        
-        var movingDate = startDate
-        for i in 1...numBuckets {
-            masterBucket.append(["time" : movingDate,"count" : 0])
-            movingDate = NSDate(timeInterval: 3600, sinceDate: movingDate)
-            }
-
-        var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM-dd HH:mm"
-
-        for tweet in theJSON {
-            var dateOfTweet = format.dateFromString(tweet["created_at"] as String!)
-            println(dateOfTweet)
-            let timeDifference = Int(-startDate.timeIntervalSinceDate(dateOfTweet!) / 60 / 60) //returns hours since
-            println(timeDifference)
-
-            var bucket: (AnyObject) = masterBucket[timeDifference]
-            var bucketTime = bucket["time"]
-            var bucketCount = bucket["count"] as Int
-            bucketCount += 1
-            var returnBucket = ["time" : bucketTime, "count" : bucketCount]
-            
-//            masterBucket[timeDifference] = ["time" : bucketTime, "count" : bucketCount]
-//            
-//            
-//            
-//            println(masterBucket[timeDifference][1])
-//            masterBucket[timeDifference]![1] = 1
-//            println(masterBucket[timeDifference][1])
-        }
-        
-//        for var i = theJSON.count; i > 0; --i{
-//            let oneTweet = theJSON[i-1]
-//            var dateFromOneTweet = format.dateFromString(oneTweet["created_at"] as String!)
-//            
-//            if compareDates(dateFromOneTweet!, laterDate: theMovingDate){
-//                bucket.append(oneTweet)
-//            }else{
-//                masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
-//                
-//                
-//                bucket = [[String:AnyObject]]()
-//                theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
-//                while !(compareDates(dateFromOneTweet!, laterDate: theMovingDate)){
-//                    masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
-//                    bucket = [[String:AnyObject]]()
-//                    theMovingDate = NSDate(timeInterval: 3600, sinceDate: theMovingDate)
-//                }
-//                bucket.append(oneTweet)
-//            }
-//        }
-//        masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
-//        
-//        for item in masterBucket {
-//            let iDate = item["date"]
-//            let iCount = item["count"]
-//            println("\(iDate!) - \(iCount!)")
-//        }
-//        println(NSDate())
-        
-        return masterBucket
-        
-    }
     
     func putTweetsInBucket(theJSON: [[String:AnyObject]])->[AnyObject]{
         //    var theMovingDate = NSDate(timeInterval: 3600, sinceDate: self.dateOfOldestTweet as NSDate!)
@@ -283,14 +209,7 @@ class TrendEngineForTicker{
             }
         }
         masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
-        
-//        for item in masterBucket {
-//            let iDate = item["date"]
-//            let iCount = item["count"]
-//            println("\(iDate!) - \(iCount!)")
-//        }
-//        println(NSDate())
-        
+                
         return masterBucket
         
     }
