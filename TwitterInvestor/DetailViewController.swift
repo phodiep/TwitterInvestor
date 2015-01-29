@@ -276,7 +276,7 @@ class DetailViewController: UIViewController {
         trendLabel.text = "TwitterTrends"
         trendLabel.textColor = UIColor.blackColor()
         
-        plotImage = TrendPlot(frame: CGRectZero, data: self.trendEngine.tweetBuckets!)
+        plotImage = self.trendEngine.plotView!//TrendPlot(frame: CGRectZero, data: self.trendEngine.tweetBuckets!)
         let average = NSString(format: "%.02f", Float(60/self.trendEngine.tweetsPerHour!))
         averageLabel.text = "Average: \(average) tweets/hr"
         
