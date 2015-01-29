@@ -51,39 +51,31 @@ class TrendEngineForTicker{
   
   
   //MARK: Initalizers
-  init(tickerSymbol: String, firstJSONBlob: [[String:AnyObject]]){
+  init(tickerSymbol: String, JSONBlob: [[String:AnyObject]]){
+    //Set the ticker property to the ticker symbol that is passed in
     self.ticker = tickerSymbol
-    if firstJSONBlob.count == 0{
+    //If no tweets were found we don't neew to do anything
+    if JSONBlob.count == 0{
       tweetsPerHour = 0
     }else {
-      for item in firstJSONBlob{
-        self.arrayOfAllJSON.append(item)
-      }
-      let newestTweet = firstJSONBlob.first as [String:AnyObject]!
-      self.idOfNewestTweet = newestTweet["id_str"] as? String
+      //If we find tweets then we strip them all and append the remaining to the array of All JSON
+      self.arrayOfAllJSON = self.stripTweets(JSONBlob)
+      //Set the formatting options for the Oldest and newest tweets
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+      //Set the Id and Date of newest tweet.
+      let newestTweet = arrayOfAllJSON.first as [String:AnyObject]!
+      self.idOfNewestTweet = newestTweet["id_str"] as? String
       self.dateOfNewestTweet = format.dateFromString(newestTweet["created_at"] as String!)
-      let oldestTweet = firstJSONBlob.last as [String:AnyObject]!
+      //set the ID and Date of the oldest Tweets
+      let oldestTweet = arrayOfAllJSON.last as [String:AnyObject]!
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
-
-    }
-  }
-  
-  
-  func buildData(){
-    getMoreTweets(self.ticker!, oldestTweetID: self.idOfOldestTweet!, completion: { (theBool) -> Void in
-      if theBool == true{
-        self.arrayOfAllJSON = self.stripTweets(self.arrayOfAllJSON)
-      }
-      println(self.arrayOfAllJSON.count)
+      //Set tweets per hour
       self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
-      println("averageTime Between Relevant Tweets is: \(self.tweetsPerHour!) minutes.")
-    })
-    self.needsBaseline = false
-    //newNotification("Message")
-    
+      //Set the needs baseline property to nil.
+      self.needsBaseline = false
+    }
   }
   
   

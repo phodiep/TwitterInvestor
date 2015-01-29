@@ -14,6 +14,14 @@ class NetworkController {
 
     let DBUG = false
   
+  
+  
+    var arrayOfAllTweetJSON = [[String:AnyObject]]()
+    //Variable for the ID of the oldest Tweet
+    var idOfOldestTweet: String?
+    //Date Stamp of oldest tweet
+    var dateOfOldestTweet: NSDate?
+
     //URLSession Variable
     var urlSession: NSURLSession
     var twitterAccount: ACAccount?
@@ -261,7 +269,6 @@ class NetworkController {
         if accountsArray.isEmpty == false{
           //We just want the first account that is stored in the array of account (there might only be one)
           self.twitterAccount = accountsArray[0] as? ACAccount
-          var trendEngineToReturn: TrendEngineForTicker?
           //return twitterAccount
          // if trendEngineToReturn == nil{
           let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&count=100")//q=%SIRI")
@@ -281,8 +288,30 @@ class NetworkController {
               //println(jsonData)
               if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
                 if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
-                  //trendEngine = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
-                  trendEngineToReturn = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
+                  //let arrayOfResults = self.stripTweets(results)
+                  if arrayOfResults.count == 0{
+                    
+                    
+                  }else{
+//                    for item in arrayOfResults{
+//                      self.arrayOfAllTweetJSON.append(item)
+//                    }
+                    //Set the formatting options for the Oldest and newest tweets
+                    let format = NSDateFormatter()
+                    format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+                    //set the ID and Date of the oldest Tweets
+                    let oldestTweet = arrayOfResults.last as [String:AnyObject]!
+                    self.idOfOldestTweet = oldestTweet["id_str"] as? String
+                    self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+                    //trendEngine = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
+                    //trendEngineToReturn = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
+                    self.getMoreTweets(tickerSymbol, oldestTweetID: self.idOfOldestTweet!, completion: { (returnedBool) -> Void in
+                      if returnedBool == true {
+                        println(self.arrayOfAllTweetJSON.count)
+                        trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, JSONBlob: self.arrayOfAllTweetJSON), nil)
+                      }
+                    })
+                  }
                 }
               }
               //If response is bad
@@ -313,7 +342,66 @@ class NetworkController {
     //end function
   }
 
+  func getMoreTweets(theTicker: String,oldestTweetID: String, completion: (Bool)->Void){
+    
+    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -430000)
+    
+    if self.dateOfOldestTweet?.compare(fiveDaysAgo) == NSComparisonResult.OrderedDescending{
+      NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) ->   Void in
+        //let JSON = self.stripTweets(returnedJSON!)
+        for item in returnedJSON!{
+          self.arrayOfAllTweetJSON.append(item)
+        }
+        let oldestTweet = self.arrayOfAllTweetJSON.last as [String:AnyObject]!
+        self.idOfOldestTweet = oldestTweet["id_str"] as? String
+        let format = NSDateFormatter()
+        format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+        //completion(format.dateFromString(oldestTweet["created_at"] as String!)!)
+        self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
+        self.getMoreTweets(theTicker, oldestTweetID: self.idOfOldestTweet!, completion: { (theBool) -> Void in
+          
+          completion(theBool)
+          
+        })
+      }
+    }else{
+      completion(true)
+      return
+    }
+  }
   
+  private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
+    var JSON = JSONBlob
+    //make sure all lower case
+    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
+    var investmentRelatedTweets = [[String:AnyObject]]()
+    
+    for var i = 0; i < JSON.count; ++i {
+      let currentTweet = JSON[i]
+      let text = currentTweet["text"] as String
+      let entities = currentTweet["entities"] as [String:AnyObject]
+      let hashTags = entities["hashtags"] as [AnyObject]
+      var arrayOfHashTags = [String]()
+      for o in hashTags{
+        arrayOfHashTags.append(o["text"] as String!)
+      }
+      //revisit this logic
+      for k in arrayOfKeyWords{
+        if text.lowercaseString.rangeOfString(k) != nil {
+          for HT in arrayOfHashTags{
+            if HT.lowercaseString.rangeOfString(HT) != nil{
+              investmentRelatedTweets.append(JSON[i])
+            }
+          }
+        }
+      }
+    }
+    //self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
+    return investmentRelatedTweets
+  }
+
+
   
     
     
