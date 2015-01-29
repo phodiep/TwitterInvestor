@@ -204,6 +204,9 @@ class NetworkController {
   
   
   func overloadTwitter(tickerSymbol: String, trailingClosure: (TrendEngineForTicker?,NSError?)->Void){
+    arrayOfAllTweetJSON = [[String:AnyObject]]()
+    self.idOfOldestTweet = nil
+    self.dateOfOldestTweet = nil
     let myAccountStore = ACAccountStore()
     //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
     let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
