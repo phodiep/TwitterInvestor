@@ -324,10 +324,14 @@ class DetailViewController: UIViewController {
     
     //MARK: Button Actions
     func newsButtonPressed(sender: UIButton) {
-        let webVC = WebViewController()
-        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
-        self.navigationController?.pushViewController(webVC, animated: true)
-        
+//        let webVC = WebViewController()
+//        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
+//        self.navigationController?.pushViewController(webVC, animated: true)
+
+        let tweetVC = TweetsViewController()
+        tweetVC.tweets = self.trendEngine.arrayOfAllJSON
+        self.navigationController?.pushViewController(tweetVC, animated: true)
+
     }
 
 }
