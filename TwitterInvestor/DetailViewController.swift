@@ -48,11 +48,12 @@ class DetailViewController: UIViewController {
         
         self.orientation = UIDevice.currentDevice().orientation
 
-        self.title = self.stock.ticker
+        self.title = self.stock.getStringValue( "Symbol" ) // ticker
         
         self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
         self.navigationItem.rightBarButtonItem = self.newsButton
-        
+
+        // cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
     }
 
     //MARK: Autolayout Views
@@ -124,30 +125,31 @@ class DetailViewController: UIViewController {
         NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
         self.operationQueueCheckTrend = NSOperationQueue()
         
-        companyLabel.text = "company"
-        priceLabel.text = "\(self.stock.price!)"
-        peLabel.text = "p/e: \(self.stock.pe!)"
-        
-        if self.stock.change == 0.0 {
-            changeLabel.textColor = UIColor.blackColor()
-            changeLabel.text = "\(self.stock.change!)"
-        }
-        if self.stock.change > 0.0 {
-            let greenColor = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
-            changeLabel.textColor = greenColor
-            changeLabel.text = "+\(self.stock.change!)"
-        }
-        if self.stock.change < 0.0 {
-            changeLabel.textColor = UIColor.redColor()
-            changeLabel.text = "\(self.stock.change!)"
-        }
+        companyLabel.text = self.stock.getStringValue( "Name" ) // Company Name
+        priceLabel.text   = self.stock.getStringValue( "AskRealtime" )  //")price!)"
+        peLabel.text      = "P/E: " + self.stock.getStringValue( "PERatio" )
 
-        daysRangeLabel.text = "days range"
-        fiftyDayAverageLabel.text = "fifty"
-        marketCapLabel.text = "market cap"
-        volAverageLabel.text = "vol average"
-        epsLabel.text = "eps"
-        sharesLabel.text = "shares"
+        let floatChange   = self.stock.convertToFloat( "Change" )
+        let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
+        
+//        if self.stock.change == 0.0 {
+        if        floatChange == 0.0 {
+            changeLabel.textColor = UIColor.blackColor()
+        } else if floatChange  > 0.0 {
+            changeLabel.textColor = greenColor
+        } else if floatChange  < 0.0 {
+            changeLabel.textColor = UIColor.redColor()
+        } else {
+            changeLabel.textColor = UIColor.blackColor()
+        }
+        changeLabel.text = "Change: " + self.stock.getStringValue( "Change" ) // "\(self.stock.change!)"
+
+        daysRangeLabel.text = "Range: " + self.stock.getStringValue( "DaysRange" )
+        fiftyDayAverageLabel.text = "50 Day Avg: " + self.stock.getStringValue( "FiftydayMovingAverage" )
+        marketCapLabel.text = "Market Cap: " + self.stock.getStringValue( "MarketCapitalization" )
+        volAverageLabel.text = "Vol Average: " + self.stock.getStringValue( "AverageDailyVolume" )
+        epsLabel.text = "EPS: " + self.stock.getStringValue( "EPSEstimateCurrentYear" )
+//        sharesLabel.text = "Shares: " + self.stock.getStringValue( "SharesOwned" )
         
         
         companyLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
