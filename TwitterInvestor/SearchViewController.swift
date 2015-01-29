@@ -109,6 +109,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println(self.watchList.count)
+        println(self.engines.count)
+        
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
         detailVC.trendEngine = self.engines[indexPath.row]
@@ -122,7 +125,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let ticker = input.uppercaseString
 
         let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.frame = UIScreen.mainScreen().bounds
+        activityIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width * 2, UIScreen.mainScreen().bounds.height * 2)
         activityIndicator.color = UIColor.blackColor()
         activityIndicator.backgroundColor = UIColor.lightGrayColor()
         activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
