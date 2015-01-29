@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D1472131A7A791D00D828D6 /* TrendPlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1472121A7A791D00D828D6 /* TrendPlot.swift */; };
 		1DB33AE91A76D88F008B4225 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB33AE81A76D88F008B4225 /* Notifications.swift */; };
 		1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297021A73195C00B5ADED /* AppDelegate.swift */; };
 		1DF297061A73195C00B5ADED /* TwitterInvestor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1DF297041A73195C00B5ADED /* TwitterInvestor.xcdatamodeld */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D1472121A7A791D00D828D6 /* TrendPlot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendPlot.swift; sourceTree = "<group>"; };
 		1DB33AE81A76D88F008B4225 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		1DF296FD1A73195B00B5ADED /* TwitterInvestor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterInvestor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF297011A73195C00B5ADED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				1DB33AE81A76D88F008B4225 /* Notifications.swift */,
 				1DF297401A73289F00B5ADED /* MenuCell.swift */,
 				1DF297461A73723F00B5ADED /* SearchCell.swift */,
+				1D1472121A7A791D00D828D6 /* TrendPlot.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				1DF297471A73723F00B5ADED /* SearchCell.swift in Sources */,
 				1DF297431A73373C00B5ADED /* SearchViewController.swift in Sources */,
 				1DF297351A731B1500B5ADED /* HelpViewController.swift in Sources */,
+				1D1472131A7A791D00D828D6 /* TrendPlot.swift in Sources */,
 				1DF297411A73289F00B5ADED /* MenuCell.swift in Sources */,
 				1DF297031A73195C00B5ADED /* AppDelegate.swift in Sources */,
 				1DF297371A731B8300B5ADED /* Stock.swift in Sources */,

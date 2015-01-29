@@ -2,7 +2,7 @@
 //  Stock.swift
 //  TwitterInvestor
 //
-//  Created by Pho Diep on 1/23/15.
+//  Created by Denise Koch on 1/23/15.
 //  Copyright (c) 2015 Pho Diep. All rights reserved.
 //
 
@@ -49,14 +49,14 @@ class Stock {
         // ---------------------------------------------------------------------
 
         for key in quote.keys {
-            println("Key: \(key)")
+//            println("Key: \(key)")
         }
 
         for (key, value) in quote {
-            println("Key: \(key)")
+//            println("Key: \(key)")
         }
 
-        if DBUG { println( quote ) }
+//        if DBUG { println( quote ) }
 
 //        printStockDictionary( jsonDictionary )
     }
