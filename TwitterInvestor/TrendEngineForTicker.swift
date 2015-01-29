@@ -47,7 +47,7 @@ class TrendEngineForTicker{
   //Array of all trends that have occured for this stock.
   var tweetText: String?
   var arrayOfTrends = [Trend]()
-    var tweetBuckets : [AnyObject]?
+  var tweetBuckets : [AnyObject]?
   
   
   //MARK: Initalizers

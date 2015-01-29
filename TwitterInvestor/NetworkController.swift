@@ -287,8 +287,8 @@ class NetworkController {
               //create an array of json data that is typed as an array of [AnyObject]
               //println(jsonData)
               if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
-                if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
-                  //let arrayOfResults = self.stripTweets(results)
+                if let results = jsonDictionary["statuses"] as? [[String:AnyObject]]{
+                  let arrayOfResults = self.stripTweets(results)
                   if arrayOfResults.count == 0{
                     
                     
