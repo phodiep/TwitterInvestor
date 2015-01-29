@@ -39,7 +39,7 @@ class DetailViewController: UIViewController {
         self.view = self.rootView
 
         self.layoutRootView()
-        self.real_layoutStockView()
+        self.layoutStockView()
         self.layoutTwitterView()
     }
     
@@ -48,11 +48,12 @@ class DetailViewController: UIViewController {
         
         self.orientation = UIDevice.currentDevice().orientation
 
-        self.title = self.stock.ticker
+        self.title = self.stock.getStringValue( "Symbol" ) // ticker
         
         self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
         self.navigationItem.rightBarButtonItem = self.newsButton
-        
+
+        // cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
     }
 
     //MARK: Autolayout Views
@@ -77,24 +78,8 @@ class DetailViewController: UIViewController {
             options: nil, metrics: nil, views: views))
         
     }
-
+    
     func layoutStockView() {
-        self.stockView.backgroundColor = UIColor.whiteColor()
-        
-//        let plotImage = StockPlot(frame: CGRectMake(0, 0, 300, 250),
-//            data: [
-//                ["label" : "A", "value": 10 as NSNumber],
-//                ["label" : "B", "value": 140 as NSNumber],
-//                ["label" : "C", "value": 50 as NSNumber],
-//                ["label" : "D", "value": 250 as NSNumber],
-//                ["label" : "E", "value": 30 as NSNumber]
-//            ] as NSArray)
-        
-//        self.stockView.addSubview(plotImage)
-    }
-    
-    
-    func real_layoutStockView() {
         self.stockView.backgroundColor = UIColor.whiteColor()
         
         let companyLabel = UILabel()
@@ -124,30 +109,31 @@ class DetailViewController: UIViewController {
         NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
         self.operationQueueCheckTrend = NSOperationQueue()
         
-        companyLabel.text = "company"
-        priceLabel.text = "\(self.stock.price!)"
-        peLabel.text = "p/e: \(self.stock.pe!)"
-        
-        if self.stock.change == 0.0 {
-            changeLabel.textColor = UIColor.blackColor()
-            changeLabel.text = "\(self.stock.change!)"
-        }
-        if self.stock.change > 0.0 {
-            let greenColor = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
-            changeLabel.textColor = greenColor
-            changeLabel.text = "+\(self.stock.change!)"
-        }
-        if self.stock.change < 0.0 {
-            changeLabel.textColor = UIColor.redColor()
-            changeLabel.text = "\(self.stock.change!)"
-        }
+        companyLabel.text = self.stock.getStringValue( "Name" ) // Company Name
+        priceLabel.text   = self.stock.getStringValue( "AskRealtime" )  //")price!)"
+        peLabel.text      = "P/E: " + self.stock.getStringValue( "PERatio" )
 
-        daysRangeLabel.text = "days range"
-        fiftyDayAverageLabel.text = "fifty"
-        marketCapLabel.text = "market cap"
-        volAverageLabel.text = "vol average"
-        epsLabel.text = "eps"
-        sharesLabel.text = "shares"
+        let floatChange   = self.stock.convertToFloat( "Change" )
+        let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
+        
+//        if self.stock.change == 0.0 {
+        if        floatChange == 0.0 {
+            changeLabel.textColor = UIColor.blackColor()
+        } else if floatChange  > 0.0 {
+            changeLabel.textColor = greenColor
+        } else if floatChange  < 0.0 {
+            changeLabel.textColor = UIColor.redColor()
+        } else {
+            changeLabel.textColor = UIColor.blackColor()
+        }
+        changeLabel.text = "Change: " + self.stock.getStringValue( "Change" ) // "\(self.stock.change!)"
+
+        daysRangeLabel.text = "Range: " + self.stock.getStringValue( "DaysRange" )
+        fiftyDayAverageLabel.text = "50 Day Avg: " + self.stock.getStringValue( "FiftydayMovingAverage" )
+        marketCapLabel.text = "Market Cap: " + self.stock.getStringValue( "MarketCapitalization" )
+        volAverageLabel.text = "Vol Average: " + self.stock.getStringValue( "AverageDailyVolume" )
+        epsLabel.text = "EPS: " + self.stock.getStringValue( "EPSEstimateCurrentYear" )
+//        sharesLabel.text = "Shares: " + self.stock.getStringValue( "SharesOwned" )
         
         
         companyLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -225,6 +211,7 @@ class DetailViewController: UIViewController {
         isTrendingLabel.font = UIFont(name: "HelveticaNeue", size: 16)
 
         trendLabel.text = "TwitterTrends"
+        trendLabel.textColor = UIColor.blueColor()
         
         plotImage = TrendPlot(frame: CGRectZero, data: self.trendEngine.tweetBuckets!)
         let average = NSString(format: "%.02f", Float(60/self.trendEngine.tweetsPerHour!))
@@ -257,10 +244,13 @@ class DetailViewController: UIViewController {
             "isTrendingLabel" : isTrendingLabel]
 
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-8-[trendLabel]-8-|",
+            options: nil, metrics: nil, views: views))
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-8-[plotImage]-8-|",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[plotImage]",
+            "V:|-16-[trendLabel]-[plotImage]",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:[plotImage]-8-[averageLabel(30)]-[latestTweet(30)]-[isTrendingLabel(30)]-16-|",
@@ -272,7 +262,7 @@ class DetailViewController: UIViewController {
     //MARK: Button Actions
     func newsButtonPressed(sender: UIButton) {
         let webVC = WebViewController()
-        webVC.ticker = self.stock.ticker
+        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
         self.navigationController?.pushViewController(webVC, animated: true)
         
     }

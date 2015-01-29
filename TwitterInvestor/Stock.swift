@@ -93,7 +93,9 @@ class Stock {
 
     func getStringValue( key: NSString ) -> NSString {
        // println( "getStringValue() key[\(key)]" )
-        let string : NSString       = quoteData["\(key)"] as String
+        var searchKey = key
+        if searchKey == "Company" { searchKey = "Name" }
+        let string : NSString       = quoteData["\(searchKey)"] as String
         return string
     }
 
