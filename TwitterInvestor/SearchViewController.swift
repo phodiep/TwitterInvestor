@@ -73,6 +73,23 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 
         return cell
     }
+
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Symbol      Price   Change"
+    }
+    
+
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let cell = SearchCell()
+//        
+//        cell.tickerLabel.text = "Symbol"
+//        cell.priceLabel.text = "Price"
+//        cell.changeLabel.text = "Change"
+//        cell.companyNameLabel.text = "Name"
+//        
+//        return cell
+//    }
+    
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45
@@ -105,7 +122,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let ticker = input.uppercaseString
 
         let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.frame = self.tableView.bounds
+        activityIndicator.frame = UIScreen.mainScreen().bounds
         activityIndicator.color = UIColor.blackColor()
         activityIndicator.backgroundColor = UIColor.lightGrayColor()
         activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
@@ -121,8 +138,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
             
             NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
                 if returnedTrendEngine != nil{
-                  returnedTrendEngine!.buildData()
-                  self.engines.append(returnedTrendEngine!)
+                  //returnedTrendEngine!.buildData()
+                  self.engines.insert(returnedTrendEngine!, atIndex: 0)
                     activityIndicator.stopAnimating()
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
