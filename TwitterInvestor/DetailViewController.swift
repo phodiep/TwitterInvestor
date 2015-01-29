@@ -39,7 +39,7 @@ class DetailViewController: UIViewController {
         self.view = self.rootView
 
         self.layoutRootView()
-        self.real_layoutStockView()
+        self.layoutStockView()
         self.layoutTwitterView()
     }
     
@@ -77,24 +77,8 @@ class DetailViewController: UIViewController {
             options: nil, metrics: nil, views: views))
         
     }
-
+    
     func layoutStockView() {
-        self.stockView.backgroundColor = UIColor.whiteColor()
-        
-//        let plotImage = StockPlot(frame: CGRectMake(0, 0, 300, 250),
-//            data: [
-//                ["label" : "A", "value": 10 as NSNumber],
-//                ["label" : "B", "value": 140 as NSNumber],
-//                ["label" : "C", "value": 50 as NSNumber],
-//                ["label" : "D", "value": 250 as NSNumber],
-//                ["label" : "E", "value": 30 as NSNumber]
-//            ] as NSArray)
-        
-//        self.stockView.addSubview(plotImage)
-    }
-    
-    
-    func real_layoutStockView() {
         self.stockView.backgroundColor = UIColor.whiteColor()
         
         let companyLabel = UILabel()
@@ -225,6 +209,7 @@ class DetailViewController: UIViewController {
         isTrendingLabel.font = UIFont(name: "HelveticaNeue", size: 16)
 
         trendLabel.text = "TwitterTrends"
+        trendLabel.textColor = UIColor.blueColor()
         
         plotImage = TrendPlot(frame: CGRectZero, data: self.trendEngine.tweetBuckets!)
         let average = NSString(format: "%.02f", Float(60/self.trendEngine.tweetsPerHour!))
@@ -257,10 +242,13 @@ class DetailViewController: UIViewController {
             "isTrendingLabel" : isTrendingLabel]
 
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-8-[trendLabel]-8-|",
+            options: nil, metrics: nil, views: views))
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-8-[plotImage]-8-|",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[plotImage]",
+            "V:|-16-[trendLabel]-[plotImage]",
             options: nil, metrics: nil, views: views))
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:[plotImage]-8-[averageLabel(30)]-[latestTweet(30)]-[isTrendingLabel(30)]-16-|",
@@ -272,7 +260,7 @@ class DetailViewController: UIViewController {
     //MARK: Button Actions
     func newsButtonPressed(sender: UIButton) {
         let webVC = WebViewController()
-        webVC.ticker = self.stock.ticker
+        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
         self.navigationController?.pushViewController(webVC, animated: true)
         
     }

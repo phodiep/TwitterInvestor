@@ -68,6 +68,19 @@ class TrendPlot: UIView {
             }
         }
         
+        // Label y-axis
+        let yAxisLabel = UILabel()
+        yAxisLabel.text = "Tweets / Hour"
+        yAxisLabel.font = UIFont.systemFontOfSize(10)
+        yAxisLabel.textColor = UIColor.blueColor()
+
+//        yAxisLabel.backgroundColor = UIColor.redColor()
+        yAxisLabel.textAlignment = NSTextAlignment.Center
+        yAxisLabel.layer.anchorPoint = CGPoint(x: 0, y: 0)
+        yAxisLabel.transform = CGAffineTransformMakeRotation(4.7124)
+        yAxisLabel.frame = CGRectMake(0, graphHeight, padding/2, axisHeight)
+        addSubview(yAxisLabel)
+        
         // Draw graph x/y axis
         let axisPath = CGPathCreateMutable()
         CGPathMoveToPoint(axisPath, nil, padding, 10)
@@ -154,7 +167,7 @@ class TrendPlot: UIView {
         label.text = title
         label.font = labelFont
         label.textColor = labelColor
-        label.backgroundColor = backgroundColor
+        label.backgroundColor = UIColor.clearColor()  //backgroundColor
         label.textAlignment = NSTextAlignment.Right
         
         return label

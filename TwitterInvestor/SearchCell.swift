@@ -23,6 +23,11 @@ class SearchCell: UITableViewCell {
         companyNameLabel.font = UIFont(name: "HelveticaNeue", size: 16)
         priceLabel.font = UIFont(name: "HelveticaNeue", size: 16)
         changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        
+        tickerLabel.textAlignment = NSTextAlignment.Left
+        companyNameLabel.textAlignment = NSTextAlignment.Right
+        priceLabel.textAlignment = NSTextAlignment.Right
+        changeLabel.textAlignment = NSTextAlignment.Left
 
         
         self.tickerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -41,16 +46,16 @@ class SearchCell: UITableViewCell {
             "priceLabel" : self.priceLabel]
 
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[tickerLabel(50)]-8-[priceLabel(50)]-8-[changeLabel(50)]-16-[companyNameLabel]-|",
+            "H:|-18-[tickerLabel(60)]-8-[priceLabel(60)]-18-[changeLabel(60)]",
             options: nil, metrics: nil, views: views))
 //        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
 //            "H:|-115-[priceLabel]-16-[changeLabel]",
 //            options: nil, metrics: nil, views: views))
 
         
-//        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "H:[companyNameLabel]-16-|",
-//            options: nil, metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[companyNameLabel]-16-|",
+            options: nil, metrics: nil, views: views))
 
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|[tickerLabel]|",
