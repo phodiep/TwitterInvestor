@@ -148,8 +148,30 @@ class TrendEngineForTicker{
   //Funciton to strip tweets that have nothing to do with investing.
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
     var JSON = JSONBlob
-    //make sure all lower case
-    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
+    // Make sure all lower case
+    // 'indu' = Dow Jones Global Indexes
+    // 'spx'  = S&P 500 Index
+    // 'ibov' = Sao Paulo Se Bovespa Index
+    // 'osp60' = S&P/TSX 60 Index
+    // 'ipsa'  = Chilean Se IPSA Index
+    // 'mxx'   = MXSE IPC Index, Mexico Stock Exchange
+    //
+    let arrayOfKeyWords = [ "analytics", "after-hours", "afterhours",
+                            "buy",
+                            "chart",
+                            "daytrader", "dow",
+                            "finance",
+                            "investing", "investor", "investment", "indu", "ibov", "ipsa", "ira",
+                            "gainer",
+                            "loser", "long", "longterm",
+                            "market", "money", "mover", "mxx",
+                            "nasdaq",
+                            "osp60",
+                            "premarket",
+                            "rating", "longterm", "roth",
+                            "stock", "soared", "short", "sell", "share", "spx",
+                            "trade", "trading" ]
+
     var investmentRelatedTweets = [[String:AnyObject]]()
     
     for var i = 0; i < JSON.count; ++i {

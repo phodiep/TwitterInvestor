@@ -48,15 +48,13 @@ class Stock {
 
         // ---------------------------------------------------------------------
 
-        for key in quote.keys {
-//            println("Key: \(key)")
+        if DBUG {
+            println( "symbol[\(symbol)] symbol[\(ticker)]" )
+            for ( key, value ) in quote {
+                println( "Key: \(key) Value: \(value) " )
+            }
+            println( quote )
         }
-
-        for (key, value) in quote {
-//            println("Key: \(key)")
-        }
-
-//        if DBUG { println( quote ) }
 
 //        printStockDictionary( jsonDictionary )
     }
@@ -91,12 +89,17 @@ class Stock {
 
     }
 
-    func getStringValue( key: NSString ) -> NSString {
-       // println( "getStringValue() key[\(key)]" )
+    func getStringValue( key: NSString ) -> String? {
+        println( "getStringValue() key[\(key)]" )
         var searchKey = key
-        if searchKey == "Company" { searchKey = "Name" }
-        let string : NSString       = quoteData["\(searchKey)"] as String
-        return string
+        if  searchKey == "Company" { searchKey = "Name" }
+        if let theStringValue  = quoteData["\(searchKey)"] as? String {
+            println( "good: searchKey - \(key)" )
+            return theStringValue
+        } else {
+            println( "bad: searchKey - \(key)" )
+            return "-"
+        }
     }
 
     func convertToFloat( key: NSString ) -> Float {
@@ -128,170 +131,5 @@ class Stock {
 }
 
 /*
-Key: EPSEstimateNextQuarter
-Key: HoldingsGain
-Key: DaysRangeRealtime
-Key: PercentChangeFromTwoHundreddayMovingAverage
-Key: Change_PercentChange
-Key: Commission
-Key: symbol
-Key: PEGRatio
-Key: PercentChangeFromYearLow
-Key: ExDividendDate
-Key: HoldingsGainRealtime
-Key: PriceEPSEstimateNextYear
-Key: ErrorIndicationreturnedforsymbolchangedinvalid
-Key: ShortRatio
-Key: HoldingsValueRealtime
-Key: Symbol
-Key: DaysValueChangeRealtime
-Key: BookValue
-Key: EBITDA
-Key: Open
-Key: ChangeinPercent
-Key: ChangeFromTwoHundreddayMovingAverage
-Key: OneyrTargetPrice
-Key: StockExchange
-Key: HoldingsGainPercentRealtime
-Key: ChangeFromFiftydayMovingAverage
-Key: AnnualizedGain
-Key: LastTradeTime
-Key: Name
-Key: DividendYield
-Key: PriceEPSEstimateCurrentYear
-Key: ChangeRealtime
-Key: LastTradeRealtimeWithTime
-Key: ChangeFromYearLow
-Key: HoldingsGainPercent
-Key: HighLimit
-Key: PercentChangeFromFiftydayMovingAverage
-Key: PercebtChangeFromYearHigh
-Key: LastTradePriceOnly
-Key: TradeDate
-Key: OrderBookRealtime
-Key: MoreInfo
-Key: LowLimit
-Key: EPSEstimateNextYear
-Key: PriceSales
-Key: BidRealtime
-Key: Change
-Key: AverageDailyVolume
-Key: FiftydayMovingAverage
-Key: YearHigh
-Key: MarketCapRealtime
-Key: DaysHigh
-Key: PERatio
-Key: DividendShare
-Key: PreviousClose
-Key: EPSEstimateCurrentYear
-Key: ChangeFromYearHigh
-Key: PERatioRealtime
-Key: PriceBook
-Key: LastTradeWithTime
-Key: MarketCapitalization
-Key: Currency
-Key: Ask
-Key: HoldingsValue
-Key: TickerTrend
-Key: Notes
-Key: AfterHoursChangeRealtime
-Key: Volume
-Key: DaysValueChange
-Key: TwoHundreddayMovingAverage
-Key: YearLow
-Key: LastTradeDate
-Key: DaysLow
-Key: PercentChange
-Key: Bid
-Key: EarningsShare
-Key: ChangePercentRealtime
-Key: DaysRange
-Key: SharesOwned
-Key: YearRange
-Key: PricePaid
-Key: AskRealtime
-Key: DividendPayDate
-Key: EPSEstimateNextQuarter
-Key: HoldingsGain
-Key: DaysRangeRealtime
-Key: PercentChangeFromTwoHundreddayMovingAverage
-Key: Change_PercentChange
-Key: Commission
-Key: symbol
-Key: PEGRatio
-Key: PercentChangeFromYearLow
-Key: ExDividendDate
-Key: HoldingsGainRealtime
-Key: PriceEPSEstimateNextYear
-Key: ErrorIndicationreturnedforsymbolchangedinvalid
-Key: ShortRatio
-Key: HoldingsValueRealtime
-Key: Symbol
-Key: DaysValueChangeRealtime
-Key: BookValue
-Key: EBITDA
-Key: Open
-Key: ChangeinPercent
-Key: ChangeFromTwoHundreddayMovingAverage
-Key: OneyrTargetPrice
-Key: StockExchange
-Key: HoldingsGainPercentRealtime
-Key: ChangeFromFiftydayMovingAverage
-Key: AnnualizedGain
-Key: LastTradeTime
-Key: Name
-Key: DividendYield
-Key: PriceEPSEstimateCurrentYear
-Key: ChangeRealtime
-Key: LastTradeRealtimeWithTime
-Key: ChangeFromYearLow
-Key: HoldingsGainPercent
-Key: HighLimit
-Key: PercentChangeFromFiftydayMovingAverage
-Key: PercebtChangeFromYearHigh
-Key: LastTradePriceOnly
-Key: TradeDate
-Key: OrderBookRealtime
-Key: MoreInfo
-Key: LowLimit
-Key: EPSEstimateNextYear
-Key: PriceSales
-Key: BidRealtime
-Key: Change
-Key: AverageDailyVolume
-Key: FiftydayMovingAverage
-Key: YearHigh
-Key: MarketCapRealtime
-Key: DaysHigh
-Key: PERatio
-Key: DividendShare
-Key: PreviousClose
-Key: EPSEstimateCurrentYear
-Key: ChangeFromYearHigh
-Key: PERatioRealtime
-Key: PriceBook
-Key: LastTradeWithTime
-Key: MarketCapitalization
-Key: Currency
-Key: Ask
-Key: HoldingsValue
-Key: TickerTrend
-Key: Notes
-Key: AfterHoursChangeRealtime
-Key: Volume
-Key: DaysValueChange
-Key: TwoHundreddayMovingAverage
-Key: YearLow
-Key: LastTradeDate
-Key: DaysLow
-Key: PercentChange
-Key: Bid
-Key: EarningsShare
-Key: ChangePercentRealtime
-Key: DaysRange
-Key: SharesOwned
-Key: YearRange
-Key: PricePaid
-Key: AskRealtime
-Key: DividendPayDate
+
 ------------------------- */

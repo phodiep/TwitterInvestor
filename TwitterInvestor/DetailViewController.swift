@@ -127,7 +127,7 @@ class DetailViewController: UIViewController {
         
         companyLabel.text = self.stock.getStringValue( "Name" ) // Company Name
         priceLabel.text   = self.stock.getStringValue( "AskRealtime" )  //")price!)"
-        peLabel.text      = "P/E: " + self.stock.getStringValue( "PERatio" )
+        peLabel.text      = "P/E: " + self.stock.getStringValue( "PERatio" )!
 
         let floatChange   = self.stock.convertToFloat( "Change" )
         let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
@@ -142,13 +142,13 @@ class DetailViewController: UIViewController {
         } else {
             changeLabel.textColor = UIColor.blackColor()
         }
-        changeLabel.text = "Change: " + self.stock.getStringValue( "Change" ) // "\(self.stock.change!)"
+        changeLabel.text = "Change: " + self.stock.getStringValue( "Change" )! // "\(self.stock.change!)"
 
-        daysRangeLabel.text = "Range: " + self.stock.getStringValue( "DaysRange" )
-        fiftyDayAverageLabel.text = "50 Day Avg: " + self.stock.getStringValue( "FiftydayMovingAverage" )
-        marketCapLabel.text = "Market Cap: " + self.stock.getStringValue( "MarketCapitalization" )
-        volAverageLabel.text = "Vol Average: " + self.stock.getStringValue( "AverageDailyVolume" )
-        epsLabel.text = "EPS: " + self.stock.getStringValue( "EPSEstimateCurrentYear" )
+        daysRangeLabel.text = "Range: " + self.stock.getStringValue( "DaysRange" )!
+        fiftyDayAverageLabel.text = "50 Day Avg: " + self.stock.getStringValue( "FiftydayMovingAverage" )!
+        marketCapLabel.text = "Market Cap: " + self.stock.getStringValue( "MarketCapitalization" )!
+        volAverageLabel.text = "Vol Average: " + self.stock.getStringValue( "AverageDailyVolume" )!
+        epsLabel.text = "EPS: " + self.stock.getStringValue( "EPSEstimateCurrentYear" )!
 //        sharesLabel.text = "Shares: " + self.stock.getStringValue( "SharesOwned" )
         
         
