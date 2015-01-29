@@ -15,7 +15,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let menu = [["Search", SearchViewController()],
         ["Help", HelpViewController()]]
     
-    
+    //MARK: UIViewController Lifecycle
     override func loadView() {
         self.menuTableView.frame = UIScreen.mainScreen().bounds
         
