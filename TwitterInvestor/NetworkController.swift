@@ -72,7 +72,7 @@ class NetworkController {
             if error == nil && jsonData != nil {
                 if let urlResponse = response as? NSHTTPURLResponse {
                     let returnCode = urlResponse.statusCode
-                    println( "returnCode[\(returnCode)] [\(urlResponse.statusCode)]" )
+                    if self.DBUG { println( "returnCode[\(returnCode)] [\(urlResponse.statusCode)]" ) }
                     switch returnCode {
                     case 200...299:
                         let jsonDictionary = NSJSONSerialization.JSONObjectWithData( jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil ) as [String : AnyObject]
@@ -81,13 +81,12 @@ class NetworkController {
                         if jsonDictionary.count == 1 {
                             
                             var stockData: Stock = Stock( jsonDictionary: jsonDictionary )
-//                            trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol,firstJSONBlob: arrayOfResults),nil
-                            
+
                             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                                 stockLookup( stockData, nil  )
                             })
                         }
-                        
+
                     default:
                         errorString = "\(urlResponse.statusCode) error ... \(error)"
                     }
@@ -189,7 +188,7 @@ class NetworkController {
               }
               //If response is bad
             case 400...599:
-              println(error)
+              println( "400...599 \(error)" )
               NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                 Completion(nil, error)
               })

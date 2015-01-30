@@ -28,7 +28,8 @@ class Stock {
     var results : [String:AnyObject]
     var quote : [String:AnyObject]
 
-    var quoteData : AnyObject
+    var quoteData : [String:AnyObject]
+    var emptyDictionary = Dictionary<String, String>()
 
     init(jsonDictionary: [String:AnyObject]) {
 
@@ -42,21 +43,29 @@ class Stock {
         // Copy input 'quote' data...
         self.quoteData = quote
 
-        let symbol = getStringValue( "Symbol" )
-        let ticker = getStringValue( "Symbol" )
-        //println( "symbol[\(symbol)] symbol[\(ticker)]" )
+        if let theStringValue  = quote["ErrorIndicationreturnedforsymbolchangedinvalid"] as? String {
+            if theStringValue.hasPrefix( "No such ticker symbol" ) {
+
+                self.quoteData = emptyDictionary
+
+            } else {
+
+                self.quoteData = quote
+
+                self.symbol = getStringValue( "Symbol" )!
+                self.ticker = getStringValue( "Symbol" )!
+            }
+        }
 
         // ---------------------------------------------------------------------
 
         if DBUG {
             println( "symbol[\(symbol)] symbol[\(ticker)]" )
-            for ( key, value ) in quote {
+            for ( key, value ) in quoteData {
                 println( "Key: \(key) Value: \(value) " )
             }
             println( quote )
         }
-
-//        printStockDictionary( jsonDictionary )
     }
 
     init(ticker: String, companyName: String, change: Float = 0.0, price: Float = 0.0, pe: Float = 0.0) {
@@ -112,6 +121,11 @@ class Stock {
         } else {
             return 0.0  // ????
         }
+    }
+
+    func isValidQuote( quote : [String:AnyObject] ) -> Bool {
+        println( "isValidQuote()" );
+        return false
     }
 
     func getSymbol() -> String {
