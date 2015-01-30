@@ -14,8 +14,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     let searchBar = UISearchBar()
     
     var watchList = [Stock]()
-    var engines = [TrendEngineForTicker]()
-   // var stocks = [Stock]()
+    var engines   = [TrendEngineForTicker]()
 
     //MARK: UIViewController Lifecycle
     override func loadView() {
@@ -51,44 +50,32 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let cell = SearchCell()
         let stockQuote = self.watchList[indexPath.row]
 
-        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
-
+        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")
         cell.companyNameLabel.text = stockQuote.getStringValue( "Name" )
-        cell.change = stockQuote.convertToFloat( "Change" ) // self.watchList[indexPath.row].change
-        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )   // "\(self.watchList[indexPath.row].price!)"
+        cell.change = stockQuote.convertToFloat( "Change" )
+        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()
-            cell.changeLabel.text = "\(cell.change)"
+            
+            cell.changeLabel.text = NSString(format: "%.2f", cell.change)
         }
         if cell.change > 0.0 {
             let greenColor = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
             cell.changeLabel.textColor = greenColor
-            cell.changeLabel.text = "+\(cell.change)"
+            cell.changeLabel.text = "+" + NSString(format: "%.2f", cell.change)
         }
         if cell.change < 0.0 {
             cell.changeLabel.textColor = UIColor.redColor()
-            cell.changeLabel.text = "\(cell.change)"
+            cell.changeLabel.text = NSString(format: "%.2f", cell.change)
         }
 
         return cell
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Symbol      Price   Change"
+        return "Symbol        Price     Change"
     }
-    
-
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let cell = SearchCell()
-//        
-//        cell.tickerLabel.text = "Symbol"
-//        cell.priceLabel.text = "Price"
-//        cell.changeLabel.text = "Change"
-//        cell.companyNameLabel.text = "Name"
-//        
-//        return cell
-//    }
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -109,9 +96,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println(self.watchList.count)
-        println(self.engines.count)
-        
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
         detailVC.trendEngine = self.engines[indexPath.row]
@@ -125,30 +109,66 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let ticker = input.uppercaseString
 
         let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width * 2, UIScreen.mainScreen().bounds.height * 2)
+        activityIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height * 2)
         activityIndicator.color = UIColor.blackColor()
         activityIndicator.backgroundColor = UIColor.lightGrayColor()
         activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
         activityIndicator.alpha = 0.5
         activityIndicator.hidden = false
-        self.view.addSubview(activityIndicator)
+
         activityIndicator.startAnimating()
         activityIndicator.hidesWhenStopped = true
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
+        self.view.addSubview(activityIndicator)
         
-        NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
-            self.watchList.insert(Stock!, atIndex: 0)
-            
-            NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
-                if returnedTrendEngine != nil{
-                  //returnedTrendEngine!.buildData()
-                  self.engines.insert(returnedTrendEngine!, atIndex: 0)
+        let message = UILabel()
+        message.text = "Hang on... Getting Twitter Info"
+        message.textColor = UIColor.grayColor()
+        message.textAlignment = NSTextAlignment.Center
+        message.numberOfLines = 0
+        message.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.view.addSubview(message)
+        let views = ["message" : message]
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[message(\(UIScreen.mainScreen().bounds.width))]|",
+            options: nil, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-250-[message]",
+            options: nil, metrics: nil, views: views))
+        
+
+
+        
+
+        
+        NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (stockJSON, error) -> () in
+            if stockJSON != nil {
+                self.watchList.insert(stockJSON!, atIndex: 0)
+                let testForEmpty = self.watchList.first!.quoteData.isEmpty
+                if  testForEmpty {
+                    self.invalidTickerAlert( ticker )
+                    self.watchList.removeAtIndex(0)
                     activityIndicator.stopAnimating()
+                    message.hidden = true
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
-                }
-            })
 
+                } else {
+
+                    NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
+                       // if returnedTrendEngine != nil {
+                            //returnedTrendEngine!.buildData()
+                            self.engines.insert(returnedTrendEngine!, atIndex: 0)
+                            activityIndicator.stopAnimating()
+                            message.hidden = true
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            self.tableView.reloadData()
+                       // }
+                    })
+
+                }
+            }
         })
         
         
@@ -165,8 +185,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
     
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        //return text.validateForTicker()
-        return true
+        return text.validateForTicker()
   }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -178,8 +197,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
     
     //MARK: UIActionAlert
-    func invalidTickerAlert() {
-        let alertController = UIAlertController(title: "Ticker is not valid", message: "Enter a valid ticker for search", preferredStyle: .Alert)
+    func invalidTickerAlert( ticker : String ) {
+        let alertController = UIAlertController(title: "\(ticker) is not a valid ticker", message: "Enter a valid ticker for search", preferredStyle: .Alert)
     
         let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
             //dismiss alert and reset search bar text

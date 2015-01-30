@@ -15,6 +15,8 @@ class HelpViewController: UIViewController {
 
         self.title = "Help"
         self.view.backgroundColor = UIColor.whiteColor()
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

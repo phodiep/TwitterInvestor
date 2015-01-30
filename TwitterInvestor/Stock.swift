@@ -11,7 +11,7 @@ import Foundation
 
 class Stock {
 
-    let DBUG                = true
+    let DBUG                = false
 
     var symbol: String      = ""
     var ticker: String      = ""
@@ -28,7 +28,8 @@ class Stock {
     var results : [String:AnyObject]
     var quote : [String:AnyObject]
 
-    var quoteData : AnyObject
+    var quoteData : [String:AnyObject]
+    var emptyDictionary = Dictionary<String, String>()
 
     init(jsonDictionary: [String:AnyObject]) {
 
@@ -42,23 +43,29 @@ class Stock {
         // Copy input 'quote' data...
         self.quoteData = quote
 
-        let symbol = getStringValue( "Symbol" )
-        let ticker = getStringValue( "Symbol" )
-        //println( "symbol[\(symbol)] symbol[\(ticker)]" )
+        if let theStringValue  = quote["ErrorIndicationreturnedforsymbolchangedinvalid"] as? String {
+            if theStringValue.hasPrefix( "No such ticker symbol" ) {
+
+                self.quoteData = emptyDictionary
+
+            } else {
+
+                self.quoteData = quote
+
+                self.symbol = getStringValue( "Symbol" )!
+                self.ticker = getStringValue( "Symbol" )!
+            }
+        }
 
         // ---------------------------------------------------------------------
 
-        for key in quote.keys {
-//            println("Key: \(key)")
+        if DBUG {
+            println( "symbol[\(symbol)] symbol[\(ticker)]" )
+            for ( key, value ) in quoteData {
+                println( "Key: \(key) Value: \(value) " )
+            }
+            println( quote )
         }
-
-        for (key, value) in quote {
-//            println("Key: \(key)")
-        }
-
-//        if DBUG { println( quote ) }
-
-//        printStockDictionary( jsonDictionary )
     }
 
     init(ticker: String, companyName: String, change: Float = 0.0, price: Float = 0.0, pe: Float = 0.0) {
@@ -82,28 +89,43 @@ class Stock {
     /**
      *
      */
-    func convertToInt( key : NSString ) -> Int {
-        //println( "convertToInt() key[\(key)]" )
-        let aString   : NSString   = quoteData["\(key)"] as NSString
-        let anInteger : Int?       = aString.integerValue
-        return anInteger!
-//        let a:Int? = firstText.text.toInt() // firstText is UITextField
-
+    func convertToInt( key : NSString ) -> Int? {
+        if DBUG { println( "convertToInt() key[\(key)]" ) }
+        var searchKey  = key
+        if  searchKey == "Company" { searchKey = "Name" }
+        if  let theStringValue = quoteData["\(searchKey)"] as? String {
+            let anInteger      = theStringValue.toInt()
+            return anInteger!
+        } else {
+            return 0   // ????
+        }
     }
 
-    func getStringValue( key: NSString ) -> NSString {
-       // println( "getStringValue() key[\(key)]" )
-        var searchKey = key
-        if searchKey == "Company" { searchKey = "Name" }
-        let string : NSString       = quoteData["\(searchKey)"] as String
-        return string
+    func getStringValue( key: NSString ) -> String? {
+        if DBUG { println( "getStringValue() key[\(key)]" ) }
+        var searchKey  = key
+        if  searchKey == "Company" { searchKey = "Name" }
+        if let theStringValue  = quoteData["\(searchKey)"] as? String {
+           return theStringValue
+        } else {
+           return "-"
+        }
     }
 
-    func convertToFloat( key: NSString ) -> Float {
-       // println( "convertToFloat() key[\(key)]" )
-        let string : NSString   = quoteData["\(key)"] as NSString
-        let aFloat : Float      = string.floatValue
-        return aFloat
+    func convertToFloat( key: NSString ) -> Float? {
+        if DBUG { println( "convertToFloat() key[\(key)]" ) }
+        var searchKey  = key
+        if  let theStringValue = quoteData["\(key)"] as? String {
+            let aFloat         = (theStringValue as NSString).floatValue
+            return aFloat
+        } else {
+            return 0.0  // ????
+        }
+    }
+
+    func isValidQuote( quote : [String:AnyObject] ) -> Bool {
+        println( "isValidQuote()" );
+        return false
     }
 
     func getSymbol() -> String {
@@ -126,172 +148,3 @@ class Stock {
 
     }
 }
-
-/*
-Key: EPSEstimateNextQuarter
-Key: HoldingsGain
-Key: DaysRangeRealtime
-Key: PercentChangeFromTwoHundreddayMovingAverage
-Key: Change_PercentChange
-Key: Commission
-Key: symbol
-Key: PEGRatio
-Key: PercentChangeFromYearLow
-Key: ExDividendDate
-Key: HoldingsGainRealtime
-Key: PriceEPSEstimateNextYear
-Key: ErrorIndicationreturnedforsymbolchangedinvalid
-Key: ShortRatio
-Key: HoldingsValueRealtime
-Key: Symbol
-Key: DaysValueChangeRealtime
-Key: BookValue
-Key: EBITDA
-Key: Open
-Key: ChangeinPercent
-Key: ChangeFromTwoHundreddayMovingAverage
-Key: OneyrTargetPrice
-Key: StockExchange
-Key: HoldingsGainPercentRealtime
-Key: ChangeFromFiftydayMovingAverage
-Key: AnnualizedGain
-Key: LastTradeTime
-Key: Name
-Key: DividendYield
-Key: PriceEPSEstimateCurrentYear
-Key: ChangeRealtime
-Key: LastTradeRealtimeWithTime
-Key: ChangeFromYearLow
-Key: HoldingsGainPercent
-Key: HighLimit
-Key: PercentChangeFromFiftydayMovingAverage
-Key: PercebtChangeFromYearHigh
-Key: LastTradePriceOnly
-Key: TradeDate
-Key: OrderBookRealtime
-Key: MoreInfo
-Key: LowLimit
-Key: EPSEstimateNextYear
-Key: PriceSales
-Key: BidRealtime
-Key: Change
-Key: AverageDailyVolume
-Key: FiftydayMovingAverage
-Key: YearHigh
-Key: MarketCapRealtime
-Key: DaysHigh
-Key: PERatio
-Key: DividendShare
-Key: PreviousClose
-Key: EPSEstimateCurrentYear
-Key: ChangeFromYearHigh
-Key: PERatioRealtime
-Key: PriceBook
-Key: LastTradeWithTime
-Key: MarketCapitalization
-Key: Currency
-Key: Ask
-Key: HoldingsValue
-Key: TickerTrend
-Key: Notes
-Key: AfterHoursChangeRealtime
-Key: Volume
-Key: DaysValueChange
-Key: TwoHundreddayMovingAverage
-Key: YearLow
-Key: LastTradeDate
-Key: DaysLow
-Key: PercentChange
-Key: Bid
-Key: EarningsShare
-Key: ChangePercentRealtime
-Key: DaysRange
-Key: SharesOwned
-Key: YearRange
-Key: PricePaid
-Key: AskRealtime
-Key: DividendPayDate
-Key: EPSEstimateNextQuarter
-Key: HoldingsGain
-Key: DaysRangeRealtime
-Key: PercentChangeFromTwoHundreddayMovingAverage
-Key: Change_PercentChange
-Key: Commission
-Key: symbol
-Key: PEGRatio
-Key: PercentChangeFromYearLow
-Key: ExDividendDate
-Key: HoldingsGainRealtime
-Key: PriceEPSEstimateNextYear
-Key: ErrorIndicationreturnedforsymbolchangedinvalid
-Key: ShortRatio
-Key: HoldingsValueRealtime
-Key: Symbol
-Key: DaysValueChangeRealtime
-Key: BookValue
-Key: EBITDA
-Key: Open
-Key: ChangeinPercent
-Key: ChangeFromTwoHundreddayMovingAverage
-Key: OneyrTargetPrice
-Key: StockExchange
-Key: HoldingsGainPercentRealtime
-Key: ChangeFromFiftydayMovingAverage
-Key: AnnualizedGain
-Key: LastTradeTime
-Key: Name
-Key: DividendYield
-Key: PriceEPSEstimateCurrentYear
-Key: ChangeRealtime
-Key: LastTradeRealtimeWithTime
-Key: ChangeFromYearLow
-Key: HoldingsGainPercent
-Key: HighLimit
-Key: PercentChangeFromFiftydayMovingAverage
-Key: PercebtChangeFromYearHigh
-Key: LastTradePriceOnly
-Key: TradeDate
-Key: OrderBookRealtime
-Key: MoreInfo
-Key: LowLimit
-Key: EPSEstimateNextYear
-Key: PriceSales
-Key: BidRealtime
-Key: Change
-Key: AverageDailyVolume
-Key: FiftydayMovingAverage
-Key: YearHigh
-Key: MarketCapRealtime
-Key: DaysHigh
-Key: PERatio
-Key: DividendShare
-Key: PreviousClose
-Key: EPSEstimateCurrentYear
-Key: ChangeFromYearHigh
-Key: PERatioRealtime
-Key: PriceBook
-Key: LastTradeWithTime
-Key: MarketCapitalization
-Key: Currency
-Key: Ask
-Key: HoldingsValue
-Key: TickerTrend
-Key: Notes
-Key: AfterHoursChangeRealtime
-Key: Volume
-Key: DaysValueChange
-Key: TwoHundreddayMovingAverage
-Key: YearLow
-Key: LastTradeDate
-Key: DaysLow
-Key: PercentChange
-Key: Bid
-Key: EarningsShare
-Key: ChangePercentRealtime
-Key: DaysRange
-Key: SharesOwned
-Key: YearRange
-Key: PricePaid
-Key: AskRealtime
-Key: DividendPayDate
-------------------------- */

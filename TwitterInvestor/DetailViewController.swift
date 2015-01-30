@@ -16,17 +16,17 @@ class DetailViewController: UIViewController {
     let rootView = UIView()
     let stockView = UIView()
     let twitterView = UIView()
-    
-    var newsButton: UIBarButtonItem!
-    var orientation: UIDeviceOrientation!
-    //MARK: UIViewController Lifecycle
 
-    var timerForTwitterTrendCheck: NSTimer?
-    var operationQueueCheckTrend: NSOperationQueue?
+    var alertController: UIAlertController!
+    var moreButton: UIBarButtonItem!
+
+//    var timerForTwitterTrendCheck: NSTimer?
+//    var operationQueueCheckTrend: NSOperationQueue?
     var isTrending: Bool?
     var trendMagnitude: Double?
   
-
+    
+    //MARK: UIViewController Lifecycle
     override func loadView() {
         self.rootView.frame = UIScreen.mainScreen().bounds
         
@@ -38,23 +38,52 @@ class DetailViewController: UIViewController {
         
         self.view = self.rootView
 
+        self.alertController = UIAlertController(title: "More Options", message: "", preferredStyle: .ActionSheet)
+        
         self.layoutRootView()
         self.layoutStockView()
-        self.layoutTwitterView()
+        if !self.trendEngine.needsBaseline{
+            self.layoutTwitterView()
+        } else {
+            self.layoutTwitterView_empty()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.orientation = UIDevice.currentDevice().orientation
 
         self.title = self.stock.getStringValue( "Symbol" ) // ticker
         
-        self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
-        self.navigationItem.rightBarButtonItem = self.newsButton
-
-        // cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
+        self.setupAlertViewController()
+        
     }
+    
+    //MARK: AlertViewController
+    func setupAlertViewController() {
+        self.moreButton = UIBarButtonItem(title: "More", style: .Done, target: self, action: "moreButtonPressed:")
+        self.navigationItem.rightBarButtonItem = self.moreButton
+        let webOption = UIAlertAction(title: "Web", style: .Default) { (action) -> Void in
+            let webVC = WebViewController()
+            webVC.ticker = self.stock.getStringValue("Symbol")  //self.stock.ticker
+            self.navigationController?.pushViewController(webVC, animated: true)
+        }
+        
+        let tweetsOption = UIAlertAction(title: "Tweets", style: .Default) { (action) -> Void in
+            let tweetVC = TweetsViewController()
+            tweetVC.tweets = self.trendEngine.arrayOfAllJSON
+            self.navigationController?.pushViewController(tweetVC, animated: true)
+        }
+        
+        let cancelOption = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
+                //close actionsheet
+        }
+        
+        alertController.addAction(webOption)
+        alertController.addAction(tweetsOption)
+        alertController.addAction(cancelOption)
+
+    }
+
 
     //MARK: Autolayout Views
     func layoutRootView() {
@@ -80,6 +109,12 @@ class DetailViewController: UIViewController {
     }
     
     func layoutStockView() {
+        // start time for Trend Check
+//        timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
+//        NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
+//        self.operationQueueCheckTrend = NSOperationQueue()
+
+        
         self.stockView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
         let companyLabel = UILabel()
@@ -101,62 +136,38 @@ class DetailViewController: UIViewController {
         let titlePE = UILabel()
         let titleEPS = UILabel()
         
-        companyLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
-        priceLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
-        peLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        daysRangeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        fiftyDayAverageLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        marketCapLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        volAverageLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        epsLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-
-        titleRange.font = UIFont(name: "HelveticaNeue", size: 12)
-        titleRange.textColor = UIColor.grayColor()
-        titleRange.text = "Range"
-
-        titleFiftyDay.font = UIFont(name: "HelveticaNeue", size: 12)
-        titleFiftyDay.textColor = UIColor.grayColor()
-        titleFiftyDay.text = "50 Day Average"
         
-        titleMarketCap.font = UIFont(name: "HelveticaNeue", size: 12)
-        titleMarketCap.textColor = UIColor.grayColor()
-        titleMarketCap.text = "Market Cap"
+        func setTitleLabel(label: UILabel, text: String) {
+            label.font = UIFont(name: "HelveticaNeue", size: 12)
+            label.textColor = UIColor.grayColor()
+            label.text = text
+        }
+        func setValueLabel(label: UILabel, text: String, font: UIFont = UIFont(name: "HelveticaNeue", size: 16)!) {
+            label.font = font
+            label.text = text
+        }
 
-        titlePrice.font = UIFont(name: "HelveticaNeue", size: 12)
-        titlePrice.textColor = UIColor.grayColor()
-        titlePrice.text = "Price"
-        
-        titleChange.font = UIFont(name: "HelveticaNeue", size: 12)
-        titleChange.textColor = UIColor.grayColor()
-        titleChange.text = "Change"
-        
-        titleVolAvg.font = UIFont(name: "HelveticaNeue", size: 12)
-        titleVolAvg.textColor = UIColor.grayColor()
-        titleVolAvg.text = "Volume Average"
+        setTitleLabel(titleRange, "Range")
+        setTitleLabel(titleFiftyDay, "50 Day Average")
+        setTitleLabel(titleMarketCap, "Market Cap")
+        setTitleLabel(titlePrice, "Price")
+        setTitleLabel(titleChange, "Change")
+        setTitleLabel(titleVolAvg, "Volume Average")
+        setTitleLabel(titlePE, "P/E")
+        setTitleLabel(titleEPS, "EPS")
 
-        
-        titlePE.font = UIFont(name: "HelveticaNeue", size: 12)
-        titlePE.textColor = UIColor.grayColor()
-        titlePE.text = "P/E"
-        
-        titleEPS.font = UIFont(name: "HelveticaNeue", size: 12)
-        titleEPS.textColor = UIColor.grayColor()
-        titleEPS.text = "EPS"
-
-
-        timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
-        NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
-        self.operationQueueCheckTrend = NSOperationQueue()
-        
-        companyLabel.text = self.stock.getStringValue( "Name" ) // Company Name
-        priceLabel.text   = self.stock.getStringValue( "AskRealtime" )  //")price!)"
-        peLabel.text      = self.stock.getStringValue( "PERatio" )
-
+        setValueLabel(companyLabel,         self.stock.getStringValue("Name")!,          font: UIFont(name: "HelveticaNeue-Bold", size: 18)!)
+        setValueLabel(priceLabel,           self.stock.getStringValue("AskRealtime")!,   font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
+        setValueLabel(peLabel,              self.stock.getStringValue( "PERatio" )!)
+        setValueLabel(daysRangeLabel,       self.stock.getStringValue("DaysRange")!)
+        setValueLabel(fiftyDayAverageLabel, self.stock.getStringValue("FiftydayMovingAverage")!)
+        setValueLabel(marketCapLabel,       self.stock.getStringValue("MarketCapitalization")!)
+        setValueLabel(volAverageLabel,      self.stock.getStringValue("AverageDailyVolume")!)
+        setValueLabel(epsLabel,             self.stock.getStringValue("EPSEstimateCurrentYear")!)
+        setValueLabel(changeLabel,          self.stock.getStringValue( "Change" )!)
         let floatChange   = self.stock.convertToFloat( "Change" )
         let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
-        
-        if        floatChange == 0.0 {
+        if floatChange == 0.0 {
             changeLabel.textColor = UIColor.blackColor()
         } else if floatChange  > 0.0 {
             changeLabel.textColor = greenColor
@@ -165,52 +176,31 @@ class DetailViewController: UIViewController {
         } else {
             changeLabel.textColor = UIColor.blackColor()
         }
-        changeLabel.text =  self.stock.getStringValue( "Change" )
 
-        daysRangeLabel.text = self.stock.getStringValue( "DaysRange" )
-        fiftyDayAverageLabel.text = self.stock.getStringValue( "FiftydayMovingAverage" )
-        marketCapLabel.text = self.stock.getStringValue( "MarketCapitalization" )
-        volAverageLabel.text = self.stock.getStringValue( "AverageDailyVolume" )
-        epsLabel.text =  self.stock.getStringValue( "EPSEstimateCurrentYear" )
+
         
-        
-        companyLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        priceLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        peLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        changeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        daysRangeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        fiftyDayAverageLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        marketCapLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        volAverageLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        epsLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        titleRange.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titleFiftyDay.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titleMarketCap.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titlePrice.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titleChange.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titleVolAvg.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titlePE.setTranslatesAutoresizingMaskIntoConstraints(false)
-        titleEPS.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        self.stockView.addSubview(companyLabel)
-        self.stockView.addSubview(priceLabel)
-        self.stockView.addSubview(peLabel)
-        self.stockView.addSubview(changeLabel)
-        self.stockView.addSubview(daysRangeLabel)
-        self.stockView.addSubview(fiftyDayAverageLabel)
-        self.stockView.addSubview(marketCapLabel)
-        self.stockView.addSubview(volAverageLabel)
-        self.stockView.addSubview(epsLabel)
-        
-        self.stockView.addSubview(titleRange)
-        self.stockView.addSubview(titleFiftyDay)
-        self.stockView.addSubview(titleMarketCap)
-        self.stockView.addSubview(titlePrice)
-        self.stockView.addSubview(titleChange)
-        self.stockView.addSubview(titleVolAvg)
-        self.stockView.addSubview(titlePE)
-        self.stockView.addSubview(titleEPS)
+        func readyAutoLayout(label: UILabel) {
+            label.setTranslatesAutoresizingMaskIntoConstraints(false)
+            self.stockView.addSubview(label)
+        }
+        readyAutoLayout(companyLabel)
+        readyAutoLayout(priceLabel)
+        readyAutoLayout(peLabel)
+        readyAutoLayout(changeLabel)
+        readyAutoLayout(daysRangeLabel)
+        readyAutoLayout(fiftyDayAverageLabel)
+        readyAutoLayout(marketCapLabel)
+        readyAutoLayout(volAverageLabel)
+        readyAutoLayout(epsLabel)
+        readyAutoLayout(titleRange)
+        readyAutoLayout(titleFiftyDay)
+        readyAutoLayout(titleMarketCap)
+        readyAutoLayout(titlePrice)
+        readyAutoLayout(titleChange)
+        readyAutoLayout(titleVolAvg)
+        readyAutoLayout(titlePE)
+        readyAutoLayout(titleEPS)
+
         
         let views = ["companyLabel": companyLabel,
                     "priceLabel": priceLabel,
@@ -248,18 +238,37 @@ class DetailViewController: UIViewController {
     }
   
   
-    func checkForTrend(){
-      
-      
-      operationQueueCheckTrend!.addOperationWithBlock { () -> Void in
-        
-        self.trendMagnitude = self.trendEngine.checkForTrend()
-        self.isTrending = self.trendEngine.isTrending
-      }
-    }
+//    func checkForTrend(){
+//      operationQueueCheckTrend!.addOperationWithBlock { () -> Void in
+//        
+//        self.trendMagnitude = self.trendEngine.checkForTrend()
+//        self.isTrending = self.trendEngine.isTrending
+//      }
+//    }
 
+    func layoutTwitterView_empty() {
+        let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
+        self.twitterView.backgroundColor = twitterBlueColor //UIColor.whiteColor()
+        
+        let message = UILabel()
+        message.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
+        message.text = "No Twitter Activity Found"
+        message.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.twitterView.addSubview(message)
+        
+        let views = ["message" : message]
+        
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-16-[message]",
+            options: nil, metrics: nil, views: views))
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-16-[message]",
+            options: nil, metrics: nil, views: views))
+        
+    }
+    
     func layoutTwitterView() {
-        let twitterBlueColor    = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
+        let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
         self.twitterView.backgroundColor = twitterBlueColor //UIColor.whiteColor()
 
         let trendLabel = UILabel()
@@ -319,19 +328,18 @@ class DetailViewController: UIViewController {
             "V:[plotImage]-8-[averageLabel(30)]-[latestTweet(30)]-[isTrendingLabel(30)]-16-|",
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
-        
     }
     
     //MARK: Button Actions
-    func newsButtonPressed(sender: UIButton) {
-//        let webVC = WebViewController()
-//        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
-//        self.navigationController?.pushViewController(webVC, animated: true)
-
-        let tweetVC = TweetsViewController()
-        tweetVC.tweets = self.trendEngine.arrayOfAllJSON
-        self.navigationController?.pushViewController(tweetVC, animated: true)
-
+    func moreButtonPressed(sender: UIBarButtonItem) {
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if let popoverController = self.alertController.popoverPresentationController {
+                popoverController.barButtonItem = sender
+            }
+            self.alertController.popoverPresentationController
+        }
+        self.presentViewController(self.alertController, animated: true, completion: nil)
     }
 
+    
 }
