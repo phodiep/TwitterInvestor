@@ -49,6 +49,8 @@ class TrendEngineForTicker{
   var arrayOfTrends = [Trend]()
   var tweetBuckets : [AnyObject]?
   var plotView: UIView?
+  var timerForTwitterTrendCheck: NSTimer?
+  var operationQueueCheckTrend: NSOperationQueue?
   
   
   //MARK: Initalizers
@@ -82,12 +84,16 @@ class TrendEngineForTicker{
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
       //Set tweets per hour
-      self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
+      self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)//self.arrayOfAllJSON.count/self.tweetBuckets!.count
+      //self.figureOutAverageInterval(self.arrayOfAllJSON)
       //Set the needs baseline property to nil.
       self.needsBaseline = false
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
-
+      //Set up Timer and Queue to check for trends.
+      timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
+      NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
+      self.operationQueueCheckTrend = NSOperationQueue()
     }
   }
   
@@ -215,6 +221,7 @@ class TrendEngineForTicker{
     func putTweetsInBucket(theJSON: [[String:AnyObject]])->[AnyObject]{
         //    var theMovingDate = NSDate(timeInterval: 3600, sinceDate: self.dateOfOldestTweet as NSDate!)
         var theMovingDate = NSDate(timeInterval: 3600, sinceDate: NSDate(timeIntervalSinceNow: -432000))
+        var theStartDate = NSDate(timeInterval: 0, sinceDate: NSDate(timeIntervalSinceNow: -432000))
         let format = NSDateFormatter()
         format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         var masterBucket = [AnyObject]()
@@ -226,9 +233,11 @@ class TrendEngineForTicker{
         for var i = theJSON.count; i > 0; --i{
             let oneTweet = theJSON[i-1]
             var dateFromOneTweet = format.dateFromString(oneTweet["created_at"] as String!)
-            
+          if !compareDates(dateFromOneTweet!, laterDate: theStartDate){
             if compareDates(dateFromOneTweet!, laterDate: theMovingDate){
-                bucket.append(oneTweet)
+              
+              
+              bucket.append(oneTweet)
             }else{
                 masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
                 
@@ -243,6 +252,7 @@ class TrendEngineForTicker{
                 bucket.append(oneTweet)
             }
         }
+      }
         masterBucket.append(["date": dateFormatter.stringFromDate(theMovingDate), "count": bucket.count])
                 
         return masterBucket
@@ -266,6 +276,8 @@ class TrendEngineForTicker{
   func setPlotView(){
     self.plotView = TrendPlot(frame: CGRectZero, data: self.tweetBuckets!)
   }
+
+
   
   
   

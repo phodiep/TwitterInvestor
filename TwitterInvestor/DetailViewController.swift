@@ -42,7 +42,11 @@ class DetailViewController: UIViewController {
         
         self.layoutRootView()
         self.layoutStockView()
-        self.layoutTwitterView()
+        if !self.trendEngine.needsBaseline{
+            self.layoutTwitterView()
+        } else {
+            self.layoutTwitterView_empty()
+        }
     }
     
     override func viewDidLoad() {
@@ -242,6 +246,27 @@ class DetailViewController: UIViewController {
       }
     }
 
+    func layoutTwitterView_empty() {
+        let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
+        self.twitterView.backgroundColor = twitterBlueColor //UIColor.whiteColor()
+        
+        let message = UILabel()
+        message.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
+        message.text = "No Twitter Activity Found"
+        message.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.twitterView.addSubview(message)
+        
+        let views = ["message" : message]
+        
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-16-[message]",
+            options: nil, metrics: nil, views: views))
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-16-[message]",
+            options: nil, metrics: nil, views: views))
+        
+    }
+    
     func layoutTwitterView() {
         let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
         self.twitterView.backgroundColor = twitterBlueColor //UIColor.whiteColor()
@@ -303,32 +328,16 @@ class DetailViewController: UIViewController {
             "V:[plotImage]-8-[averageLabel(30)]-[latestTweet(30)]-[isTrendingLabel(30)]-16-|",
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
-        
     }
     
     //MARK: Button Actions
-    func newsButtonPressed(sender: UIButton) {
-//        let webVC = WebViewController()
-//        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
-//        self.navigationController?.pushViewController(webVC, animated: true)
-
-        let tweetVC = TweetsViewController()
-        tweetVC.tweets = self.trendEngine.arrayOfAllJSON
-        self.navigationController?.pushViewController(tweetVC, animated: true)
-
-    }
-
-    
-    func moreButtonPressed(sender: UIButton) {
-
-        
+    func moreButtonPressed(sender: UIBarButtonItem) {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             if let popoverController = self.alertController.popoverPresentationController {
-                popoverController.sourceView = sender
-                popoverController.sourceRect = sender.bounds
+                popoverController.barButtonItem = sender
             }
+            self.alertController.popoverPresentationController
         }
-
         self.presentViewController(self.alertController, animated: true, completion: nil)
     }
 
