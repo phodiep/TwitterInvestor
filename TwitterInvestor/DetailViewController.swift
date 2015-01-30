@@ -42,7 +42,9 @@ class DetailViewController: UIViewController {
         
         self.layoutRootView()
         self.layoutStockView()
-        self.layoutTwitterView()
+        if !self.trendEngine.needsBaseline{
+            self.layoutTwitterView()
+        }
     }
     
     override func viewDidLoad() {

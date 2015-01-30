@@ -19,15 +19,15 @@ class SearchCell: UITableViewCell {
     override init() {
         super.init()
         
-        tickerLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
-        companyNameLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        priceLabel.font = UIFont(name: "HelveticaNeue", size: 16)
-        changeLabel.font = UIFont(name: "HelveticaNeue", size: 16)
+        tickerLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        companyNameLabel.font = UIFont(name: "HelveticaNeue", size: 14)
+        priceLabel.font = UIFont(name: "HelveticaNeue", size: 14)
+        changeLabel.font = UIFont(name: "HelveticaNeue", size: 14)
         
         tickerLabel.textAlignment = NSTextAlignment.Left
-        companyNameLabel.textAlignment = NSTextAlignment.Right
+        companyNameLabel.textAlignment = NSTextAlignment.Left
         priceLabel.textAlignment = NSTextAlignment.Right
-        changeLabel.textAlignment = NSTextAlignment.Left
+        changeLabel.textAlignment = NSTextAlignment.Right
 
         
         self.tickerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -46,16 +46,17 @@ class SearchCell: UITableViewCell {
             "priceLabel" : self.priceLabel]
 
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-18-[tickerLabel(60)]-8-[priceLabel(60)]-18-[changeLabel(60)]",
+            "H:|-18-[tickerLabel(55)]-8-[priceLabel(75)]-8-[changeLabel(75)]-8-[companyNameLabel]",
             options: nil, metrics: nil, views: views))
+
 //        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
 //            "H:|-115-[priceLabel]-16-[changeLabel]",
 //            options: nil, metrics: nil, views: views))
 
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[companyNameLabel]-16-|",
-            options: nil, metrics: nil, views: views))
+//        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+//            "H:[companyNameLabel]-16-|",
+//            options: nil, metrics: nil, views: views))
 
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|[tickerLabel]|",
