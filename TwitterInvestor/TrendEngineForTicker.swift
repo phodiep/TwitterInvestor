@@ -49,6 +49,8 @@ class TrendEngineForTicker{
   var arrayOfTrends = [Trend]()
   var tweetBuckets : [AnyObject]?
   var plotView: UIView?
+  var timerForTwitterTrendCheck: NSTimer?
+  var operationQueueCheckTrend: NSOperationQueue?
   
   
   //MARK: Initalizers
@@ -82,12 +84,16 @@ class TrendEngineForTicker{
       self.idOfOldestTweet = oldestTweet["id_str"] as? String
       self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
       //Set tweets per hour
-      self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
+      self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)//self.arrayOfAllJSON.count/self.tweetBuckets!.count
+      //self.figureOutAverageInterval(self.arrayOfAllJSON)
       //Set the needs baseline property to nil.
       self.needsBaseline = false
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
-
+      //Set up Timer and Queue to check for trends.
+      timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
+      NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
+      self.operationQueueCheckTrend = NSOperationQueue()
     }
   }
   
@@ -270,6 +276,8 @@ class TrendEngineForTicker{
   func setPlotView(){
     self.plotView = TrendPlot(frame: CGRectZero, data: self.tweetBuckets!)
   }
+
+
   
   
   
