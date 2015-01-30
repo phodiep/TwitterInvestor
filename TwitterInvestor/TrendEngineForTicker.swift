@@ -63,6 +63,13 @@ class TrendEngineForTicker{
 
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
+      for item in JSONBlob{
+        println(item["id_str"])
+      }
+      println("____________")
+      for item in self.arrayOfAllJSON{
+        println(item["id_str"])
+      }
       //Set the formatting options for the Oldest and newest tweets
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
@@ -152,23 +159,25 @@ class TrendEngineForTicker{
     
     for var i = 0; i < JSON.count; ++i {
       let currentTweet = JSON[i]
-      let text = currentTweet["text"] as String
+      var text = currentTweet["text"] as String
       let entities = currentTweet["entities"] as [String:AnyObject]
       let hashTags = entities["hashtags"] as [AnyObject]
         
       var arrayOfHashTags = [String]()
       for o in hashTags{
         arrayOfHashTags.append(o["text"] as String!)
+        //println(o)
       }
+      for item in arrayOfHashTags{
+        text = "\(text) \(item)"
+      }
+      
       //revisit this logic
       for k in arrayOfKeyWords{
-        for item in arrayOfHashTags{
-            if text.lowercaseString.rangeOfString(k) != nil || item.lowercaseString.rangeOfString(item as String) != nil {
-                
-                investmentRelatedTweets.append(JSON[i])
-                
-            }
-        }
+          if text.lowercaseString.rangeOfString(k) != nil {
+            investmentRelatedTweets.append(JSON[i])
+            break
+          }
       }
     }
     self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
@@ -221,6 +230,8 @@ class TrendEngineForTicker{
     }
     if earlierDate.compare(laterDate) == NSComparisonResult.OrderedSame{
       return true
+      
+      
     }
     return false
   }

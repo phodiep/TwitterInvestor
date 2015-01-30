@@ -245,6 +245,7 @@ class NetworkController {
                     //append the results to the global arrayofallTweetData
                     for item in arrayOfResults{
                       self.arrayOfAllTweetJSON.append(item)
+                      //println(item["id_str"])
                     }
                     //Set the formatting options for Dates
                     let format = NSDateFormatter()
@@ -294,6 +295,7 @@ class NetworkController {
       NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) ->   Void in
         for item in returnedJSON!{
           self.arrayOfAllTweetJSON.append(item)
+          //println(item["id_str"])
         }
         let oldestTweet = self.arrayOfAllTweetJSON.last as [String:AnyObject]!
         self.idOfOldestTweet = oldestTweet["id_str"] as? String
