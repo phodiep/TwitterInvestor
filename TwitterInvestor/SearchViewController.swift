@@ -74,7 +74,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Symbol      Price   Change"
+        return "Symbol        Price     Change"
     }
     
     
@@ -120,19 +120,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         activityIndicator.hidesWhenStopped = true
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
 
-        NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
-            // println( "Stock[\(Stock)] error[\(error)]" )
-            if Stock != nil {
-                // println( "Stock: \(Stock)" )
-                self.watchList.insert(Stock!, atIndex: 0)
+        NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (stockJSON, error) -> () in
+            if stockJSON != nil {
+                self.watchList.insert(stockJSON!, atIndex: 0)
                 let testForEmpty = self.watchList.first!.quoteData.isEmpty
                 if  testForEmpty {
                     self.invalidTickerAlert( ticker )
                     self.watchList.removeAtIndex(0)
-//                    println( "Count[\(self.watchList.count)]" )
-//                    println( "First[\(self.watchList.first?.quoteData)]" )
-//                    println( "First[\(self.watchList.first?.quoteData.isEmpty)]" )
-//                    println( "Count[\(self.watchList.first?.quoteData.count)]" )
                     activityIndicator.stopAnimating()
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
@@ -181,7 +175,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UIActionAlert
     func invalidTickerAlert( ticker : String ) {
-        let alertController = UIAlertController(title: "Ticker, \(ticker), is not valid", message: "Enter a valid ticker for search", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "\(ticker) is not a valid ticker", message: "Enter a valid ticker for search", preferredStyle: .Alert)
     
         let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
             //dismiss alert and reset search bar text
