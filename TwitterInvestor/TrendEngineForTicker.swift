@@ -285,6 +285,19 @@ class TrendEngineForTicker: NSObject{
   func checkForTrend(sender: AnyObject){
     var mostRecentTweets = [[String:AnyObject]]()
     var averageTimeIntervalOfRecentTweets: Double?
+    if self.idOfNewestTweet == nil {
+      NetworkController.sharedInstance.doACheck(self.ticker!, trailingClosure: { (returnedTweets, error) -> Void in
+        if returnedTweets!.count != 0 {
+          for item in returnedTweets!{
+            mostRecentTweets.append(item)
+          }
+          mostRecentTweets = self.stripTweets(mostRecentTweets)
+          averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
+          if averageTimeIntervalOfRecentTweets > 0{
+            newNotification("Ticker \(self.ticker) is Trending! OMG!")
+          }
+        }
+      })    }else{
     NetworkController.sharedInstance.twitterRequestForAfterID(self.ticker!, theID: self.idOfNewestTweet!) { (returnedTweets, error) -> Void in
       if returnedTweets!.count != 0 {
         for item in returnedTweets!{
@@ -297,5 +310,8 @@ class TrendEngineForTicker: NSObject{
         }
       }
     }
+    }
   }
+  
+//End Class
 }
