@@ -17,6 +17,7 @@ class DetailViewController: UIViewController {
     let stockView = UIView()
     let twitterView = UIView()
     
+    var moreButton: UIBarButtonItem!
     var newsButton: UIBarButtonItem!
     var orientation: UIDeviceOrientation!
     //MARK: UIViewController Lifecycle
@@ -26,6 +27,7 @@ class DetailViewController: UIViewController {
     var isTrending: Bool?
     var trendMagnitude: Double?
   
+    var alertController: UIAlertController!
 
     override func loadView() {
         self.rootView.frame = UIScreen.mainScreen().bounds
@@ -38,6 +40,8 @@ class DetailViewController: UIViewController {
         
         self.view = self.rootView
 
+        self.alertController = UIAlertController(title: "More Options", message: "", preferredStyle: .ActionSheet)
+        
         self.layoutRootView()
         self.layoutStockView()
         self.layoutTwitterView()
@@ -50,9 +54,13 @@ class DetailViewController: UIViewController {
 
         self.title = self.stock.getStringValue( "Symbol" ) // ticker
         
-        self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
-        self.navigationItem.rightBarButtonItem = self.newsButton
+//        self.newsButton = UIBarButtonItem(title: "News", style: .Done, target: self, action: "newsButtonPressed:")
+//        self.navigationItem.rightBarButtonItem = self.newsButton
 
+        self.moreButton = UIBarButtonItem(title: "More", style: .Done, target: self, action: "moreButtonPressed:")
+        self.navigationItem.rightBarButtonItem = self.moreButton
+
+        
         // cell.tickerLabel.text = stockQuote.getStringValue("Symbol")  // self.watchList[indexPath.row].ticker
     }
 
@@ -334,4 +342,25 @@ class DetailViewController: UIViewController {
 
     }
 
+    
+    func moreButtonPressed(sender: UIButton) {
+        let webOption = UIAlertAction(title: "Web", style: .Default) { (action) -> Void in
+                let webVC = WebViewController()
+                webVC.ticker = self.stock.getStringValue("Symbol")  //self.stock.ticker
+                self.navigationController?.pushViewController(webVC, animated: true)
+        }
+        
+        let tweetsOption = UIAlertAction(title: "Tweets", style: .Default) { (action) -> Void in
+            let tweetVC = TweetsViewController()
+            tweetVC.tweets = self.trendEngine.arrayOfAllJSON
+            self.navigationController?.pushViewController(tweetVC, animated: true)
+        }
+        
+        alertController.addAction(webOption)
+        alertController.addAction(tweetsOption)
+        
+        self.presentViewController(self.alertController, animated: true, completion: nil)
+    }
+
+    
 }

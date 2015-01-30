@@ -78,18 +78,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         return "Symbol      Price   Change"
     }
     
-
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let cell = SearchCell()
-//        
-//        cell.tickerLabel.text = "Symbol"
-//        cell.priceLabel.text = "Price"
-//        cell.changeLabel.text = "Change"
-//        cell.companyNameLabel.text = "Name"
-//        
-//        return cell
-//    }
-    
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45
@@ -109,9 +97,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     //MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println(self.watchList.count)
-        println(self.engines.count)
-        
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
         detailVC.trendEngine = self.engines[indexPath.row]

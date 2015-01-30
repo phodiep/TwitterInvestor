@@ -59,6 +59,8 @@ class TrendEngineForTicker{
     if JSONBlob.count == 0{
       tweetsPerHour = 0
     }else {
+
+
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
       //Set the formatting options for the Oldest and newest tweets
@@ -78,6 +80,7 @@ class TrendEngineForTicker{
       self.needsBaseline = false
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
+
     }
   }
   
@@ -144,7 +147,7 @@ class TrendEngineForTicker{
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
     var JSON = JSONBlob
     //make sure all lower case
-    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
+    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "chart", "longterm", "trade","investment", "long", "short", "earning", "wall", "street"]
     var investmentRelatedTweets = [[String:AnyObject]]()
     
     for var i = 0; i < JSON.count; ++i {
@@ -152,18 +155,19 @@ class TrendEngineForTicker{
       let text = currentTweet["text"] as String
       let entities = currentTweet["entities"] as [String:AnyObject]
       let hashTags = entities["hashtags"] as [AnyObject]
+        
       var arrayOfHashTags = [String]()
       for o in hashTags{
         arrayOfHashTags.append(o["text"] as String!)
       }
       //revisit this logic
       for k in arrayOfKeyWords{
-        if text.lowercaseString.rangeOfString(k) != nil {
-          for HT in arrayOfHashTags{
-            if HT.lowercaseString.rangeOfString(HT) != nil{
-              investmentRelatedTweets.append(JSON[i])
+        for item in arrayOfHashTags{
+            if text.lowercaseString.rangeOfString(k) != nil || item.lowercaseString.rangeOfString(item as String) != nil {
+                
+                investmentRelatedTweets.append(JSON[i])
+                
             }
-          }
         }
       }
     }
