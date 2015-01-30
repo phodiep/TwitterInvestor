@@ -154,10 +154,7 @@ class TrendEngineForTicker{
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
     var JSON = JSONBlob
     //make sure all lower case
-    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
-    
-    
-    
+    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "chart", "longterm", "trade","investment", "long", "short", "earning", "wall", "street"]
     var investmentRelatedTweets = [[String:AnyObject]]()
     
     for var i = 0; i < JSON.count; ++i {
