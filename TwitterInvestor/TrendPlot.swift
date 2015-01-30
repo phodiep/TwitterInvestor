@@ -149,11 +149,12 @@ class TrendPlot: UIView {
         CGPathAddLineToPoint(path, nil, xposition, graphHeight - yposition);
         
         xTickCount += 1
-        if xTickCount >= 10 {
+        if xTickCount >= 15 {
             let xLabel = axisLabel(point.objectForKey("date") as NSString )
-            xLabel.frame = CGRectMake(xposition - 17, graphHeight + 20, 38, 20)
-            xLabel.textAlignment = NSTextAlignment.Center
-            xLabel.transform = CGAffineTransformMakeRotation(0.785)
+            xLabel.frame = CGRectMake(xposition - 17, graphHeight + 20, 38, 40)
+            xLabel.numberOfLines = 0
+            xLabel.textAlignment = NSTextAlignment.Right
+            xLabel.transform = CGAffineTransformMakeRotation(4.7124) //0.785
             addSubview(xLabel)
             xTickCount = 0
         }
