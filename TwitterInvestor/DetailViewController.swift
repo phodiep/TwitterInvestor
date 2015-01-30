@@ -20,8 +20,8 @@ class DetailViewController: UIViewController {
     var alertController: UIAlertController!
     var moreButton: UIBarButtonItem!
 
-    var timerForTwitterTrendCheck: NSTimer?
-    var operationQueueCheckTrend: NSOperationQueue?
+//    var timerForTwitterTrendCheck: NSTimer?
+//    var operationQueueCheckTrend: NSOperationQueue?
     var isTrending: Bool?
     var trendMagnitude: Double?
   
@@ -110,9 +110,9 @@ class DetailViewController: UIViewController {
     
     func layoutStockView() {
         // start time for Trend Check
-        timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
-        NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
-        self.operationQueueCheckTrend = NSOperationQueue()
+//        timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
+//        NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
+//        self.operationQueueCheckTrend = NSOperationQueue()
 
         
         self.stockView.backgroundColor = UIColor(white: 0.95, alpha: 1)
@@ -238,13 +238,13 @@ class DetailViewController: UIViewController {
     }
   
   
-    func checkForTrend(){
-      operationQueueCheckTrend!.addOperationWithBlock { () -> Void in
-        
-        self.trendMagnitude = self.trendEngine.checkForTrend()
-        self.isTrending = self.trendEngine.isTrending
-      }
-    }
+//    func checkForTrend(){
+//      operationQueueCheckTrend!.addOperationWithBlock { () -> Void in
+//        
+//        self.trendMagnitude = self.trendEngine.checkForTrend()
+//        self.isTrending = self.trendEngine.isTrending
+//      }
+//    }
 
     func layoutTwitterView_empty() {
         let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
