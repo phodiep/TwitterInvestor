@@ -174,19 +174,21 @@ class TrendEngineForTicker{
                             "buy",
                             "chart",
                             "daytrader", "dow",
-                            "earning",
+                            "earn",
                             "finance",
-                            "investing", "investor", "investment", "indu", "ibov", "ipsa", "ira",
-                            "gainer",
-                            "loser", "long",
+                            "invest", "indu", "ibov", "ipsa", "ira",
+                            "hold",
+                            "gain", "grow", "global",
+                            "loser", "long", "loss",
                             "market", "money", "mover", "mxx",
                             "nasdaq", "nyse",
                             "osp60",
                             "premarket",
-                            "rating", "roth",
-                            "stock", "soared", "short", "sell", "share", "spx", "street",
+                            "rating", "roth", "record",
+                            "stock", "soared", "short", "sell", "share", "spx", "street", "split", "sold", "sector", "shake",
                             "trade", "trading",
-                            "wall" ]
+                            "wall", "win",
+                            "yield"]
 
     var investmentRelatedTweets = [[String:AnyObject]]()
     
