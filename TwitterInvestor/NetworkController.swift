@@ -239,7 +239,9 @@ class NetworkController {
                   //Check to See if any results got returned. Sometimes a hashtag just never has any tweets
                   if arrayOfResults.count == 0{
                     //Reture an trendengine that has a base line of zero
-                    trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, JSONBlob: self.arrayOfAllTweetJSON), nil)
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                      trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, JSONBlob: self.arrayOfAllTweetJSON), nil)
+                    })
                   }else{
                     //append the results to the global arrayofallTweetData
                     for item in arrayOfResults{
