@@ -307,28 +307,13 @@ class DetailViewController: UIViewController {
     }
     
     //MARK: Button Actions
-    func newsButtonPressed(sender: UIButton) {
-//        let webVC = WebViewController()
-//        webVC.ticker = stock.getStringValue("Symbol")  //self.stock.ticker
-//        self.navigationController?.pushViewController(webVC, animated: true)
-
-        let tweetVC = TweetsViewController()
-        tweetVC.tweets = self.trendEngine.arrayOfAllJSON
-        self.navigationController?.pushViewController(tweetVC, animated: true)
-
-    }
-
-    
     func moreButtonPressed(sender: UIButton) {
-
-        
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             if let popoverController = self.alertController.popoverPresentationController {
                 popoverController.sourceView = sender
                 popoverController.sourceRect = sender.bounds
             }
         }
-
         self.presentViewController(self.alertController, animated: true, completion: nil)
     }
 
