@@ -11,7 +11,7 @@ import Foundation
 extension String {
     
     func validateForTicker() -> Bool {
-        let regex = NSRegularExpression(pattern: "[^A-Za-z0-9\n-]", options: nil, error: nil)
+        let regex = NSRegularExpression(pattern: "[^A-Za-z0-9\n]", options: nil, error: nil)
         let elements = countElements(self)
         let range = NSMakeRange(0, elements)
         
