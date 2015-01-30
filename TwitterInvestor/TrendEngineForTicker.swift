@@ -61,6 +61,13 @@ class TrendEngineForTicker{
     }else {
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
+      for item in JSONBlob{
+        println(item["id_str"])
+      }
+      println("____________")
+      for item in self.arrayOfAllJSON{
+        println(item["id_str"])
+      }
       //Set the formatting options for the Oldest and newest tweets
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
@@ -145,6 +152,9 @@ class TrendEngineForTicker{
     var JSON = JSONBlob
     //make sure all lower case
     let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
+    
+    
+    
     var investmentRelatedTweets = [[String:AnyObject]]()
     
     for var i = 0; i < JSON.count; ++i {
@@ -155,7 +165,10 @@ class TrendEngineForTicker{
       var arrayOfHashTags = [String]()
       for o in hashTags{
         arrayOfHashTags.append(o["text"] as String!)
+        //println(o)
       }
+      
+      
       //revisit this logic
       for k in arrayOfKeyWords{
         if text.lowercaseString.rangeOfString(k) != nil {
@@ -163,8 +176,10 @@ class TrendEngineForTicker{
             if HT.lowercaseString.rangeOfString(HT) != nil{
               investmentRelatedTweets.append(JSON[i])
             }
+            break
           }
         }
+        break
       }
     }
     self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
