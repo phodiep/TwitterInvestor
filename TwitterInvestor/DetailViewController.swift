@@ -359,6 +359,13 @@ class DetailViewController: UIViewController {
         alertController.addAction(webOption)
         alertController.addAction(tweetsOption)
         
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if let popoverController = self.alertController.popoverPresentationController {
+                popoverController.sourceView = sender
+                popoverController.sourceRect = sender.bounds
+            }
+        }
+
         self.presentViewController(self.alertController, animated: true, completion: nil)
     }
 
