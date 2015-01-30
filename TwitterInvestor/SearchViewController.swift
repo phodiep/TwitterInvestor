@@ -133,22 +133,23 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 //                    println( "First[\(self.watchList.first?.quoteData)]" )
 //                    println( "First[\(self.watchList.first?.quoteData.isEmpty)]" )
 //                    println( "Count[\(self.watchList.first?.quoteData.count)]" )
+                    activityIndicator.stopAnimating()
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    self.tableView.reloadData()
+
                 } else {
 
                     NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
                         if returnedTrendEngine != nil {
                             //returnedTrendEngine!.buildData()
                             self.engines.insert(returnedTrendEngine!, atIndex: 0)
-                            //activityIndicator.stopAnimating()
-                            //UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            //self.tableView.reloadData()
+                            activityIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            self.tableView.reloadData()
                         }
                     })
 
                 }
-                activityIndicator.stopAnimating()
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                self.tableView.reloadData()
             }
         })
         
