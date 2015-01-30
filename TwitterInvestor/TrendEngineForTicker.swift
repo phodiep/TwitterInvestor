@@ -229,6 +229,8 @@ class TrendEngineForTicker{
     }
     if earlierDate.compare(laterDate) == NSComparisonResult.OrderedSame{
       return true
+      
+      
     }
     return false
   }
