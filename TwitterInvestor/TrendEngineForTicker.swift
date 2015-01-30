@@ -174,7 +174,7 @@ class TrendEngineForTicker{
                             "gainer",
                             "loser", "long", "longterm",
                             "market", "money", "mover", "mxx",
-                            "nasdaq",
+                            "nasdaq", "nyse",
                             "osp60",
                             "premarket",
                             "rating", "longterm", "roth",

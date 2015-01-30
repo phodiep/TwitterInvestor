@@ -144,7 +144,6 @@
 		1DF297251A73198B00B5ADED /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1DF297361A731B8300B5ADED /* Stock.swift */,
 				74102FA21A76B56600FC4E61 /* Extensions.swift */,
 				1DF297361A731B8300B5ADED /* Stock.swift */,
 				4E4BAF7A1A74229B0076CE09 /* TrendEngineForTicker.swift */,
