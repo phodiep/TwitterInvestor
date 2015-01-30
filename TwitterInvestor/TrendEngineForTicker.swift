@@ -63,13 +63,13 @@ class TrendEngineForTicker{
 
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
-      for item in JSONBlob{
-        println(item["id_str"])
-      }
-      println("____________")
-      for item in self.arrayOfAllJSON{
-        println(item["id_str"])
-      }
+//      for item in JSONBlob{
+//        println(item["id_str"])
+//      }
+//      println("____________")
+//      for item in self.arrayOfAllJSON{
+//        println(item["id_str"])
+//      }
       //Set the formatting options for the Oldest and newest tweets
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
