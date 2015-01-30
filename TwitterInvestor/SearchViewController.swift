@@ -109,17 +109,39 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let ticker = input.uppercaseString
 
         let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width * 2, UIScreen.mainScreen().bounds.height * 2)
+        activityIndicator.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height * 2)
         activityIndicator.color = UIColor.blackColor()
         activityIndicator.backgroundColor = UIColor.lightGrayColor()
         activityIndicator.center = CGPointMake(self.view.frame.width/2, self.view.frame.height/3)
         activityIndicator.alpha = 0.5
         activityIndicator.hidden = false
-        self.view.addSubview(activityIndicator)
+
         activityIndicator.startAnimating()
         activityIndicator.hidesWhenStopped = true
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
 
+        self.view.addSubview(activityIndicator)
+        
+        let message = UILabel()
+        message.text = "Hang on... Getting Twitter Info"
+        message.textColor = UIColor.grayColor()
+        message.textAlignment = NSTextAlignment.Center
+        message.numberOfLines = 0
+        message.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.view.addSubview(message)
+        let views = ["message" : message]
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[message(\(UIScreen.mainScreen().bounds.width))]|",
+            options: nil, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-250-[message]",
+            options: nil, metrics: nil, views: views))
+        
+
+
+        
+
+        
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (stockJSON, error) -> () in
             if stockJSON != nil {
                 self.watchList.insert(stockJSON!, atIndex: 0)
@@ -128,6 +150,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
                     self.invalidTickerAlert( ticker )
                     self.watchList.removeAtIndex(0)
                     activityIndicator.stopAnimating()
+                    message.hidden = true
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
 
@@ -138,6 +161,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
                             //returnedTrendEngine!.buildData()
                             self.engines.insert(returnedTrendEngine!, atIndex: 0)
                             activityIndicator.stopAnimating()
+                            message.hidden = true
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             self.tableView.reloadData()
                        // }

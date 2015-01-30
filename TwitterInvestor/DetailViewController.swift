@@ -259,7 +259,10 @@ class DetailViewController: UIViewController {
         let views = ["message" : message]
         
         self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-8-[message]-8-|",
+            "H:|-16-[message]",
+            options: nil, metrics: nil, views: views))
+        self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-16-[message]",
             options: nil, metrics: nil, views: views))
         
     }
