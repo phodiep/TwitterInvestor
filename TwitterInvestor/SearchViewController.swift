@@ -161,8 +161,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
     
     func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        //return text.validateForTicker()
-        return true
+        return text.validateForTicker()
   }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
