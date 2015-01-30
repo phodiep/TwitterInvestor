@@ -59,6 +59,8 @@ class TrendEngineForTicker{
     if JSONBlob.count == 0{
       tweetsPerHour = 0
     }else {
+
+
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
       for item in JSONBlob{
@@ -85,6 +87,7 @@ class TrendEngineForTicker{
       self.needsBaseline = false
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
+
     }
   }
   
@@ -162,6 +165,7 @@ class TrendEngineForTicker{
       var text = currentTweet["text"] as String
       let entities = currentTweet["entities"] as [String:AnyObject]
       let hashTags = entities["hashtags"] as [AnyObject]
+        
       var arrayOfHashTags = [String]()
       for o in hashTags{
         arrayOfHashTags.append(o["text"] as String!)
