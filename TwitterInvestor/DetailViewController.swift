@@ -81,6 +81,10 @@ class DetailViewController: UIViewController {
         alertController.addAction(webOption)
         alertController.addAction(tweetsOption)
         alertController.addAction(cancelOption)
+        
+        if self.trendEngine.needsBaseline {
+            tweetsOption.enabled = false
+        }
 
     }
 
