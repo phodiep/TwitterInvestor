@@ -14,8 +14,6 @@ class NetworkController {
 
     let DBUG = false
   
-  
-  
     var arrayOfAllTweetJSON = [[String:AnyObject]]()
     //Variable for the ID of the oldest Tweet
     var idOfOldestTweet: String?
@@ -43,17 +41,6 @@ class NetworkController {
     }
 
     /**
-    * @abtract A really simple way to calculate the sum of two numbers.
-    * @param firstNumber An NSInteger to be used in the summation of two numbers
-    * @param secondNumber The second half of the equation.
-    * @return The sum of the two numbers passed in.
-    *
-    * @discussion A really simple way to calculate the sum of two numbers.
-
-    *  https://www.quandl.com/resources/api-for-stock-data
-    *  Quandl is the easiest way to find, use and share numerical data. Search millions of datasets.
-    *  Instantly download, graph, share or access via API.
-    *  for example: https://www.quandl.com/api/v1/datasets/WIKI/CRIS.json
     */
     func getStockInfoFromYahoo(ticker: String, stockLookup: (Stock?, NSError?) -> () ) {
 
