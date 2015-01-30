@@ -11,7 +11,7 @@ import Foundation
 
 class Stock {
 
-    let DBUG                = true
+    let DBUG                = false
 
     var symbol: String      = ""
     var ticker: String      = ""
@@ -113,13 +113,6 @@ class Stock {
             return 0.0  // ????
         }
     }
-
-/*  func convertToFloat( key: NSString ) -> Float {
-       // println( "convertToFloat() key[\(key)]" )
-        let string : NSString   = quoteData["\(key)"] as NSString
-        let aFloat : Float      = string.floatValue
-        return aFloat
-    } */
 
     func getSymbol() -> String {
         return self.symbol

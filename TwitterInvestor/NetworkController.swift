@@ -202,61 +202,11 @@ class NetworkController {
     }
   }
   
-//  func overloadTwitter(tickerSymbol: String, trailingClosure: (TrendEngineForTicker?,NSError?)->Void){
-//    let myAccountStore = ACAccountStore()
-//    //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
-//    let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-//    //this starts a new thread to access the account and do something with it in the clsure statement
-//    myAccountStore.requestAccessToAccountsWithType(myAccountType, options: nil) { (gotit: Bool , error: NSError!) -> Void in
-//      if gotit{
-//        //A user can have multiple accounts with each of these services, we load them all into the array.
-//        let accountsArray = myAccountStore.accountsWithAccountType(myAccountType)
-//        //make sure we got at least one account
-//        if accountsArray.isEmpty == false{
-//          //We just want the first account that is stored in the array of account (there might only be one)
-//          self.twitterAccount = accountsArray[0] as? ACAccount
-//          //return twitterAccount
-//          let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&count=100")//q=%SIRI")
-//          //A request of type SLRequest, this starts a new thread.
-//          //var trendEngine: TrendEngineForTicker?
-//          let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
-//          //Set the SLRequests account property to the twitter accont that we got from the array of accounts
-//          twitterRequest.account = self.twitterAccount
-//          //call the performRequestWithHandler method on SLRequest (this starts a new thread) paramaters are the data that will be returned, the response code, and then an error
-//          twitterRequest.performRequestWithHandler({ (jsonData, responseCode, error) -> Void in
-//            println(error)
-//            //make a switch statement on the response code. You will probably get a basic server response code
-//            switch responseCode.statusCode {
-//              //If the response is good
-//            case 200...299:
-//              //create an array of json data that is typed as an array of [AnyObject]
-//              //println(jsonData)
-//              if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
-//                if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
-//                 //trendEngine = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
-//                  trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults), nil)
-//                }
-//              }
-//              //If response is bad
-//            case 400...599:
-//              //println(responseCode.statusCode)
-//              NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-//                trailingClosure(nil, error)
-//              })
-//            default:
-//              println("\(responseCode.statusCode)")
-//            }
-//          })
-//        //end accounts array is empty check
-//        }
-//      //got it check
-//      }
-//    //end account store request
-//    }
-//   //end function
-//  }
   
   func overloadTwitter(tickerSymbol: String, trailingClosure: (TrendEngineForTicker?,NSError?)->Void){
+    arrayOfAllTweetJSON = [[String:AnyObject]]()
+    self.idOfOldestTweet = nil
+    self.dateOfOldestTweet = nil
     let myAccountStore = ACAccountStore()
     //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
     let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
@@ -270,7 +220,6 @@ class NetworkController {
           //We just want the first account that is stored in the array of account (there might only be one)
           self.twitterAccount = accountsArray[0] as? ACAccount
           //return twitterAccount
-         // if trendEngineToReturn == nil{
           let requestURL = NSURL(string: "https://api.twitter.com/1.1/search/tweets.json?q=%23\(tickerSymbol)&count=100")//q=%SIRI")
           //A request of type SLRequest, this starts a new thread.
           //var trendEngine: TrendEngineForTicker?
@@ -287,28 +236,33 @@ class NetworkController {
               //create an array of json data that is typed as an array of [AnyObject]
               //println(jsonData)
               if let jsonDictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: nil) as? [String: AnyObject] {
-                if let results = jsonDictionary["statuses"] as? [[String:AnyObject]]{
-                  let arrayOfResults = self.stripTweets(results)
+                if let arrayOfResults = jsonDictionary["statuses"] as? [[String:AnyObject]]{
+                  //Check to See if any results got returned. Sometimes a hashtag just never has any tweets
                   if arrayOfResults.count == 0{
-                    
-                    
+                    //Reture an trendengine that has a base line of zero
+                    trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, JSONBlob: self.arrayOfAllTweetJSON), nil)
                   }else{
-//                    for item in arrayOfResults{
-//                      self.arrayOfAllTweetJSON.append(item)
-//                    }
-                    //Set the formatting options for the Oldest and newest tweets
+                    //append the results to the global arrayofallTweetData
+                    for item in arrayOfResults{
+                      self.arrayOfAllTweetJSON.append(item)
+                      //println(item["id_str"])
+                    }
+                    //Set the formatting options for Dates
                     let format = NSDateFormatter()
                     format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
                     //set the ID and Date of the oldest Tweets
-                    let oldestTweet = arrayOfResults.last as [String:AnyObject]!
+                    let oldestTweet = self.arrayOfAllTweetJSON.last as [String:AnyObject]!
                     self.idOfOldestTweet = oldestTweet["id_str"] as? String
                     self.dateOfOldestTweet = format.dateFromString(oldestTweet["created_at"] as String!)
-                    //trendEngine = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
-                    //trendEngineToReturn = TrendEngineForTicker(tickerSymbol: tickerSymbol, firstJSONBlob: arrayOfResults)
+                    //Call get more tweets this is a recursive function that will keep appending to arrayof alljson and updating hte oldest date untill 5 days ago is reached.
                     self.getMoreTweets(tickerSymbol, oldestTweetID: self.idOfOldestTweet!, completion: { (returnedBool) -> Void in
+                      //When we come back out of the recursion all the work of appending to the array should be complete and we check for a true.
                       if returnedBool == true {
                         println(self.arrayOfAllTweetJSON.count)
-                        trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, JSONBlob: self.arrayOfAllTweetJSON), nil)
+                        //Add the trailing closure to the main queue and return a trend engine that is initalized with the arrayOFALLTweets that has been built recursivly.
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                          trailingClosure(TrendEngineForTicker(tickerSymbol: tickerSymbol, JSONBlob: self.arrayOfAllTweetJSON), nil)
+                        })
                       }
                     })
                   }
@@ -324,15 +278,6 @@ class NetworkController {
               println("\(responseCode.statusCode)")
             }
           })
-          //end If to check for initial JSON request
-         // }else{
-            
-            
-            
-            
-            
-          //End else to build all the data and call the completion handler.
-         // }
           //end accounts array is empty check
         }
         //got it check
@@ -344,13 +289,13 @@ class NetworkController {
 
   func getMoreTweets(theTicker: String,oldestTweetID: String, completion: (Bool)->Void){
     
-    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -430000)
+    let fiveDaysAgo = NSDate(timeIntervalSinceNow: -432000)
     
     if self.dateOfOldestTweet?.compare(fiveDaysAgo) == NSComparisonResult.OrderedDescending{
       NetworkController.sharedInstance.twitterRequestForSinceID(theTicker, theID: oldestTweetID) { (returnedJSON, error) ->   Void in
-        //let JSON = self.stripTweets(returnedJSON!)
         for item in returnedJSON!{
           self.arrayOfAllTweetJSON.append(item)
+          //println(item["id_str"])
         }
         let oldestTweet = self.arrayOfAllTweetJSON.last as [String:AnyObject]!
         self.idOfOldestTweet = oldestTweet["id_str"] as? String
@@ -371,38 +316,5 @@ class NetworkController {
     }
   }
   
-  private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
-    var JSON = JSONBlob
-    //make sure all lower case
-    let arrayOfKeyWords = ["stock","market","money","mover","investing","daytrader", "loser", "gainer", "premarket", "soared", "rating", "buy", "sell", "stock", "chart", "longterm", "trade","investment", "long", "short"]
-    var investmentRelatedTweets = [[String:AnyObject]]()
-    
-    for var i = 0; i < JSON.count; ++i {
-      let currentTweet = JSON[i]
-      let text = currentTweet["text"] as String
-      let entities = currentTweet["entities"] as [String:AnyObject]
-      let hashTags = entities["hashtags"] as [AnyObject]
-      var arrayOfHashTags = [String]()
-      for o in hashTags{
-        arrayOfHashTags.append(o["text"] as String!)
-      }
-      //revisit this logic
-      for k in arrayOfKeyWords{
-        if text.lowercaseString.rangeOfString(k) != nil {
-          for HT in arrayOfHashTags{
-            if HT.lowercaseString.rangeOfString(HT) != nil{
-              investmentRelatedTweets.append(JSON[i])
-            }
-          }
-        }
-      }
-    }
-    //self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
-    return investmentRelatedTweets
-  }
-
-
-  
-    
     
 }

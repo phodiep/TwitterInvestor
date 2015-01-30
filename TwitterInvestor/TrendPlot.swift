@@ -17,7 +17,7 @@ class TrendPlot: UIView {
     private var context : CGContextRef?
     
     // plot size
-    private let padding     : CGFloat = 30
+    private let padding     : CGFloat = 32
     private var graphWidth  : CGFloat = 0
     private var graphHeight : CGFloat = 0
     private var axisWidth   : CGFloat = 0
@@ -27,7 +27,7 @@ class TrendPlot: UIView {
     // style settings
     var linesColor  = UIColor(white: 0.9, alpha: 1)
     var axisColor   = UIColor.grayColor()
-    var graphColor  = UIColor.blueColor()
+    var graphColor  = UIColor.blackColor()
     var labelFont   = UIFont.systemFontOfSize(8)
     var labelColor  = UIColor.blackColor()
     
@@ -44,7 +44,7 @@ class TrendPlot: UIView {
     init(frame: CGRect, data: NSArray) {
         
         super.init(frame: frame)
-        backgroundColor = UIColor.whiteColor()
+        backgroundColor = UIColor.clearColor()//whiteColor()
         self.data = data.mutableCopy() as NSMutableArray
         
     }
@@ -72,7 +72,7 @@ class TrendPlot: UIView {
         let yAxisLabel = UILabel()
         yAxisLabel.text = "Tweets / Hour"
         yAxisLabel.font = UIFont.systemFontOfSize(10)
-        yAxisLabel.textColor = UIColor.blueColor()
+        yAxisLabel.textColor = UIColor.blackColor()
 
 //        yAxisLabel.backgroundColor = UIColor.redColor()
         yAxisLabel.textAlignment = NSTextAlignment.Center
@@ -149,7 +149,7 @@ class TrendPlot: UIView {
         CGPathAddLineToPoint(path, nil, xposition, graphHeight - yposition);
         
         xTickCount += 1
-        if xTickCount >= 12 {
+        if xTickCount >= 10 {
             let xLabel = axisLabel(point.objectForKey("date") as NSString )
             xLabel.frame = CGRectMake(xposition - 17, graphHeight + 20, 38, 20)
             xLabel.textAlignment = NSTextAlignment.Center

@@ -48,6 +48,7 @@ class TrendEngineForTicker{
   var tweetText: String?
   var arrayOfTrends = [Trend]()
   var tweetBuckets : [AnyObject]?
+  var plotView: UIView?
   
   
   //MARK: Initalizers
@@ -58,8 +59,17 @@ class TrendEngineForTicker{
     if JSONBlob.count == 0{
       tweetsPerHour = 0
     }else {
+
+
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
+      for item in JSONBlob{
+        println(item["id_str"])
+      }
+      println("____________")
+      for item in self.arrayOfAllJSON{
+        println(item["id_str"])
+      }
       //Set the formatting options for the Oldest and newest tweets
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
@@ -75,6 +85,9 @@ class TrendEngineForTicker{
       self.tweetsPerHour = self.figureOutAverageInterval(self.arrayOfAllJSON)
       //Set the needs baseline property to nil.
       self.needsBaseline = false
+      self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
+      self.setPlotView()
+
     }
   }
   
@@ -139,19 +152,23 @@ class TrendEngineForTicker{
   
   //Funciton to strip tweets that have nothing to do with investing.
   private func stripTweets(JSONBlob: [[String:AnyObject]])->[[String:AnyObject]]{
+
     var JSON = JSONBlob
+
     // Make sure all lower case
-    // 'indu' = Dow Jones Global Indexes
-    // 'spx'  = S&P 500 Index
-    // 'ibov' = Sao Paulo Se Bovespa Index
+    // 'indu'  = Dow Jones Global Indexes
+    // 'spx'   = S&P 500 Index
+    // 'ibov'  = Sao Paulo Se Bovespa Index
     // 'osp60' = S&P/TSX 60 Index
     // 'ipsa'  = Chilean Se IPSA Index
     // 'mxx'   = MXSE IPC Index, Mexico Stock Exchange
     //
+    // ----> MAKE SURE ALL LOWER CASE
     let arrayOfKeyWords = [ "analytics", "after-hours", "afterhours",
                             "buy",
                             "chart",
                             "daytrader", "dow",
+                            "earning",
                             "finance",
                             "investing", "investor", "investment", "indu", "ibov", "ipsa", "ira",
                             "gainer",
@@ -161,29 +178,33 @@ class TrendEngineForTicker{
                             "osp60",
                             "premarket",
                             "rating", "longterm", "roth",
-                            "stock", "soared", "short", "sell", "share", "spx",
-                            "trade", "trading" ]
+                            "stock", "soared", "short", "sell", "share", "spx", "street",
+                            "trade", "trading",
+                            "wall" ]
 
     var investmentRelatedTweets = [[String:AnyObject]]()
     
     for var i = 0; i < JSON.count; ++i {
       let currentTweet = JSON[i]
-      let text = currentTweet["text"] as String
+      var text = currentTweet["text"] as String
       let entities = currentTweet["entities"] as [String:AnyObject]
       let hashTags = entities["hashtags"] as [AnyObject]
+        
       var arrayOfHashTags = [String]()
       for o in hashTags{
         arrayOfHashTags.append(o["text"] as String!)
+        //println(o)
       }
+      for item in arrayOfHashTags{
+        text = "\(text) \(item)"
+      }
+      
       //revisit this logic
       for k in arrayOfKeyWords{
-        if text.lowercaseString.rangeOfString(k) != nil {
-          for HT in arrayOfHashTags{
-            if HT.lowercaseString.rangeOfString(HT) != nil{
-              investmentRelatedTweets.append(JSON[i])
-            }
+          if text.lowercaseString.rangeOfString(k) != nil {
+            investmentRelatedTweets.append(JSON[i])
+            break
           }
-        }
       }
     }
     self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
@@ -236,11 +257,15 @@ class TrendEngineForTicker{
     }
     if earlierDate.compare(laterDate) == NSComparisonResult.OrderedSame{
       return true
+      
+      
     }
     return false
   }
 
-  
+  func setPlotView(){
+    self.plotView = TrendPlot(frame: CGRectZero, data: self.tweetBuckets!)
+  }
   
   
   
