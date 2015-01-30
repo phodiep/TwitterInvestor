@@ -80,34 +80,46 @@ class Stock {
     /**
      *
      */
-    func convertToInt( key : NSString ) -> Int {
-        //println( "convertToInt() key[\(key)]" )
-        let aString   : NSString   = quoteData["\(key)"] as NSString
-        let anInteger : Int?       = aString.integerValue
-        return anInteger!
-//        let a:Int? = firstText.text.toInt() // firstText is UITextField
-
-    }
-
-    func getStringValue( key: NSString ) -> String? {
-        println( "getStringValue() key[\(key)]" )
-        var searchKey = key
+    func convertToInt( key : NSString ) -> Int? {
+        if DBUG { println( "convertToInt() key[\(key)]" ) }
+        var searchKey  = key
         if  searchKey == "Company" { searchKey = "Name" }
-        if let theStringValue  = quoteData["\(searchKey)"] as? String {
-            println( "good: searchKey - \(key)" )
-            return theStringValue
+        if  let theStringValue = quoteData["\(searchKey)"] as? String {
+            let anInteger      = theStringValue.toInt()
+            return anInteger!
         } else {
-            println( "bad: searchKey - \(key)" )
-            return "-"
+            return 0   // ????
         }
     }
 
-    func convertToFloat( key: NSString ) -> Float {
+    func getStringValue( key: NSString ) -> String? {
+        if DBUG { println( "getStringValue() key[\(key)]" ) }
+        var searchKey  = key
+        if  searchKey == "Company" { searchKey = "Name" }
+        if let theStringValue  = quoteData["\(searchKey)"] as? String {
+           return theStringValue
+        } else {
+           return "-"
+        }
+    }
+
+    func convertToFloat( key: NSString ) -> Float? {
+        if DBUG { println( "convertToFloat() key[\(key)]" ) }
+        var searchKey  = key
+        if  let theStringValue = quoteData["\(key)"] as? String {
+            let aFloat         = (theStringValue as NSString).floatValue
+            return aFloat
+        } else {
+            return 0.0  // ????
+        }
+    }
+
+/*  func convertToFloat( key: NSString ) -> Float {
        // println( "convertToFloat() key[\(key)]" )
         let string : NSString   = quoteData["\(key)"] as NSString
         let aFloat : Float      = string.floatValue
         return aFloat
-    }
+    } */
 
     func getSymbol() -> String {
         return self.symbol
