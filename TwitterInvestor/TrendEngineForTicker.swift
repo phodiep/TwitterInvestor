@@ -159,7 +159,7 @@ class TrendEngineForTicker{
     
     for var i = 0; i < JSON.count; ++i {
       let currentTweet = JSON[i]
-      let text = currentTweet["text"] as String
+      var text = currentTweet["text"] as String
       let entities = currentTweet["entities"] as [String:AnyObject]
       let hashTags = entities["hashtags"] as [AnyObject]
       var arrayOfHashTags = [String]()
@@ -167,19 +167,16 @@ class TrendEngineForTicker{
         arrayOfHashTags.append(o["text"] as String!)
         //println(o)
       }
-      
+      for item in arrayOfHashTags{
+        text = "\(text) \(item)"
+      }
       
       //revisit this logic
       for k in arrayOfKeyWords{
-        if text.lowercaseString.rangeOfString(k) != nil {
-          for HT in arrayOfHashTags{
-            if HT.lowercaseString.rangeOfString(HT) != nil{
-              investmentRelatedTweets.append(JSON[i])
-            }
+          if text.lowercaseString.rangeOfString(k) != nil {
+            investmentRelatedTweets.append(JSON[i])
             break
           }
-        }
-        break
       }
     }
     self.tweetBuckets = putTweetsInBucket(investmentRelatedTweets)
