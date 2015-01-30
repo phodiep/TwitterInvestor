@@ -24,7 +24,7 @@ struct Trend{
   }
 }
 
-class TrendEngineForTicker{
+class TrendEngineForTicker: NSObject{
   
   //MARK: Properties for engine
   var arrayOfAllJSON = [[String:AnyObject]]()
@@ -55,11 +55,13 @@ class TrendEngineForTicker{
   
   //MARK: Initalizers
   init(tickerSymbol: String, JSONBlob: [[String:AnyObject]]){
+    super.init()
     //Set the ticker property to the ticker symbol that is passed in
     self.ticker = tickerSymbol
     //If no tweets were found we don't neew to do anything
     if JSONBlob.count == 0{
       tweetsPerHour = 0
+      self.tweetsPerHour = 0.0
     }else {
 
 
@@ -91,8 +93,7 @@ class TrendEngineForTicker{
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
       //Set up Timer and Queue to check for trends.
-      timerForTwitterTrendCheck = NSTimer(timeInterval: 60, target: self, selector: "checkForTrend", userInfo: nil, repeats: true)
-      NSRunLoop.currentRunLoop().addTimer(timerForTwitterTrendCheck!, forMode: NSRunLoopCommonModes)
+      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(3600, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
       self.operationQueueCheckTrend = NSOperationQueue()
     }
   }
@@ -174,19 +175,21 @@ class TrendEngineForTicker{
                             "buy",
                             "chart",
                             "daytrader", "dow",
-                            "earning",
+                            "earn",
                             "finance",
-                            "investing", "investor", "investment", "indu", "ibov", "ipsa", "ira",
-                            "gainer",
-                            "loser", "long",
+                            "invest", "indu", "ibov", "ipsa", "ira",
+                            "hold",
+                            "gain", "grow", "global",
+                            "loser", "long", "loss",
                             "market", "money", "mover", "mxx",
                             "nasdaq", "nyse",
                             "osp60",
                             "premarket",
-                            "rating", "roth",
-                            "stock", "soared", "short", "sell", "share", "spx", "street",
+                            "rating", "roth", "record",
+                            "stock", "soared", "short", "sell", "share", "spx", "street", "split", "sold", "sector", "shake",
                             "trade", "trading",
-                            "wall" ]
+                            "wall", "win",
+                            "yield"]
 
     var investmentRelatedTweets = [[String:AnyObject]]()
     
@@ -277,58 +280,16 @@ class TrendEngineForTicker{
     self.plotView = TrendPlot(frame: CGRectZero, data: self.tweetBuckets!)
   }
 
-
-  
-  
-  
-  
-  
-  func checkForTrend()->Double?{
-    var magnitudeOfTrend: Double?
-    if self.needsBaseline == true {
+  func checkForTrend(sender: AnyObject){
+    var magnitudeOfTrend: Double? = 2.2
+    let mostRecentTweets = [[String:AnyObject]]()
+    NetworkController.sharedInstance.twitterRequestForAfterID(self.ticker!, theID: self.idOfNewestTweet!) { (returnedTweets, error) -> Void in
       
-    }else{
-      NetworkController.sharedInstance.twitterRequestForAfterID(self.ticker!, theID: self.idOfNewestTweet!) { (returnedJSON, error) -> Void in
-        let JSON = self.stripTweets(returnedJSON!)
-        let averageIntervalForNewTweets = self.figureOutAverageInterval(JSON)
-        switch (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!{
-        
-        case 0...0.2:
-          var newTrend = Trend()
-          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
-          magnitudeOfTrend = newTrend.trendMagnitude
-        case 0.3...0.5:
-          let date = NSDate()
-          var newTrend = Trend()
-          newTrend.startTime = date
-          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
-          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
-          magnitudeOfTrend = newTrend.trendMagnitude
-        case 0.6...1:
-          let date = NSDate()
-          var newTrend = Trend()
-          newTrend.startTime = date
-          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
-          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
-          magnitudeOfTrend = newTrend.trendMagnitude
-        case 1.1...99:
-          let date = NSDate()
-          var newTrend = Trend()
-          newTrend.startTime = date
-          newTrend.trendMagnitude = (averageIntervalForNewTweets-self.tweetsPerHour!)/self.tweetsPerHour!
-          newTrend.numberOfTweetsThatRepresentTheTrend = JSON.count
-          magnitudeOfTrend = newTrend.trendMagnitude
-        default:
-          magnitudeOfTrend = 0
-        }
-        for item in JSON{
-          self.arrayOfAllJSON.insert(item, atIndex: 0)
-        }
-        
-        
-        
-      }
+      
+      
+      
+      
     }
-    return magnitudeOfTrend
+
   }
 }
