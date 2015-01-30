@@ -14,8 +14,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     let searchBar = UISearchBar()
     
     var watchList = [Stock]()
-    var engines = [TrendEngineForTicker]()
-   // var stocks = [Stock]()
+    var engines   = [TrendEngineForTicker]()
 
     //MARK: UIViewController Lifecycle
     override func loadView() {
@@ -120,20 +119,38 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         activityIndicator.startAnimating()
         activityIndicator.hidesWhenStopped = true
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        
+
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (Stock, error) -> () in
-            self.watchList.insert(Stock!, atIndex: 0)
-            
-            NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
-                if returnedTrendEngine != nil{
-                  //returnedTrendEngine!.buildData()
-                  self.engines.insert(returnedTrendEngine!, atIndex: 0)
+            // println( "Stock[\(Stock)] error[\(error)]" )
+            if Stock != nil {
+                // println( "Stock: \(Stock)" )
+                self.watchList.insert(Stock!, atIndex: 0)
+                let testForEmpty = self.watchList.first!.quoteData.isEmpty
+                if  testForEmpty {
+                    self.invalidTickerAlert( ticker )
+                    self.watchList.removeAtIndex(0)
+//                    println( "Count[\(self.watchList.count)]" )
+//                    println( "First[\(self.watchList.first?.quoteData)]" )
+//                    println( "First[\(self.watchList.first?.quoteData.isEmpty)]" )
+//                    println( "Count[\(self.watchList.first?.quoteData.count)]" )
                     activityIndicator.stopAnimating()
                     UIApplication.sharedApplication().endIgnoringInteractionEvents()
                     self.tableView.reloadData()
-                }
-            })
 
+                } else {
+
+                    NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
+                        if returnedTrendEngine != nil {
+                            //returnedTrendEngine!.buildData()
+                            self.engines.insert(returnedTrendEngine!, atIndex: 0)
+                            activityIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            self.tableView.reloadData()
+                        }
+                    })
+
+                }
+            }
         })
         
         
@@ -163,8 +180,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
     
     //MARK: UIActionAlert
-    func invalidTickerAlert() {
-        let alertController = UIAlertController(title: "Ticker is not valid", message: "Enter a valid ticker for search", preferredStyle: .Alert)
+    func invalidTickerAlert( ticker : String ) {
+        let alertController = UIAlertController(title: "Ticker, \(ticker), is not valid", message: "Enter a valid ticker for search", preferredStyle: .Alert)
     
         let okButton = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
             //dismiss alert and reset search bar text
