@@ -39,9 +39,10 @@ class DetailViewController: UIViewController {
         self.view = self.rootView
 
         self.alertController = UIAlertController(title: "More Options", message: "", preferredStyle: .ActionSheet)
-        
-        self.layoutRootView()
+
         self.layoutStockView()
+        self.layoutRootView()
+
         if !self.trendEngine.needsBaseline{
             self.layoutTwitterView()
         } else {
@@ -95,8 +96,8 @@ class DetailViewController: UIViewController {
         let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
         let navBarHeight = self.navigationController?.navigationBar.frame.size.height
         
-        let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.35
-        let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.65
+//        let stockViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.35
+//        let twitterViewHeight = (UIScreen.mainScreen().bounds.height - navBarHeight! - statusBarHeight) * 0.65
         
         let views = ["stockView" : self.stockView,
             "twitterView" : self.twitterView]
@@ -107,7 +108,7 @@ class DetailViewController: UIViewController {
             "H:|[twitterView]|",
             options: nil, metrics: nil, views: views))
         self.rootView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-(\(navBarHeight! + statusBarHeight))-[stockView(\(stockViewHeight))][twitterView(\(twitterViewHeight))]|",
+            "V:|-(\(navBarHeight! + statusBarHeight))-[stockView][twitterView]|",
             options: nil, metrics: nil, views: views))
         
     }
@@ -237,7 +238,7 @@ class DetailViewController: UIViewController {
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-18-[titlePrice][priceLabel]-16-[titleChange][changeLabel]-16-[titlePE][peLabel]-16-[titleEPS][epsLabel]",
+            "V:|-18-[titlePrice][priceLabel]-16-[titleChange][changeLabel]-16-[titlePE][peLabel]-16-[titleEPS][epsLabel]-16-|",
             options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
     }
   
