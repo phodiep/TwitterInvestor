@@ -62,6 +62,8 @@ class TrendEngineForTicker: NSObject{
     if JSONBlob.count == 0{
       tweetsPerHour = 0
       self.tweetsPerHour = 0.0
+    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      self.operationQueueCheckTrend = NSOperationQueue()
     }else {
 
 
@@ -93,7 +95,7 @@ class TrendEngineForTicker: NSObject{
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
       //Set up Timer and Queue to check for trends.
-      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(3600, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
       self.operationQueueCheckTrend = NSOperationQueue()
     }
   }
@@ -281,15 +283,35 @@ class TrendEngineForTicker: NSObject{
   }
 
   func checkForTrend(sender: AnyObject){
-    var magnitudeOfTrend: Double? = 2.2
-    let mostRecentTweets = [[String:AnyObject]]()
+    var mostRecentTweets = [[String:AnyObject]]()
+    var averageTimeIntervalOfRecentTweets: Double?
+    if self.idOfNewestTweet == nil {
+      NetworkController.sharedInstance.doACheck(self.ticker!, trailingClosure: { (returnedTweets, error) -> Void in
+        if returnedTweets!.count != 0 {
+          for item in returnedTweets!{
+            mostRecentTweets.append(item)
+          }
+          mostRecentTweets = self.stripTweets(mostRecentTweets)
+          averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
+          if averageTimeIntervalOfRecentTweets > 0{
+            newNotification("Ticker \(self.ticker) is Trending! OMG!")
+          }
+        }
+      })    }else{
     NetworkController.sharedInstance.twitterRequestForAfterID(self.ticker!, theID: self.idOfNewestTweet!) { (returnedTweets, error) -> Void in
-      
-      
-      
-      
-      
+      if returnedTweets!.count != 0 {
+        for item in returnedTweets!{
+          mostRecentTweets.append(item)
+        }
+        mostRecentTweets = self.stripTweets(mostRecentTweets)
+        averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
+        if averageTimeIntervalOfRecentTweets > self.tweetsPerHour! * 1.5{
+          newNotification("Ticker \(self.ticker) is Trending! OMG!")
+        }
+      }
     }
-
+    }
   }
+  
+//End Class
 }
