@@ -144,6 +144,22 @@ class Stock {
         return self.name
     }
 
+/*  func createNumberWithCommas( floatValue : Float ) {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        //[formatter setNumberStyle:NSNumberFormatterNoStyle];
+        //[formatter setPositiveFormat:@"###-###-####"];
+        [formatter setGroupingSeparator:@"."];
+        [formatter setGroupingSize:2];
+        [formatter setUsesGroupingSeparator:YES];
+        [formatter setSecondaryGroupingSize:3];
+
+        //[formatter setLenient:YES];
+        NSString *num = @"539000";
+        NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+        [formatter release];
+        NSLog(@"%@",str);
+    }   */
+
     func printStockDictionary( jsonDictionary : [String:AnyObject] ) {
 
     }
