@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "Person.h"
+#import "MapViewController.h"
 
 
 @interface ViewController ()
@@ -22,6 +23,8 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  MapViewController *mapVC = [MapViewController new];
   
   //using dot notation to use the setter
   self.name = @"Brad";

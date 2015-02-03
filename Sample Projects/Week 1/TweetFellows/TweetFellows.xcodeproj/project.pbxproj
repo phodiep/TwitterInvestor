@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		A227D4A71A60491200650BD7 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A227D4A61A60491200650BD7 /* UserViewController.swift */; };
+		A237E9AB1A80989A00F2F48F /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A237E9AA1A80989A00F2F48F /* InterfaceController.swift */; };
+		A237E9AD1A80989A00F2F48F /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A237E9AC1A80989A00F2F48F /* NotificationController.swift */; };
+		A237E9AF1A80989A00F2F48F /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A237E9AE1A80989A00F2F48F /* GlanceController.swift */; };
+		A237E9B11A80989A00F2F48F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A237E9B01A80989A00F2F48F /* Images.xcassets */; };
+		A237E9B51A80989A00F2F48F /* TweetFellows WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = A237E9B41A80989A00F2F48F /* TweetFellows WatchKit App.app */; };
+		A237E9BD1A80989A00F2F48F /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A237E9BB1A80989A00F2F48F /* Interface.storyboard */; };
+		A237E9BF1A80989A00F2F48F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A237E9BE1A80989A00F2F48F /* Images.xcassets */; };
+		A237E9C21A80989A00F2F48F /* TweetFellows WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A237E9A51A80989A00F2F48F /* TweetFellows WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A250FA4F1A5DBE3700D7C3A8 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */; };
 		A27EF22B1A5B0319005E7E78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27EF22A1A5B0319005E7E78 /* AppDelegate.swift */; };
 		A27EF22D1A5B0319005E7E78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27EF22C1A5B0319005E7E78 /* ViewController.swift */; };
@@ -23,6 +31,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A237E9B61A80989A00F2F48F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A27EF21D1A5B0319005E7E78 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A237E9B31A80989A00F2F48F;
+			remoteInfo = "TweetFellows WatchKit App";
+		};
+		A237E9C01A80989A00F2F48F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A27EF21D1A5B0319005E7E78 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A237E9A41A80989A00F2F48F;
+			remoteInfo = "TweetFellows WatchKit Extension";
+		};
 		A27EF23B1A5B0319005E7E78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A27EF21D1A5B0319005E7E78 /* Project object */;
@@ -32,8 +54,33 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A237E9C91A80989A00F2F48F /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A237E9C21A80989A00F2F48F /* TweetFellows WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A227D4A61A60491200650BD7 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		A237E9A51A80989A00F2F48F /* TweetFellows WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TweetFellows WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A237E9A81A80989A00F2F48F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A237E9A91A80989A00F2F48F /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		A237E9AA1A80989A00F2F48F /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		A237E9AC1A80989A00F2F48F /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		A237E9AE1A80989A00F2F48F /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
+		A237E9B01A80989A00F2F48F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A237E9B41A80989A00F2F48F /* TweetFellows WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TweetFellows WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A237E9BA1A80989A00F2F48F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A237E9BC1A80989A00F2F48F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		A237E9BE1A80989A00F2F48F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A250FA4E1A5DBE3700D7C3A8 /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		A27EF2251A5B0319005E7E78 /* TweetFellows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TweetFellows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27EF2291A5B0319005E7E78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -53,6 +100,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A237E9A21A80989A00F2F48F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A27EF2221A5B0319005E7E78 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -70,11 +124,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A237E9A61A80989A00F2F48F /* TweetFellows WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A237E9AA1A80989A00F2F48F /* InterfaceController.swift */,
+				A237E9AC1A80989A00F2F48F /* NotificationController.swift */,
+				A237E9AE1A80989A00F2F48F /* GlanceController.swift */,
+				A237E9B01A80989A00F2F48F /* Images.xcassets */,
+				A237E9A71A80989A00F2F48F /* Supporting Files */,
+			);
+			path = "TweetFellows WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		A237E9A71A80989A00F2F48F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A237E9A81A80989A00F2F48F /* Info.plist */,
+				A237E9A91A80989A00F2F48F /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A237E9B81A80989A00F2F48F /* TweetFellows WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				A237E9BB1A80989A00F2F48F /* Interface.storyboard */,
+				A237E9BE1A80989A00F2F48F /* Images.xcassets */,
+				A237E9B91A80989A00F2F48F /* Supporting Files */,
+			);
+			path = "TweetFellows WatchKit App";
+			sourceTree = "<group>";
+		};
+		A237E9B91A80989A00F2F48F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A237E9BA1A80989A00F2F48F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		A27EF21C1A5B0319005E7E78 = {
 			isa = PBXGroup;
 			children = (
 				A27EF2271A5B0319005E7E78 /* TweetFellows */,
 				A27EF23D1A5B0319005E7E78 /* TweetFellowsTests */,
+				A237E9A61A80989A00F2F48F /* TweetFellows WatchKit Extension */,
+				A237E9B81A80989A00F2F48F /* TweetFellows WatchKit App */,
 				A27EF2261A5B0319005E7E78 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -84,6 +179,8 @@
 			children = (
 				A27EF2251A5B0319005E7E78 /* TweetFellows.app */,
 				A27EF23A1A5B0319005E7E78 /* TweetFellowsTests.xctest */,
+				A237E9A51A80989A00F2F48F /* TweetFellows WatchKit Extension.appex */,
+				A237E9B41A80989A00F2F48F /* TweetFellows WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,6 +257,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A237E9A41A80989A00F2F48F /* TweetFellows WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A237E9C81A80989A00F2F48F /* Build configuration list for PBXNativeTarget "TweetFellows WatchKit Extension" */;
+			buildPhases = (
+				A237E9A11A80989A00F2F48F /* Sources */,
+				A237E9A21A80989A00F2F48F /* Frameworks */,
+				A237E9A31A80989A00F2F48F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A237E9B71A80989A00F2F48F /* PBXTargetDependency */,
+			);
+			name = "TweetFellows WatchKit Extension";
+			productName = "TweetFellows WatchKit Extension";
+			productReference = A237E9A51A80989A00F2F48F /* TweetFellows WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit-extension";
+		};
+		A237E9B31A80989A00F2F48F /* TweetFellows WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A237E9C71A80989A00F2F48F /* Build configuration list for PBXNativeTarget "TweetFellows WatchKit App" */;
+			buildPhases = (
+				A237E9B21A80989A00F2F48F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TweetFellows WatchKit App";
+			productName = "TweetFellows WatchKit App";
+			productReference = A237E9B41A80989A00F2F48F /* TweetFellows WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp";
+		};
 		A27EF2241A5B0319005E7E78 /* TweetFellows */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A27EF2441A5B0319005E7E78 /* Build configuration list for PBXNativeTarget "TweetFellows" */;
@@ -167,10 +297,12 @@
 				A27EF2211A5B0319005E7E78 /* Sources */,
 				A27EF2221A5B0319005E7E78 /* Frameworks */,
 				A27EF2231A5B0319005E7E78 /* Resources */,
+				A237E9C91A80989A00F2F48F /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A237E9C11A80989A00F2F48F /* PBXTargetDependency */,
 			);
 			name = TweetFellows;
 			productName = TweetFellows;
@@ -204,6 +336,12 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = BPJ;
 				TargetAttributes = {
+					A237E9A41A80989A00F2F48F = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					A237E9B31A80989A00F2F48F = {
+						CreatedOnToolsVersion = 6.2;
+					};
 					A27EF2241A5B0319005E7E78 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -228,11 +366,31 @@
 			targets = (
 				A27EF2241A5B0319005E7E78 /* TweetFellows */,
 				A27EF2391A5B0319005E7E78 /* TweetFellowsTests */,
+				A237E9A41A80989A00F2F48F /* TweetFellows WatchKit Extension */,
+				A237E9B31A80989A00F2F48F /* TweetFellows WatchKit App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A237E9A31A80989A00F2F48F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A237E9B11A80989A00F2F48F /* Images.xcassets in Resources */,
+				A237E9B51A80989A00F2F48F /* TweetFellows WatchKit App.app in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A237E9B21A80989A00F2F48F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A237E9BD1A80989A00F2F48F /* Interface.storyboard in Resources */,
+				A237E9BF1A80989A00F2F48F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A27EF2231A5B0319005E7E78 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -255,6 +413,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A237E9A11A80989A00F2F48F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A237E9AD1A80989A00F2F48F /* NotificationController.swift in Sources */,
+				A237E9AB1A80989A00F2F48F /* InterfaceController.swift in Sources */,
+				A237E9AF1A80989A00F2F48F /* GlanceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A27EF2211A5B0319005E7E78 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -280,6 +448,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A237E9B71A80989A00F2F48F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A237E9B31A80989A00F2F48F /* TweetFellows WatchKit App */;
+			targetProxy = A237E9B61A80989A00F2F48F /* PBXContainerItemProxy */;
+		};
+		A237E9C11A80989A00F2F48F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A237E9A41A80989A00F2F48F /* TweetFellows WatchKit Extension */;
+			targetProxy = A237E9C01A80989A00F2F48F /* PBXContainerItemProxy */;
+		};
 		A27EF23C1A5B0319005E7E78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A27EF2241A5B0319005E7E78 /* TweetFellows */;
@@ -288,6 +466,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A237E9BB1A80989A00F2F48F /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A237E9BC1A80989A00F2F48F /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		A27EF22E1A5B0319005E7E78 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -307,6 +493,66 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A237E9C31A80989A00F2F48F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "TweetFellows WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		A237E9C41A80989A00F2F48F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = "TweetFellows WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		A237E9C51A80989A00F2F48F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IBSC_MODULE = TweetFellows_WatchKit_Extension;
+				INFOPLIST_FILE = "TweetFellows WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Debug;
+		};
+		A237E9C61A80989A00F2F48F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COPY_PHASE_STRIP = NO;
+				IBSC_MODULE = TweetFellows_WatchKit_Extension;
+				INFOPLIST_FILE = "TweetFellows WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Release;
+		};
 		A27EF2421A5B0319005E7E78 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -390,6 +636,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = TweetFellows/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -400,6 +647,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = TweetFellows/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -443,6 +691,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A237E9C71A80989A00F2F48F /* Build configuration list for PBXNativeTarget "TweetFellows WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A237E9C51A80989A00F2F48F /* Debug */,
+				A237E9C61A80989A00F2F48F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A237E9C81A80989A00F2F48F /* Build configuration list for PBXNativeTarget "TweetFellows WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A237E9C31A80989A00F2F48F /* Debug */,
+				A237E9C41A80989A00F2F48F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A27EF2201A5B0319005E7E78 /* Build configuration list for PBXProject "TweetFellows" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
