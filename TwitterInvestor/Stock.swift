@@ -11,49 +11,54 @@ import Foundation
 
 class Stock {
 
-    let DBUG                = false
+    let DBUG                        = false
 
-    var symbol: String      = ""
-    var ticker: String      = ""
-    var name: String        = ""
-    var companyName: String = ""
-    var ask: Float?         = 0.0
-    var change: Float?      = 0.0
-    var pe: Float?          = 0.0
-    var peratio: Float?     = 0.0
-    var price: Float?       = 0.0
+    private var symbol: String      = ""
+    private var ticker: String      = ""
+    private var name: String        = ""
+    private var companyName: String = ""
+    private var ask: Float?         = 0.0
+    private var change: Float?      = 0.0
+    private var pe: Float?          = 0.0
+    private var peratio: Float?     = 0.0
+    private var price: Float?       = 0.0
 
-    var count : Int         = -1
-    var query : [String:AnyObject]
-    var results : [String:AnyObject]
-    var quote : [String:AnyObject]
+    private var count   : Int         = -1
+    private var query   : [String:AnyObject]
+    private var results : [String:AnyObject]
+            var quote   : [String:AnyObject]
 
-    var quoteData : [String:AnyObject]
+//  var quoteData : [String:AnyObject]
     var emptyDictionary = Dictionary<String, String>()
 
     init(jsonDictionary: [String:AnyObject]) {
 
         // Extract stock quote data
-        self.count    = jsonDictionary.count
+        self.count     = jsonDictionary.count
 
-        self.query    = jsonDictionary["query"] as [String:AnyObject]
-        self.results  = query["results"] as [String:AnyObject]
-        self.quote    = results["quote"] as [String:AnyObject]
+        self.query     = jsonDictionary["query"] as [String:AnyObject]
+        self.results   = query["results"] as [String:AnyObject]
+        self.quote     = results["quote"] as [String:AnyObject]
+        // 'quote' now contains all of the available data for this quote request.yy
 
-        // Copy input 'quote' data...
-        self.quoteData = quote
-
+        // Let's check to see if we got a valid 'ticker symbol' and it's data.
         if let theStringValue  = quote["ErrorIndicationreturnedforsymbolchangedinvalid"] as? String {
             if theStringValue.hasPrefix( "No such ticker symbol" ) {
 
-                self.quoteData = emptyDictionary
+                self.quote = emptyDictionary
 
             } else {
 
-                self.quoteData = quote
-
-                self.symbol = getStringValue( "Symbol" )!
-                self.ticker = getStringValue( "Symbol" )!
+                self.symbol         = getSymbol()  // getStringValue( "Symbol" )!
+                self.ticker         = getSymbol()  // getStringValue( "Symbol" )!
+                self.name           = getName()
+                self.companyName    = getCompanyName()
+                self.ask            = convertToFloat( "AskRealTime" )
+                self.change         = convertToFloat( "Change" )
+                self.pe             = convertToFloat( "PERatio" )
+                self.peratio        = convertToFloat( "PERatio" )
+                self.price          = convertToFloat( "AskRealTime" )
+                getDaysRange()
             }
         }
 
@@ -61,7 +66,7 @@ class Stock {
 
         if DBUG {
             println( "symbol[\(symbol)] symbol[\(ticker)]" )
-            for ( key, value ) in quoteData {
+            for ( key, value ) in quote {
                 println( "Key: \(key) Value: \(value) " )
             }
             println( quote )
@@ -83,7 +88,6 @@ class Stock {
         self.results = Dictionary()
         self.quote   = Dictionary()
 
-        self.quoteData = quote
     }
 
     /**
@@ -93,7 +97,7 @@ class Stock {
         if DBUG { println( "convertToInt() key[\(key)]" ) }
         var searchKey  = key
         if  searchKey == "Company" { searchKey = "Name" }
-        if  let theStringValue = quoteData["\(searchKey)"] as? String {
+        if  let theStringValue = quote["\(searchKey)"] as? String {
             let anInteger      = theStringValue.toInt()
             return anInteger!
         } else {
@@ -101,11 +105,36 @@ class Stock {
         }
     }
 
+    /*
+     * New Version, w/ comma's
+     */
     func getStringValue( key: NSString ) -> String? {
         if DBUG { println( "getStringValue() key[\(key)]" ) }
         var searchKey  = key
+        var testString : NSString  = ""
         if  searchKey == "Company" { searchKey = "Name" }
-        if let theStringValue  = quoteData["\(searchKey)"] as? String {
+        if  searchKey == "Price"   { println( "Price[\(searchKey)]") }
+        if  searchKey == "Change"  { println( "Change[\(searchKey)]") }
+        
+        if let theStringValue  = quote["\(searchKey)"] as? String {
+            if theStringValue.rangeOfString( "." ) != nil {
+                println( theStringValue.rangeOfString( "." ))
+                let results = theStringValue.rangeOfString( "." );
+                let short   = theStringValue.
+                println("key[\(key)] [\(theStringValue)|\(results)] -> decimal point exists")
+            }
+            return theStringValue
+
+        } else {
+           return "-"
+        }
+    }
+
+    func getStringValuePlain( key: NSString ) -> String? {
+        if DBUG { println( "getStringValue() key[\(key)]" ) }
+        var searchKey  = key
+        if  searchKey == "Company" { searchKey = "Name" }
+        if let theStringValue  = quote["\(searchKey)"] as? String {
            return theStringValue
         } else {
            return "-"
@@ -115,7 +144,7 @@ class Stock {
     func convertToFloat( key: NSString ) -> Float? {
         if DBUG { println( "convertToFloat() key[\(key)]" ) }
         var searchKey  = key
-        if  let theStringValue = quoteData["\(key)"] as? String {
+        if  let theStringValue = quote["\(key)"] as? String {
             let aFloat         = (theStringValue as NSString).floatValue
             return aFloat
         } else {
@@ -129,22 +158,60 @@ class Stock {
     }
 
     func getSymbol() -> String {
-        return self.symbol
+        return getStringValue( "Symbol" )!
     }
 
     func getTicker() -> String {
-        return self.ticker
+        return getStringValue( "Symbol" )!
     }
 
     func getName() -> String {
-        return self.name
+        return getStringValue( "Name" )!
     }
 
     func getCompanyName() -> String {
-        return self.name
+        return  getStringValue( "Name" )!
     }
 
-/*  func createNumberWithCommas( floatValue : Float ) {
+    func getChange() -> String {
+        return getStringValue( "Change" )!
+    }
+    
+    func getPrice() -> String {
+        return getStringValue( "AskRealTime" )!
+    }
+
+    func getPERatio() -> String {
+        return getStringValue( "PERatio" )!
+    }
+
+    func getDaysRange() -> String {
+        return getStringValue( "DaysRange" )!
+    }
+
+    func getFiftyDayAverage() -> String {
+        return getStringValue( "FiftydayMovingAverage" )!
+    }
+
+    func getMarketCapitalization() -> String {
+        return getStringValue("MarketCapitalization")!
+    }
+
+    func getAverageDailyVolume() -> String {
+        return getStringValue("AverageDailyVolume")!
+    }
+
+    func getEPSEstimateCurrentYear() -> String {
+        return getStringValue("EPSEstimateCurrentYear")!
+    }
+
+    func getDividendYield() -> String {
+        return getStringValue("DividendYield")!
+    }
+
+    /*
+    setValueLabel(dividendLabel,       self.stock.getStringValue("DividendYield")!)jk
+    func createNumberWithCommas( floatValue : Float ) {
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         //[formatter setNumberStyle:NSNumberFormatterNoStyle];
         //[formatter setPositiveFormat:@"###-###-####"];

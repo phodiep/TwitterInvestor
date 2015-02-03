@@ -145,7 +145,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (stockJSON, error) -> () in
             if stockJSON != nil {
                 self.watchList.insert(stockJSON!, atIndex: 0)
-                let testForEmpty = self.watchList.first!.quoteData.isEmpty
+                let testForEmpty = self.watchList.first!.quote.isEmpty
                 if  testForEmpty {
                     self.invalidTickerAlert( ticker )
                     self.watchList.removeAtIndex(0)

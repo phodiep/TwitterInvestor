@@ -105,10 +105,10 @@
 		1DF296FF1A73195B00B5ADED /* TwitterInvestor */ = {
 			isa = PBXGroup;
 			children = (
+				1DF297021A73195C00B5ADED /* AppDelegate.swift */,
 				1DF297251A73198B00B5ADED /* Models */,
 				1DF297261A73199200B5ADED /* Views */,
 				1DF297271A73199700B5ADED /* Controllers */,
-				1DF297021A73195C00B5ADED /* AppDelegate.swift */,
 				1DF2970C1A73195C00B5ADED /* Images.xcassets */,
 				1DF2970E1A73195C00B5ADED /* LaunchScreen.xib */,
 				1DF297041A73195C00B5ADED /* TwitterInvestor.xcdatamodeld */,
