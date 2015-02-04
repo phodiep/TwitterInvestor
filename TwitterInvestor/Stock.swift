@@ -120,7 +120,6 @@ class Stock {
             if theStringValue.rangeOfString( "." ) != nil {
                 println( theStringValue.rangeOfString( "." ))
                 let results = theStringValue.rangeOfString( "." );
-                let short   = theStringValue.
                 println("key[\(key)] [\(theStringValue)|\(results)] -> decimal point exists")
             }
             return theStringValue
@@ -130,7 +129,7 @@ class Stock {
         }
     }
 
-    func getStringValuePlain( key: NSString ) -> String? {
+    func getStringValueOld( key: NSString ) -> String? {
         if DBUG { println( "getStringValue() key[\(key)]" ) }
         var searchKey  = key
         if  searchKey == "Company" { searchKey = "Name" }
