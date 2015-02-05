@@ -62,7 +62,7 @@ class TrendEngineForTicker: NSObject{
     if JSONBlob.count == 0{
       tweetsPerHour = 0
       self.tweetsPerHour = 0.0
-    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
       self.operationQueueCheckTrend = NSOperationQueue()
     }else {
 
@@ -95,7 +95,7 @@ class TrendEngineForTicker: NSObject{
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
       //Set up Timer and Queue to check for trends.
-      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
       self.operationQueueCheckTrend = NSOperationQueue()
     }
   }
