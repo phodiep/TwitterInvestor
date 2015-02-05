@@ -162,18 +162,23 @@ class DetailViewController: UIViewController {
         setTitleLabel(titleVolAvg, "Volume Average")
         setTitleLabel(titlePE, "P/E")
         setTitleLabel(titleEPS, "EPS")
-        setTitleLabel(titleDividend, "Dividend" )
+        setTitleLabel(titleDividend, "Dividend")
 
-        setValueLabel(companyLabel,         self.stock.getName(),  font: UIFont(name: "HelveticaNeue-Bold", size: 18)!)
-        setValueLabel(priceLabel,           self.stock.getStringValue("AskRealtime")!, font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
-        setValueLabel(peLabel,              self.stock.getPERatio() )
-        setValueLabel(daysRangeLabel,       self.stock.getDaysRange() )
-        setValueLabel(fiftyDayAverageLabel, self.stock.getFiftyDayAverage() )
-        setValueLabel(marketCapLabel,       self.stock.getMarketCapitalization() )
-        setValueLabel(volAverageLabel,      self.stock.getAverageDailyVolume() )
-        setValueLabel(epsLabel,             self.stock.getEPSEstimateCurrentYear() )
-        setValueLabel(changeLabel,          self.stock.getChange() )
-        let floatChange   = self.stock.convertToFloat( "Change" )
+        setValueLabel(companyLabel,         self.stock.getName(), font: UIFont( name: "HelveticaNeue-Bold", size: 18)!)
+        setValueLabel(priceLabel,           self.stock.getPrice(),   font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
+        setValueLabel(peLabel,              self.stock.getStringValue( "PERatio" )!)
+        setValueLabel(daysRangeLabel,       self.stock.getStringValue("DaysRange")!)
+        setValueLabel(fiftyDayAverageLabel, self.stock.getStringValue("FiftydayMovingAverage")!)
+        setValueLabel(marketCapLabel,       self.stock.getStringValue("MarketCapitalization")!)
+        setValueLabel(volAverageLabel,      self.stock.getStringValue("AverageDailyVolume")!)
+        setValueLabel(epsLabel,             self.stock.getEPSEstimateCurrentYear())
+
+        setValueLabel(dividendLabel,        self.stock.getDividendYield())
+        var change                        = self.stock.getChange()                 // String value
+        var commaChange : String          = self.stock.getFormattedStringValue( change )!
+        setValueLabel(changeLabel,       commaChange )
+
+        let floatChange   = self.stock.getChangeFloat()
         let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
         if floatChange == 0.0 {
             changeLabel.textColor = UIColor.blackColor()
@@ -184,7 +189,7 @@ class DetailViewController: UIViewController {
         } else {
             changeLabel.textColor = UIColor.blackColor()
         }
-        setValueLabel(dividendLabel,       self.stock.getDividendYield() )
+
 
         
         func readyAutoLayout(label: UILabel) {
@@ -201,7 +206,6 @@ class DetailViewController: UIViewController {
         readyAutoLayout(volAverageLabel)
         readyAutoLayout(epsLabel)
         readyAutoLayout(dividendLabel)
-
         readyAutoLayout(titleRange)
         readyAutoLayout(titleFiftyDay)
         readyAutoLayout(titleMarketCap)
@@ -211,7 +215,6 @@ class DetailViewController: UIViewController {
         readyAutoLayout(titlePE)
         readyAutoLayout(titleEPS)
         readyAutoLayout(titleDividend)
-
 
         
         let views = ["companyLabel": companyLabel,
@@ -247,7 +250,7 @@ class DetailViewController: UIViewController {
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-4-[titlePrice][priceLabel]-8-[titleChange][changeLabel]-8-[titlePE][peLabel]-8-[titleEPS][epsLabel]-8-[titleDividend][dividendLabel]",
+            "V:|-4-[titlePrice][priceLabel]-8-[titleChange][changeLabel]-8-[titlePE][peLabel]-8-[titleEPS][epsLabel]-8-[titleDividend][dividendLabel]-8-|",
             options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
     }
   
@@ -357,3 +360,4 @@ class DetailViewController: UIViewController {
 
     
 }
+
