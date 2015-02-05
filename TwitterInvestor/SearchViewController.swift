@@ -50,10 +50,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         let cell = SearchCell()
         let stockQuote = self.watchList[indexPath.row]
 
-        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")
-        cell.companyNameLabel.text = stockQuote.getStringValue( "Name" )
-        cell.change = stockQuote.convertToFloat( "Change" )
-        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )
+        cell.tickerLabel.text = stockQuote.getSymbol()
+        cell.companyNameLabel.text = stockQuote.getName()
+        cell.change = stockQuote.getChangeFloat()
+        cell.priceLabel.text = stockQuote.getPrice()
         
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()

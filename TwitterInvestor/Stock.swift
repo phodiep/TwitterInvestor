@@ -108,7 +108,7 @@ class Stock {
     /*
      * New Version, w/ comma's
      */
-    func getStringValue( key: NSString ) -> String? {
+    func getStringValueNew( key: NSString ) -> String? {
         if DBUG { println( "getStringValue() key[\(key)]" ) }
         var searchKey  = key
         var testString : NSString  = ""
@@ -129,7 +129,7 @@ class Stock {
         }
     }
 
-    func getStringValueOld( key: NSString ) -> String? {
+    func getStringValue( key: NSString ) -> String? {
         if DBUG { println( "getStringValue() key[\(key)]" ) }
         var searchKey  = key
         if  searchKey == "Company" { searchKey = "Name" }
@@ -175,9 +175,13 @@ class Stock {
     func getChange() -> String {
         return getStringValue( "Change" )!
     }
+
+    func getChangeFloat() -> Float {
+        return convertToFloat( "Change" )!
+    }
     
     func getPrice() -> String {
-        return getStringValue( "AskRealTime" )!
+        return getStringValue( "AskRealtime" )!
     }
 
     func getPERatio() -> String {
