@@ -11,7 +11,7 @@ import Foundation
 
 class Stock {
 
-    let DBUG                        = false
+    let DBUG                        = true
 
     private var symbol: String      = ""
     private var ticker: String      = ""
@@ -108,8 +108,34 @@ class Stock {
     /*
      * New Version, w/ comma's
      */
-    func getStringValueNew( key: NSString ) -> String? {
-        if DBUG { println( "getStringValue() key[\(key)]" ) }
+    func getFormattedStringValue( key: NSString ) -> String? {
+
+        if DBUG { println( "convertToFloat() key[\(key)]" ) }
+        var floatKey : Float = 0.0
+            floatKey         = (key  as NSString).floatValue
+
+        if DBUG { println( "getFormattedStringValue() key[\(key)] floatKey[\(floatKey)]" ) }
+
+        var formatter  = NSNumberFormatter()
+            formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+            formatter.locale      = NSLocale( localeIdentifier:  "en_US" )
+            formatter.usesSignificantDigits = false
+
+        var stringKey : String = formatter.stringFromNumber( floatKey )!
+
+        if DBUG { println( "getFormattedStringValue() key[\(stringKey)]" ) }
+        var newString : String = String(map(stringKey.generate()) {
+            $0 == "$" ? " " : $0
+            })
+        if DBUG { println( "getFormattedStringValue() key[\(newString)]" ) }
+        var minus : [ String ] = newString.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " " ))
+        if  minus.count > 1 {
+            newString = minus[0] + minus[1]
+        }
+
+        if DBUG { println( "getFormattedStringValue() key[\(newString)]" ) }
+        return newString
+/*
         var searchKey  = key
         var testString : NSString  = ""
         if  searchKey == "Company" { searchKey = "Name" }
@@ -126,7 +152,7 @@ class Stock {
 
         } else {
            return "-"
-        }
+        } */
     }
 
     func getStringValue( key: NSString ) -> String? {
@@ -140,15 +166,15 @@ class Stock {
         }
     }
 
-    func convertToFloat( key: NSString ) -> Float? {
-        if DBUG { println( "convertToFloat() key[\(key)]" ) }
-        var searchKey  = key
-        if  let theStringValue = quote["\(key)"] as? String {
-            let aFloat         = (theStringValue as NSString).floatValue
-            return aFloat
-        } else {
-            return 0.0  // ????
+
+    func convertToFloat( quoteKey: NSString ) -> Float? {
+        if DBUG { println( "convertToFloat() key[\(quoteKey)]" ) }
+        var aFloat : Float     = 0.0
+        var searchKey          = quoteKey
+        if  let theStringValue = quote["\(quoteKey)"] as? String {
+                aFloat         = (theStringValue as NSString).floatValue
         }
+        return aFloat
     }
 
     func isValidQuote( quote : [String:AnyObject] ) -> Bool {
@@ -177,7 +203,8 @@ class Stock {
     }
 
     func getChangeFloat() -> Float {
-        return convertToFloat( "Change" )!
+        var change : Float = convertToFloat( "Change" )!
+        return change
     }
     
     func getPrice() -> String {
