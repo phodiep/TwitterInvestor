@@ -16,39 +16,6 @@ class TweetCell: UITableViewCell {
     
     override init() {
         super.init()
-        
-        self.tweetLabel.font = UIFont(name: "HelveticaNeue", size: 14)
-        self.tweetLabel.textAlignment = NSTextAlignment.Left
-        self.tweetLabel.numberOfLines = 0
-        self.usernameLabel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
-        self.usernameLabel.textAlignment = NSTextAlignment.Right
-        self.dateLabel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
-        self.dateLabel.textAlignment = NSTextAlignment.Right
-
-        
-        self.tweetLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        self.usernameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        self.dateLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        contentView.addSubview(self.tweetLabel)
-        contentView.addSubview(self.usernameLabel)
-        contentView.addSubview(self.dateLabel)
-        
-        let views = ["tweetLabel" : self.tweetLabel,
-                    "usernameLabel" : self.usernameLabel,
-                    "dateLabel" : self.dateLabel]
-        
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[tweetLabel]-16-|", options: nil, metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[usernameLabel]", options: nil, metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[dateLabel]-16-|", options: nil, metrics: nil, views: views))
-
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-[tweetLabel(50)]-[usernameLabel(30)]-|", options: nil, metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-[tweetLabel(50)]-[dateLabel(30)]-|", options: nil, metrics: nil, views: views))
 
     }
     
@@ -59,6 +26,39 @@ class TweetCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.tweetLabel.font = UIFont(name: "HelveticaNeue", size: 14)
+        self.tweetLabel.textAlignment = NSTextAlignment.Left
+        self.tweetLabel.numberOfLines = 0
+        self.usernameLabel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
+        self.usernameLabel.textAlignment = NSTextAlignment.Right
+        self.dateLabel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
+        self.dateLabel.textAlignment = NSTextAlignment.Right
+        
+        
+        self.tweetLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.usernameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.dateLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        contentView.addSubview(self.tweetLabel)
+        contentView.addSubview(self.usernameLabel)
+        contentView.addSubview(self.dateLabel)
+        
+        let views = ["tweetLabel" : self.tweetLabel,
+            "usernameLabel" : self.usernameLabel,
+            "dateLabel" : self.dateLabel]
+        
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-16-[tweetLabel]-16-|", options: nil, metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-16-[usernameLabel]", options: nil, metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[dateLabel]-16-|", options: nil, metrics: nil, views: views))
+        
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-[tweetLabel(50)]-[usernameLabel(30)]-|", options: nil, metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-[tweetLabel(50)]-[dateLabel(30)]-|", options: nil, metrics: nil, views: views))
     }
 
     required init(coder aDecoder: NSCoder) {

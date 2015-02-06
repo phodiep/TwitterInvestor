@@ -45,9 +45,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
 
-        let cell = SearchCell()
+//        let cell = SearchCell()
         let stockQuote = self.watchList[indexPath.row]
 
         cell.tickerLabel.text = stockQuote.getStringValue("Symbol")
