@@ -293,6 +293,7 @@ class TrendEngineForTicker: NSObject{
           if averageTimeIntervalOfRecentTweets > 0{
             newNotification("Ticker \(self.ticker) is Trending! OMG!")
             self.isTrending = true
+            self
           }
         }
       })    }else{
