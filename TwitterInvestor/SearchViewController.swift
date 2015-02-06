@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Accounts
+import Social
 
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
 
@@ -15,6 +17,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     
     var watchList = [Stock]()
     var engines   = [TrendEngineForTicker]()
+    var isLoggedInToTwitter: Bool?
 
     //MARK: UIViewController Lifecycle
     override func loadView() {
@@ -37,6 +40,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.tableView.registerClass(SearchCell.self, forCellReuseIdentifier: "SEARCH_CELL")
         
         self.tableView.reloadData()
+      self.checkForAccountLogin()
+      
     }
 
     //MARK: UITableViewDataSource
@@ -98,7 +103,12 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let detailVC = DetailViewController()
         detailVC.stock = self.watchList[indexPath.row]
+      if self.isLoggedInToTwitter == true{
         detailVC.trendEngine = self.engines[indexPath.row]
+      }else{
+        detailVC.trendEngine = TrendEngineForTicker(tickerSymbol: "EMPTY", JSONBlob: [[String:AnyObject]]())
+      }
+        detailVC.isLoggedinToTwitter = self.isLoggedInToTwitter
         self.navigationController?.pushViewController(detailVC, animated: true)
     
     }
@@ -155,7 +165,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
                     self.tableView.reloadData()
 
                 } else {
-
+                  if self.isLoggedInToTwitter == true{
                     NetworkController.sharedInstance.overloadTwitter(ticker, trailingClosure: { (returnedTrendEngine, error) -> Void in
                        // if returnedTrendEngine != nil {
                             //returnedTrendEngine!.buildData()
@@ -166,7 +176,12 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
                             self.tableView.reloadData()
                        // }
                     })
-
+                  }else{
+                    activityIndicator.stopAnimating()
+                    message.hidden = true
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    self.tableView.reloadData()
+                  }
                 }
             }
         })
@@ -210,6 +225,52 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         self.presentViewController(alertController, animated: true, completion: nil)
 
     }
+  
+  
+  func checkForAccountLogin(){
+    let myAccountStore = ACAccountStore()
+    //Create a variable of type ACAccountType by using the method accountTypeWithAccountTypeIdentifier thats in ACAccountStore
+    let myAccountType = myAccountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+    //this starts a new thread to access the account and do something with it in the clsure statement
+    myAccountStore.requestAccessToAccountsWithType(myAccountType, options: nil) { (gotit: Bool , error: NSError!) -> Void in
+      //If ACAccountStore was able to access the account the gotit boolean in the cluses will be true or false
+      if gotit{
+        
+        //A user can have multiple accounts with each of these services, we load them all into the array.
+        let accountsArray = myAccountStore.accountsWithAccountType(myAccountType)
+        //make sure we got at least one account
+        if accountsArray.isEmpty == true{
+        
+          self.isLoggedInToTwitter = false
+        let alertForNoAccount = UIAlertController(title: "No Twitter Account!", message: "Please go to settings then navigate to the settings for your twitter account and sign in, thanks. ", preferredStyle: UIAlertControllerStyle.Alert)
+        self.presentViewController(alertForNoAccount, animated: true, completion: { () -> Void in
+          
+          
+          
+        })
+        let goToSettings = UIAlertAction(title: "Go To Setting", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        
+          let goToSettingsBool = UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        
+          
+          
+        })
+          
+          let cancelAction = UIAlertAction(title: "Umm.... Ok", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            
+            
+            
+            
+          })
+        alertForNoAccount.addAction(goToSettings)
+          alertForNoAccount.addAction(cancelAction)
+        }else{
+          self.isLoggedInToTwitter = true
+        }
+      }
+    }
+    
+  }
 
 
 }
