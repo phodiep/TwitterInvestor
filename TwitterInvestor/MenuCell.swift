@@ -14,15 +14,6 @@ class MenuCell: UITableViewCell {
     
     override init() {
         super.init()
-        
-        self.cellLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        contentView.addSubview(self.cellLabel)
-        
-        let views = ["cellLabel" : self.cellLabel]
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-16-[cellLabel]", options: nil, metrics: nil, views: views))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-[cellLabel]-|", options: nil, metrics: nil, views: views))
     }
 
     
@@ -32,6 +23,16 @@ class MenuCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        self.cellLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        contentView.addSubview(self.cellLabel)
+        
+        let views = ["cellLabel" : self.cellLabel]
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|-16-[cellLabel]-16-|", options: nil, metrics: nil, views: views))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|-[cellLabel]-|", options: nil, metrics: nil, views: views))
+
     }
 
     

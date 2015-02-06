@@ -19,6 +19,18 @@ class SearchCell: UITableViewCell {
     override init() {
         super.init()
         
+
+
+        
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         tickerLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
         companyNameLabel.font = UIFont(name: "HelveticaNeue", size: 14)
         priceLabel.font = UIFont(name: "HelveticaNeue", size: 14)
@@ -28,7 +40,7 @@ class SearchCell: UITableViewCell {
         companyNameLabel.textAlignment = NSTextAlignment.Left
         priceLabel.textAlignment = NSTextAlignment.Right
         changeLabel.textAlignment = NSTextAlignment.Right
-
+        
         
         self.tickerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.companyNameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -44,20 +56,20 @@ class SearchCell: UITableViewCell {
             "companyNameLabel" : self.companyNameLabel,
             "changeLabel" : self.changeLabel,
             "priceLabel" : self.priceLabel]
-
+        
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-18-[tickerLabel(55)]-8-[priceLabel(75)]-8-[changeLabel(75)]-8-[companyNameLabel]",
             options: nil, metrics: nil, views: views))
-
-//        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "H:|-115-[priceLabel]-16-[changeLabel]",
-//            options: nil, metrics: nil, views: views))
-
         
-//        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-//            "H:[companyNameLabel]-16-|",
-//            options: nil, metrics: nil, views: views))
-
+        //        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+        //            "H:|-115-[priceLabel]-16-[changeLabel]",
+        //            options: nil, metrics: nil, views: views))
+        
+        
+        //        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+        //            "H:[companyNameLabel]-16-|",
+        //            options: nil, metrics: nil, views: views))
+        
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|[tickerLabel]|",
             options: nil, metrics: nil, views: views))
@@ -70,16 +82,6 @@ class SearchCell: UITableViewCell {
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|[priceLabel]|",
             options: nil, metrics: nil, views: views))
-
-        
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     

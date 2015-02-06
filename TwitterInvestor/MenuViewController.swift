@@ -29,6 +29,9 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.menuTableView.delegate = self
         self.title = "Main Menu"
         
+        self.menuTableView.registerClass(MenuCell.self, forCellReuseIdentifier: "MENU_CELL")
+
+        
         clearNotificationBadgeNumbers()
     }
 
@@ -39,7 +42,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: UITableViewDataSource
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = MenuCell()
+        let cell = self.menuTableView.dequeueReusableCellWithIdentifier("MENU_CELL", forIndexPath: indexPath) as MenuCell
         cell.cellLabel.text = self.menu[indexPath.row][0] as? String
         return cell
     }
