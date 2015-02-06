@@ -62,21 +62,14 @@ class TrendEngineForTicker: NSObject{
     if JSONBlob.count == 0{
       tweetsPerHour = 0
       self.tweetsPerHour = 0.0
-    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
       self.operationQueueCheckTrend = NSOperationQueue()
     }else {
 
 
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
-//      for item in JSONBlob{
-//        println(item["id_str"])
-//      }
-//      println("____________")
-//      for item in self.arrayOfAllJSON{
-//        println(item["id_str"])
-//      }
-      //Set the formatting options for the Oldest and newest tweets
+      if self.arrayOfAllJSON.count != 0{
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
       //Set the Id and Date of newest tweet.
@@ -95,8 +88,12 @@ class TrendEngineForTicker: NSObject{
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
       //Set up Timer and Queue to check for trends.
-      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
-      self.operationQueueCheckTrend = NSOperationQueue()
+      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      }else{
+        tweetsPerHour = 0
+        self.setPlotView()
+        timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      }
     }
   }
   
@@ -295,6 +292,7 @@ class TrendEngineForTicker: NSObject{
           averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
           if averageTimeIntervalOfRecentTweets > 0{
             newNotification("Ticker \(self.ticker) is Trending! OMG!")
+            self.isTrending = true
           }
         }
       })    }else{
@@ -305,8 +303,9 @@ class TrendEngineForTicker: NSObject{
         }
         mostRecentTweets = self.stripTweets(mostRecentTweets)
         averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
-        if averageTimeIntervalOfRecentTweets > self.tweetsPerHour! * 1.5{
+        if averageTimeIntervalOfRecentTweets > self.tweetsPerHour! * 1.2{
           newNotification("Ticker \(self.ticker) is Trending! OMG!")
+          self.isTrending = true
         }
       }
     }
