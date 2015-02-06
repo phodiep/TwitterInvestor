@@ -51,11 +51,15 @@ class TrendEngineForTicker: NSObject{
   var plotView: UIView?
   var timerForTwitterTrendCheck: NSTimer?
   var operationQueueCheckTrend: NSOperationQueue?
-  
-  
+  let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+  let navigationController: UINavigationController?
+  let detailView: DetailViewController?
   //MARK: Initalizers
   init(tickerSymbol: String, JSONBlob: [[String:AnyObject]]){
     super.init()
+    //Get a reference to the Apps navigation COntroller 
+    self.navigationController = self.appDelegate.navigationController as UINavigationController!
+    //self.detailView = self.navigationController!.viewControllers[2] as? DetailViewController
     //Set the ticker property to the ticker symbol that is passed in
     self.ticker = tickerSymbol
     //If no tweets were found we don't neew to do anything
@@ -293,7 +297,8 @@ class TrendEngineForTicker: NSObject{
           if averageTimeIntervalOfRecentTweets > 0{
             newNotification("Ticker \(self.ticker) is Trending! OMG!")
             self.isTrending = true
-            self
+            
+            self.displayAlertController(self)
           }
         }
       })    }else{
@@ -307,10 +312,46 @@ class TrendEngineForTicker: NSObject{
         if averageTimeIntervalOfRecentTweets > self.tweetsPerHour! * 1.2{
           newNotification("Ticker \(self.ticker) is Trending! OMG!")
           self.isTrending = true
+          self.displayAlertController(self)
+
+        }else{
+          
         }
       }
     }
     }
+  }
+  
+  
+//  func refreshDetailView(sender: AnyObject ){
+//    self.isTrending = true
+//    if self.detailView!.isLoggedinToTwitter == true{
+//      if !self.detailView!.trendEngine.needsBaseline{
+//        self.detailView!.layoutTwitterView()
+//      } else {
+//        self.detailView!.layoutTwitterView_empty()
+//      }
+//    }else{
+//      self.detailView!.layOutTwitterViewNotLoggedIn()
+//    }
+//
+//    
+//    
+//  }
+  
+  
+  func displayAlertController(sender: AnyObject){
+    let trendingAlert = UIAlertController(title: "Trend Detected!!", message: "\(self.ticker!) is trending!", preferredStyle: UIAlertControllerStyle.Alert )
+    
+    let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+      
+      
+      
+      
+    }
+    
+    trendingAlert.addAction(action)
+    self.navigationController?.presentViewController(trendingAlert, animated: true, completion: nil)
   }
   
 //End Class
