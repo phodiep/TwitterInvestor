@@ -10,19 +10,35 @@ import UIKit
 
 class HelpViewController: UIViewController {
 
+    let helpText = UITextView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = "Help"
         self.view.backgroundColor = UIColor.whiteColor()
         
+        self.view.addSubview(helpText)
+
+        self.setHelpText()
         
+        self.helpText.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        self.helpText.font = UIFont.systemFontOfSize(16)
+        self.helpText.scrollEnabled = true
+        
+        let views = ["helpText":helpText]
+        
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[helpText]|",
+            options: nil, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|[helpText]|",
+            options: nil, metrics: nil, views: views))
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func setHelpText() {
+        helpText.text = "ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasvausdnvasvausdnvasv ausdnvasv ausdnvasv ausdnvasv ausdnvasv"
     }
-    
 
 }
