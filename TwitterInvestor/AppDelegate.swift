@@ -13,7 +13,9 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+  var searchViewController: SearchViewController?
     var detailView: DetailViewController?
+    var navigationController: UINavigationController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,7 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
         
         let rootVC = MenuViewController()
-        let navigationController = UINavigationController(rootViewController: rootVC)
+        navigationController = UINavigationController(rootViewController: rootVC)
+      
+        //self.detailView = navigationController?.viewControllers[2] as? DetailViewController
         self.window?.rootViewController = navigationController
 
         return true
@@ -38,9 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
     
-    let navController = window?.rootViewController as UINavigationController
-    let searchViewController = navController.viewControllers[1] as SearchViewController
-    let arrayofEngines = searchViewController.engines
+    //let navController = window?.rootViewController as UINavigationController
+    searchViewController = navigationController?.viewControllers[1] as SearchViewController!
+    let arrayofEngines = self.searchViewController!.engines
     
     for item in arrayofEngines{
       item.checkForTrend(self)
