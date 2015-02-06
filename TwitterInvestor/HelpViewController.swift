@@ -26,14 +26,15 @@ class HelpViewController: UIViewController {
         
         self.helpText.font = UIFont.systemFontOfSize(16)
         self.helpText.scrollEnabled = true
+        self.helpText.editable = false
         
         let views = ["helpText":helpText]
         
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|[helpText]|",
+            "H:|-8-[helpText]-8-|",
             options: nil, metrics: nil, views: views))
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|[helpText]|",
+            "V:|-8-[helpText]-8-|",
             options: nil, metrics: nil, views: views))
     }
 
