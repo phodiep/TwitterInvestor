@@ -154,7 +154,7 @@ class DetailViewController: UIViewController {
             label.text = text
         }
 
-        setTitleLabel(titleRange, "Range")
+        setTitleLabel(titleRange, "Days Range")
         setTitleLabel(titleFiftyDay, "50 Day Average")
         setTitleLabel(titleMarketCap, "Market Cap")
         setTitleLabel(titlePrice, "Price")
@@ -165,18 +165,29 @@ class DetailViewController: UIViewController {
         setTitleLabel(titleDividend, "Dividend")
 
         setValueLabel(companyLabel,         self.stock.getName(), font: UIFont( name: "HelveticaNeue-Bold", size: 18)!)
-        setValueLabel(priceLabel,           self.stock.getPrice(),   font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
-        setValueLabel(peLabel,              self.stock.getStringValue( "PERatio" )!)
-        setValueLabel(daysRangeLabel,       self.stock.getStringValue("DaysRange")!)
-        setValueLabel(fiftyDayAverageLabel, self.stock.getStringValue("FiftydayMovingAverage")!)
-        setValueLabel(marketCapLabel,       self.stock.getStringValue("MarketCapitalization")!)
-        setValueLabel(volAverageLabel,      self.stock.getStringValue("AverageDailyVolume")!)
+
+           var commaPrice : String        = self.stock.getFormattedStringValue( self.stock.getPrice() )!
+        setValueLabel(priceLabel,           commaPrice,   font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
+
+        setValueLabel(peLabel,              self.stock.getPERatio())                  // ( "PERatio" )!)
+
+           var commaDaysRange : String    = self.stock.getFormattedRangeStringValue( self.stock.getDaysRange() )!
+        setValueLabel(daysRangeLabel,       self.stock.getDaysRange())                // ("DaysRange")!)
+
+           var commaPrice50DayAv : String = self.stock.getFormattedStringValue( self.stock.getFiftyDayAverage() )!
+        setValueLabel(fiftyDayAverageLabel, commaPrice50DayAv )                       // ("FiftydayMovingAverage")!)
+
+        setValueLabel(marketCapLabel,       self.stock.getMarketCapitalization())     // ("MarketCapitalization")!)
+
+           var commaVolAverage : String  =  self.stock.getFormattedStringValue( self.stock.getAverageDailyVolume() )!
+        setValueLabel(volAverageLabel,      commaVolAverage )       // ("AverageDailyVolume")!)
+
         setValueLabel(epsLabel,             self.stock.getEPSEstimateCurrentYear())
 
         setValueLabel(dividendLabel,        self.stock.getDividendYield())
-        var change                        = self.stock.getChange()                 // String value
-        var commaChange : String          = self.stock.getFormattedStringValue( change )!
-        setValueLabel(changeLabel,       commaChange )
+
+           var commaChange : String       = self.stock.getFormattedStringValue( self.stock.getChange()  )!
+        setValueLabel(changeLabel,          commaChange )
 
         let floatChange   = self.stock.getChangeFloat()
         let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
@@ -184,6 +195,7 @@ class DetailViewController: UIViewController {
             changeLabel.textColor = UIColor.blackColor()
         } else if floatChange  > 0.0 {
             changeLabel.textColor = greenColor
+            setValueLabel(changeLabel, "+" + commaChange )
         } else if floatChange  < 0.0 {
             changeLabel.textColor = UIColor.redColor()
         } else {

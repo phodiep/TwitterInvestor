@@ -105,6 +105,12 @@ class Stock {
         }
     }
 
+    func getFormattedRangeStringValue( key: NSString ) -> String? {
+        var rangeWithCommas = "1,000,000 - 2,000,00"
+        if DBUG { println( "getFormattedRangeStringValue() key[\(key)]" ) }
+        return rangeWithCommas
+    }
+
     /*
      * New Version, w/ comma's
      */
@@ -216,7 +222,22 @@ class Stock {
     }
 
     func getDaysRange() -> String {
-        return getStringValue( "DaysRange" )!
+        var range    : String  = ""
+        var daysLow  : String  = self.getFormattedStringValue( getStringValue("DaysLow")! )!
+        var daysHigh : String  = self.getFormattedStringValue( getStringValue("DaysHigh")! )!
+
+        range = daysLow + daysHigh
+        return range
+    }
+
+    // Created so comma's could be added to the two values that make 'DaysRange, 'DaysLow'
+    func getDaysRangeLow() -> String {
+        return getStringValue( "DaysLow" )!
+    }
+
+    // Created so comma's could be added to the two values that make 'DaysRange, 'DaysHigh'
+    func getDaysRangeHigh() -> String {
+        return getStringValue( "DaysHigh" )!
     }
 
     func getFiftyDayAverage() -> String {
