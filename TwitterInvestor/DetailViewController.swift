@@ -184,8 +184,9 @@ class DetailViewController: UIViewController {
 
         setValueLabel(marketCapLabel,       self.stock.getMarketCapitalization())     // ("MarketCapitalization")!)
 
-           var commaVolAverage : String  =  self.stock.getFormattedStringValue( self.stock.getAverageDailyVolume() )!
+           var commaVolAverage : String  =  self.stock.getFormattedStringValueNoDecimal( self.stock.getAverageDailyVolume() )!
         setValueLabel(volAverageLabel,      commaVolAverage )       // ("AverageDailyVolume")!)
+        println( "\(self.stock.getAverageDailyVolume())  --> \(volAverageLabel) --> \(commaVolAverage)" )
 
         setValueLabel(epsLabel,             self.stock.getEPSEstimateCurrentYear())
 

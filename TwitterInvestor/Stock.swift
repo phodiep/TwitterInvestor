@@ -11,7 +11,7 @@ import Foundation
 
 class Stock {
 
-    let DBUG                        = true
+    let DBUG                        = false
 
     private var symbol: String      = ""
     private var ticker: String      = ""
@@ -141,24 +141,24 @@ class Stock {
 
         if DBUG { println( "getFormattedStringValue() key[\(newString)]" ) }
         return newString
-/*
-        var searchKey  = key
-        var testString : NSString  = ""
-        if  searchKey == "Company" { searchKey = "Name" }
-        if  searchKey == "Price"   { println( "Price[\(searchKey)]") }
-        if  searchKey == "Change"  { println( "Change[\(searchKey)]") }
-        
-        if let theStringValue  = quote["\(searchKey)"] as? String {
-            if theStringValue.rangeOfString( "." ) != nil {
-                println( theStringValue.rangeOfString( "." ))
-                let results = theStringValue.rangeOfString( "." );
-                println("key[\(key)] [\(theStringValue)|\(results)] -> decimal point exists")
-            }
-            return theStringValue
+    }
 
+    func getFormattedStringValueNoDecimal( key: NSString ) -> String? {
+        var newString       : String = getFormattedStringValue( key )!
+        var newString2      : String = ""
+        var noDecimalString : String = ""
+        
+        if newString.hasSuffix( ".00" ) == true {
+
+            let count  = countElements(newString) // string length
+            let short  = count - 3
+            println( "\(newString)" )
+            // var str = "Hello, playground"
+            newString2 = newString.substringWithRange(Range<String.Index>(start: advance(newString.startIndex, 0), end: advance(newString.endIndex, -3)))
+            return newString2
         } else {
-           return "-"
-        } */
+            return newString2
+        }
     }
 
     func getStringValue( key: NSString ) -> String? {
@@ -226,7 +226,7 @@ class Stock {
         var daysLow  : String  = self.getFormattedStringValue( getStringValue("DaysLow")! )!
         var daysHigh : String  = self.getFormattedStringValue( getStringValue("DaysHigh")! )!
 
-        range = daysLow + daysHigh
+        range = daysLow + " - " + daysHigh
         return range
     }
 
@@ -249,6 +249,10 @@ class Stock {
     }
 
     func getAverageDailyVolume() -> String {
+        return getStringValue("AverageDailyVolume")!
+    }
+
+    func getAverageDailyVolumeNoDecimal() -> String {
         return getStringValue("AverageDailyVolume")!
     }
 
