@@ -13,7 +13,9 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+  var searchViewController: SearchViewController?
+    var detailView: DetailViewController?
+    var navigationController: UINavigationController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,7 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
         
         let rootVC = MenuViewController()
-        let navigationController = UINavigationController(rootViewController: rootVC)
+        navigationController = UINavigationController(rootViewController: rootVC)
+      
+        //self.detailView = navigationController?.viewControllers[2] as? DetailViewController
         self.window?.rootViewController = navigationController
 
         return true
@@ -36,6 +40,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
+  func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    
+    //let navController = window?.rootViewController as UINavigationController
+    searchViewController = navigationController?.viewControllers[1] as SearchViewController!
+    let arrayofEngines = self.searchViewController!.engines
+    
+    for item in arrayofEngines{
+      item.checkForTrend(self)
+    }
+    
+    completionHandler(UIBackgroundFetchResult.NewData)
+    
+    
+  }
+  
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.

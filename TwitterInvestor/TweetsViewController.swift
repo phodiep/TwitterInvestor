@@ -22,6 +22,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.allowsSelection = false
+        
+        self.tableView.registerClass(TweetCell.self, forCellReuseIdentifier: "TWEET_CELL")
     
         self.view = self.tableView
     }
@@ -32,7 +34,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = TweetCell()
+//        let cell = TweetCell()
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("TWEET_CELL", forIndexPath: indexPath) as TweetCell
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         

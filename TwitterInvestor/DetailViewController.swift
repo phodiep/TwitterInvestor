@@ -11,7 +11,7 @@ import UIKit
 class DetailViewController: UIViewController {
 
     var stock: Stock!
-    var trendEngine: TrendEngineForTicker!
+    var trendEngine: TrendEngineForTicker!// = TrendEngineForTicker(tickerSymbol: , JSONBlob: )
 
     let rootView = UIView()
     let stockView = UIView()
@@ -19,6 +19,7 @@ class DetailViewController: UIViewController {
 
     var alertController: UIAlertController!
     var moreButton: UIBarButtonItem!
+  var isLoggedinToTwitter: Bool?
 
 //    var timerForTwitterTrendCheck: NSTimer?
 //    var operationQueueCheckTrend: NSOperationQueue?
@@ -43,11 +44,15 @@ class DetailViewController: UIViewController {
         self.layoutStockView()
         self.layoutRootView()
 
+      if self.isLoggedinToTwitter == true{
         if !self.trendEngine.needsBaseline{
             self.layoutTwitterView()
         } else {
             self.layoutTwitterView_empty()
         }
+      }else{
+        self.layOutTwitterViewNotLoggedIn()
+      }
     }
     
     override func viewDidLoad() {
@@ -295,7 +300,28 @@ class DetailViewController: UIViewController {
             options: nil, metrics: nil, views: views))
         
     }
+  
+  func layOutTwitterViewNotLoggedIn(){
+    let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
+    self.twitterView.backgroundColor = twitterBlueColor //UIColor.whiteColor()
     
+    let message = UILabel()
+    message.font = UIFont(name: "HelveticaNeue-Thin", size: 16)
+    message.text = "You Need to log into Twitter in your account setting."
+    message.setTranslatesAutoresizingMaskIntoConstraints(false)
+    self.twitterView.addSubview(message)
+    
+    let views = ["message" : message]
+    
+    self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+      "H:|-16-[message]",
+      options: nil, metrics: nil, views: views))
+    self.twitterView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+      "V:|-16-[message]",
+      options: nil, metrics: nil, views: views))
+
+  }
+  
     func layoutTwitterView() {
         let twitterBlueColor = UIColor(red: 166/255, green: 232/255, blue: 255/255, alpha: 0.8)
         self.twitterView.backgroundColor = twitterBlueColor //UIColor.whiteColor()

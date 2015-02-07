@@ -51,32 +51,29 @@ class TrendEngineForTicker: NSObject{
   var plotView: UIView?
   var timerForTwitterTrendCheck: NSTimer?
   var operationQueueCheckTrend: NSOperationQueue?
-  
-  
+  let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+  let navigationController: UINavigationController?
+  let detailView: DetailViewController?
   //MARK: Initalizers
   init(tickerSymbol: String, JSONBlob: [[String:AnyObject]]){
     super.init()
+    //Get a reference to the Apps navigation COntroller 
+    self.navigationController = self.appDelegate.navigationController as UINavigationController!
+    //self.detailView = self.navigationController!.viewControllers[2] as? DetailViewController
     //Set the ticker property to the ticker symbol that is passed in
     self.ticker = tickerSymbol
     //If no tweets were found we don't neew to do anything
     if JSONBlob.count == 0{
       tweetsPerHour = 0
       self.tweetsPerHour = 0.0
-    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+    timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
       self.operationQueueCheckTrend = NSOperationQueue()
     }else {
 
 
       //If we find tweets then we strip them all and append the remaining to the array of All JSON
       self.arrayOfAllJSON = self.stripTweets(JSONBlob)
-//      for item in JSONBlob{
-//        println(item["id_str"])
-//      }
-//      println("____________")
-//      for item in self.arrayOfAllJSON{
-//        println(item["id_str"])
-//      }
-      //Set the formatting options for the Oldest and newest tweets
+      if self.arrayOfAllJSON.count != 0{
       let format = NSDateFormatter()
       format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
       //Set the Id and Date of newest tweet.
@@ -95,8 +92,12 @@ class TrendEngineForTicker: NSObject{
       self.tweetBuckets = self.putTweetsInBucket(self.arrayOfAllJSON)
       self.setPlotView()
       //Set up Timer and Queue to check for trends.
-      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
-      self.operationQueueCheckTrend = NSOperationQueue()
+      timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      }else{
+        tweetsPerHour = 0
+        self.setPlotView()
+        timerForTwitterTrendCheck = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkForTrend:", userInfo: nil, repeats: true)
+      }
     }
   }
   
@@ -295,6 +296,9 @@ class TrendEngineForTicker: NSObject{
           averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
           if averageTimeIntervalOfRecentTweets > 0{
             newNotification("Ticker \(self.ticker) is Trending! OMG!")
+            self.isTrending = true
+            
+            self.displayAlertController(self)
           }
         }
       })    }else{
@@ -305,12 +309,49 @@ class TrendEngineForTicker: NSObject{
         }
         mostRecentTweets = self.stripTweets(mostRecentTweets)
         averageTimeIntervalOfRecentTweets = self.figureOutAverageInterval(mostRecentTweets)
-        if averageTimeIntervalOfRecentTweets > self.tweetsPerHour! * 1.5{
+        if averageTimeIntervalOfRecentTweets > self.tweetsPerHour! * 1.2{
           newNotification("Ticker \(self.ticker) is Trending! OMG!")
+          self.isTrending = true
+          self.displayAlertController(self)
+
+        }else{
+          
         }
       }
     }
     }
+  }
+  
+  
+//  func refreshDetailView(sender: AnyObject ){
+//    self.isTrending = true
+//    if self.detailView!.isLoggedinToTwitter == true{
+//      if !self.detailView!.trendEngine.needsBaseline{
+//        self.detailView!.layoutTwitterView()
+//      } else {
+//        self.detailView!.layoutTwitterView_empty()
+//      }
+//    }else{
+//      self.detailView!.layOutTwitterViewNotLoggedIn()
+//    }
+//
+//    
+//    
+//  }
+  
+  
+  func displayAlertController(sender: AnyObject){
+    let trendingAlert = UIAlertController(title: "Trend Detected!!", message: "\(self.ticker!) is trending!", preferredStyle: UIAlertControllerStyle.Alert )
+    
+    let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+      
+      
+      
+      
+    }
+    
+    trendingAlert.addAction(action)
+    self.navigationController?.presentViewController(trendingAlert, animated: true, completion: nil)
   }
   
 //End Class
