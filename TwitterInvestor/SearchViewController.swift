@@ -12,6 +12,8 @@ import Social
 
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
 
+    var DBUG = false
+    
     var tableView = UITableView()
     let searchBar = UISearchBar()
     
@@ -62,7 +64,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         change                     = stockQuote.getChange()                 // String value
         price                      = stockQuote.getPrice()                  // String value 
         cell.priceLabel.text       = stockQuote.getFormattedStringValue( price )!
-        println( "priceLabel[\(cell.priceLabel.text)] change[\(cell.change)] price[\(price)]" )
+        if DBUG { println( "priceLabel[\(cell.priceLabel.text)] change[\(cell.change)] price[\(price)]" ) }
 
         var commaChange : String = stockQuote.getFormattedStringValue( change )!
 

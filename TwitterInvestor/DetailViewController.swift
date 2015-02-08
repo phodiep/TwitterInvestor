@@ -10,6 +10,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
+    var DBUG = false
+
     var stock: Stock!
     var trendEngine: TrendEngineForTicker!// = TrendEngineForTicker(tickerSymbol: , JSONBlob: )
 
@@ -186,7 +188,7 @@ class DetailViewController: UIViewController {
 
            var commaVolAverage : String  =  self.stock.getFormattedStringValueNoDecimal( self.stock.getAverageDailyVolume() )!
         setValueLabel(volAverageLabel,      commaVolAverage )       // ("AverageDailyVolume")!)
-        println( "\(self.stock.getAverageDailyVolume())  --> \(volAverageLabel) --> \(commaVolAverage)" )
+        if DBUG { println( "\(self.stock.getAverageDailyVolume())  --> \(volAverageLabel) --> \(commaVolAverage)" ) }
 
         setValueLabel(epsLabel,             self.stock.getEPSEstimateCurrentYear())
 
