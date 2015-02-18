@@ -10,6 +10,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
+    var DBUG = false
+
     var stock: Stock!
     var trendEngine: TrendEngineForTicker!// = TrendEngineForTicker(tickerSymbol: , JSONBlob: )
 
@@ -136,6 +138,7 @@ class DetailViewController: UIViewController {
         let marketCapLabel = UILabel()
         let volAverageLabel = UILabel()
         let epsLabel = UILabel()
+        let dividendLabel = UILabel()
         
         let titleRange = UILabel()
         let titleFiftyDay = UILabel()
@@ -145,6 +148,7 @@ class DetailViewController: UIViewController {
         let titleVolAvg = UILabel()
         let titlePE = UILabel()
         let titleEPS = UILabel()
+        let titleDividend = UILabel()
         
         
         func setTitleLabel(label: UILabel, text: String) {
@@ -157,7 +161,7 @@ class DetailViewController: UIViewController {
             label.text = text
         }
 
-        setTitleLabel(titleRange, "Range")
+        setTitleLabel(titleRange, "Days Range")
         setTitleLabel(titleFiftyDay, "50 Day Average")
         setTitleLabel(titleMarketCap, "Market Cap")
         setTitleLabel(titlePrice, "Price")
@@ -165,22 +169,41 @@ class DetailViewController: UIViewController {
         setTitleLabel(titleVolAvg, "Volume Average")
         setTitleLabel(titlePE, "P/E")
         setTitleLabel(titleEPS, "EPS")
+        setTitleLabel(titleDividend, "Dividend")
 
-        setValueLabel(companyLabel,         self.stock.getStringValue("Name")!,          font: UIFont(name: "HelveticaNeue-Bold", size: 18)!)
-        setValueLabel(priceLabel,           self.stock.getStringValue("AskRealtime")!,   font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
-        setValueLabel(peLabel,              self.stock.getStringValue( "PERatio" )!)
-        setValueLabel(daysRangeLabel,       self.stock.getStringValue("DaysRange")!)
-        setValueLabel(fiftyDayAverageLabel, self.stock.getStringValue("FiftydayMovingAverage")!)
-        setValueLabel(marketCapLabel,       self.stock.getStringValue("MarketCapitalization")!)
-        setValueLabel(volAverageLabel,      self.stock.getStringValue("AverageDailyVolume")!)
-        setValueLabel(epsLabel,             self.stock.getStringValue("EPSEstimateCurrentYear")!)
-        setValueLabel(changeLabel,          self.stock.getStringValue( "Change" )!)
-        let floatChange   = self.stock.convertToFloat( "Change" )
+        setValueLabel(companyLabel,         self.stock.getName(), font: UIFont( name: "HelveticaNeue-Bold", size: 18)!)
+
+           var commaPrice : String        = self.stock.getFormattedStringValue( self.stock.getPrice() )!
+        setValueLabel(priceLabel,           commaPrice,   font: UIFont(name: "HelveticaNeue-Bold", size: 16)!)
+
+        setValueLabel(peLabel,              self.stock.getPERatio())                  // ( "PERatio" )!)
+
+           var commaDaysRange : String    = self.stock.getFormattedRangeStringValue( self.stock.getDaysRange() )!
+        setValueLabel(daysRangeLabel,       self.stock.getDaysRange())                // ("DaysRange")!)
+
+           var commaPrice50DayAv : String = self.stock.getFormattedStringValue( self.stock.getFiftyDayAverage() )!
+        setValueLabel(fiftyDayAverageLabel, commaPrice50DayAv )                       // ("FiftydayMovingAverage")!)
+
+        setValueLabel(marketCapLabel,       self.stock.getMarketCapitalization())     // ("MarketCapitalization")!)
+
+           var commaVolAverage : String  =  self.stock.getFormattedStringValueNoDecimal( self.stock.getAverageDailyVolume() )!
+        setValueLabel(volAverageLabel,      commaVolAverage )       // ("AverageDailyVolume")!)
+        if DBUG { println( "\(self.stock.getAverageDailyVolume())  --> \(volAverageLabel) --> \(commaVolAverage)" ) }
+
+        setValueLabel(epsLabel,             self.stock.getEPSEstimateCurrentYear())
+
+        setValueLabel(dividendLabel,        self.stock.getDividendYield())
+
+           var commaChange : String       = self.stock.getFormattedStringValue( self.stock.getChange()  )!
+        setValueLabel(changeLabel,          commaChange )
+
+        let floatChange   = self.stock.getChangeFloat()
         let greenColor    = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
         if floatChange == 0.0 {
             changeLabel.textColor = UIColor.blackColor()
         } else if floatChange  > 0.0 {
             changeLabel.textColor = greenColor
+            setValueLabel(changeLabel, "+" + commaChange )
         } else if floatChange  < 0.0 {
             changeLabel.textColor = UIColor.redColor()
         } else {
@@ -202,6 +225,7 @@ class DetailViewController: UIViewController {
         readyAutoLayout(marketCapLabel)
         readyAutoLayout(volAverageLabel)
         readyAutoLayout(epsLabel)
+        readyAutoLayout(dividendLabel)
         readyAutoLayout(titleRange)
         readyAutoLayout(titleFiftyDay)
         readyAutoLayout(titleMarketCap)
@@ -210,6 +234,7 @@ class DetailViewController: UIViewController {
         readyAutoLayout(titleVolAvg)
         readyAutoLayout(titlePE)
         readyAutoLayout(titleEPS)
+        readyAutoLayout(titleDividend)
 
         
         let views = ["companyLabel": companyLabel,
@@ -221,6 +246,7 @@ class DetailViewController: UIViewController {
                     "marketCapLabel" : marketCapLabel,
                     "volAverageLabel" : volAverageLabel,
                     "epsLabel" : epsLabel,
+                    "dividendLabel" : dividendLabel,
                     "titleRange" : titleRange,
                     "titleFiftyDay" : titleFiftyDay,
                     "titleMarketCap" : titleMarketCap,
@@ -228,7 +254,8 @@ class DetailViewController: UIViewController {
                     "titleChange" : titleChange,
                     "titleVolAvg" : titleVolAvg,
                     "titlePE" : titlePE,
-                    "titleEPS" : titleEPS
+                    "titleEPS" : titleEPS,
+                    "titleDividend" : titleDividend
         ]
         
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
@@ -243,7 +270,7 @@ class DetailViewController: UIViewController {
             options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: views))
 
         self.stockView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-18-[titlePrice][priceLabel]-16-[titleChange][changeLabel]-16-[titlePE][peLabel]-16-[titleEPS][epsLabel]-16-|",
+            "V:|-4-[titlePrice][priceLabel]-8-[titleChange][changeLabel]-8-[titlePE][peLabel]-8-[titleEPS][epsLabel]-8-[titleDividend][dividendLabel]-8-|",
             options: NSLayoutFormatOptions.AlignAllRight, metrics: nil, views: views))
     }
   
@@ -374,3 +401,4 @@ class DetailViewController: UIViewController {
 
     
 }
+

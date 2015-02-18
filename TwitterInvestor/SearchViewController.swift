@@ -12,6 +12,8 @@ import Social
 
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
 
+    var DBUG = false
+    
     var tableView = UITableView()
     let searchBar = UISearchBar()
     
@@ -52,29 +54,38 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCellWithIdentifier("SEARCH_CELL", forIndexPath: indexPath) as SearchCell
 
-//        let cell = SearchCell()
-        let stockQuote = self.watchList[indexPath.row]
+        let stockQuote      = self.watchList[indexPath.row]
+        var price : String  = ""
+        var change : String = ""
 
-        cell.tickerLabel.text = stockQuote.getStringValue("Symbol")
-        cell.companyNameLabel.text = stockQuote.getStringValue( "Name" )
-        cell.change = stockQuote.convertToFloat( "Change" )
-        cell.priceLabel.text = stockQuote.getStringValue( "AskRealtime" )
-        
+        cell.tickerLabel.text      = stockQuote.getSymbol()
+        cell.companyNameLabel.text = stockQuote.getName()
+        cell.change                = stockQuote.convertToFloat("Change")    // Float value
+        change                     = stockQuote.getChange()                 // String value
+        price                      = stockQuote.getPrice()                  // String value 
+        cell.priceLabel.text       = stockQuote.getFormattedStringValue( price )!
+        if DBUG { println( "priceLabel[\(cell.priceLabel.text)] change[\(cell.change)] price[\(price)]" ) }
+
+        var commaChange : String = stockQuote.getFormattedStringValue( change )!
+
         if cell.change == 0.0 {
             cell.changeLabel.textColor = UIColor.blackColor()
             
-            cell.changeLabel.text = NSString(format: "%.2f", cell.change)
+        //  cell.changeLabel.text = NSString(format: "%.2f", commaChange)
+            cell.changeLabel.text = commaChange
         }
+
         if cell.change > 0.0 {
             let greenColor = UIColor(red: 31/255, green: 153/255, blue: 43/255, alpha: 1.0)
             cell.changeLabel.textColor = greenColor
-            cell.changeLabel.text = "+" + NSString(format: "%.2f", cell.change)
+        //  cell.changeLabel.text = "+" + NSString(format: "%.2f", commaChange)
+            cell.changeLabel.text = "+" + commaChange
         }
         if cell.change < 0.0 {
-            cell.changeLabel.textColor = UIColor.redColor()
-            cell.changeLabel.text = NSString(format: "%.2f", cell.change)
+           cell.changeLabel.textColor = UIColor.redColor()
+        // cell.changeLabel.text = NSString(format: "%.2f", commaChange)
+           cell.changeLabel.text = commaChange
         }
-
         return cell
     }
 
@@ -155,7 +166,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
         NetworkController.sharedInstance.getStockInfoFromYahoo(ticker, stockLookup: { (stockJSON, error) -> () in
             if stockJSON != nil {
                 self.watchList.insert(stockJSON!, atIndex: 0)
-                let testForEmpty = self.watchList.first!.quoteData.isEmpty
+                let testForEmpty = self.watchList.first!.quote.isEmpty
                 if  testForEmpty {
                     self.invalidTickerAlert( ticker )
                     self.watchList.removeAtIndex(0)
