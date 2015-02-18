@@ -10,14 +10,16 @@ import UIKit
 
 class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    let menuTableView = UITableView()
+  let menuTableView = UITableView(frame: UIScreen.mainScreen().bounds, style: UITableViewStyle.Grouped)
     
     let menu = [["Search", SearchViewController()],
         ["Help", HelpViewController()]]
     
     //MARK: UIViewController Lifecycle
     override func loadView() {
-        self.menuTableView.frame = UIScreen.mainScreen().bounds
+      
+      
+    //self.menuTableView.frame = UIScreen.mainScreen().bounds
         
         self.view = self.menuTableView
     }
@@ -31,7 +33,8 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.menuTableView.registerClass(MenuCell.self, forCellReuseIdentifier: "MENU_CELL")
 
-        
+        self.menuTableView.scrollEnabled = false
+      
         clearNotificationBadgeNumbers()
     }
 
